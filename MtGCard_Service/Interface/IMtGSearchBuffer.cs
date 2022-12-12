@@ -13,6 +13,6 @@ namespace Application.MtGCard_Service.Interface
         public List<MtGCardRecordDTO> SearchCard(string searchText);
         public void AddToSearchBuffer(string searchText, List<MtGCardRecordDTO> list);
         public void AddClickedCard(MtGCardRecordDTO card);
-        public List<ClickedCardClass> GetClickedCardList()
+        public List<ClickedCardClass> GetClickedCardList();
     }
 }

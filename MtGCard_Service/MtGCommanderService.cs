@@ -217,6 +217,14 @@ namespace MtGCard_Service
             }
         }
 
+        public List<MtGCardRecordDTO> GetTop10ClickedCards()
+        {
+            var result = _bufferContext.GetClickedCardList();
+            if (result.Count() > 10)
+                return result.OrderByDescending(x=>x.NumOfTimesClicked).Select(c=>c.Card).Take(10).ToList();
+            return result.OrderByDescending(x => x.NumOfTimesClicked).Select(c => c.Card).ToList();
+        }
+
         private void CheckPlayerIndex(int playerIndex)
         {
             if (playerIndex > players.Count - 1 && playerIndex < 0)

@@ -1,0 +1,69 @@
+﻿@page "/Magic/Commander/V1"
+@using Application.MtGCard_Service.Interface;
+@using Application.MtGCard_Service.DTO;
+@using Application.MtGCard_Service;
+
+<h1>Commander V1</h1>
+
+<input type="text" id="name" @bind="SearchText" /><button @onclick="@Search">Sök</button>
+<br />
+@if(clickedCard != null)
+    {
+        <div id="clickedCard">
+            <h2>@(clickedCard.Name)</h2>
+            <img src="@(clickedCard.ImageUrl)" />
+            <div>
+            <p>@(clickedCard.Text)</p>
+                @if (clickedCard.Rulings != null)
+                {
+                    @foreach (var rule in clickedCard.Rulings.OrderBy(x=>x.Date))
+                    {
+                    <p><b>@($"{rule.Date}")</b> @($"{rule.Text}")</p>
+                    }
+                    <br />
+                    <br />
+                }
+            </div>
+            <select @bind="@playerId">
+                @foreach (var player in playerList)
+                {
+                    <option value="@player.PlayerId">@player.PlayerName</option>
+                }
+            </select>
+            <button @onclick="SaveCard">Lägg till listan</button>
+        </div>
+    }
+<div class="d-flex flex-wrap flex-row bd-highlight mb-3" id="SearchResult">
+    <p>@if (searchResult.Count() == 0)
+        {
+            @("Hittade inga kort")
+        }
+    </p>
+
+
+@foreach (var item in searchResult.OrderBy(x=>x.Name))
+{
+    <div class="p-2 bd-highlight">
+        <h3>@item.Name</h3>
+        <img src="@item.ImageUrl" onclick="@(() => ShowCard(@item.Id))" />
+    </div>
+}
+</div>
+
+<div class="d-flex flex-wrap flex-column bd-highlight mb-3" id="SavedCards">
+    <h2>Saved cards</h2>
+    @foreach (var player in playerList)
+    {
+        <h3>@player.PlayerName</h3>
+        <div class="d-flex flex-wrap flex-row bd-highlight mb-3">
+            @foreach (var card in player.CardList)
+            {
+                <div class="p-2 bd-highlight">
+                    <h3>@card.Name</h3>
+                    <img src="@card.ImageUrl" onclick="@(() => DeleteCard(card.Id,player.PlayerId))" />
+                </div>
+            }
+        </div>
+        <br />
+    }
+</div>

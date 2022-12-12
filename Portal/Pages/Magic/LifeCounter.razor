@@ -1,0 +1,30 @@
+﻿@page "/Magic/LifeCounter"
+@inject MtGCard_Service.MtGCommanderService _commanderService
+<h1>LifeCounter</h1>
+@foreach(var player in _commanderService.GetPlayerList())
+{
+    <h2>@player.PlayerName</h2>
+    <div class="d-flex flex-wrap flex-row bd-highlight mb-3">
+        <div class="d-flex flex-wrap flex-row bd-highlight mb-3">
+            <canvas id="life_@player.PlayerId" height="200" width="200"></canvas>
+            <div class="d-flex flex-wrap flex-column bd-highlight mb-3">
+                <button @onclick="(() => Damage(player.PlayerId,1))">+1 Damage</button>
+                <button @onclick="(() => Damage(player.PlayerId,5))">+5 Damage</button>
+                <button @onclick="(() => Heal(player.PlayerId,1))">+1 Heal</button>
+                <button @onclick="(() => Heal(player.PlayerId,5))">+5 Heal</button>
+            </div>
+        </div>
+
+        <div>
+            <div class="d-flex flex-wrap flex-row bd-highlight mb-3">
+                <canvas id="poison_@player.PlayerId" height="200" width="200"></canvas>
+                <div class="d-flex flex-wrap flex-column bd-highlight mb-3">
+                    <button @onclick="(() => Poison(player.PlayerId,1))">+1 Damage</button>
+                    <button @onclick="(() => Poison(player.PlayerId,5))">+5 Damage</button>
+                    <button @onclick="(() => HealPoison(player.PlayerId,1))">+1 Heal</button>
+                    <button @onclick="(() => HealPoison(player.PlayerId,5))">+5 Heal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

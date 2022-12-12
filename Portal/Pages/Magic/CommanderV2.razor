@@ -1,0 +1,14 @@
+﻿@page "/Magic/Commander/V2"
+@inject MtGCard_Service.MtGCommanderService _commanderService
+<h1>Commander V2</h1>
+<input type="text" @bind="SearchText" /><button @onclick="SearchForCard">Search for a card</button>
+<InfoCard 
+    onSaveCard="AddCardToPlayer" 
+    card="_commanderService.GetClickedCard()" 
+    PlayerList="_commanderService.GetPlayerList()" />
+<ShowSearchResult 
+    onShowCard="ShowCard" 
+    List="_commanderService.GetSearchResult()" />
+<ShowPlayerCards 
+    onDeleteCard="DeleteCard" 
+    PlayerList="_commanderService.GetPlayerListWithCardList()" />

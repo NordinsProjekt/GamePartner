@@ -1,0 +1,45 @@
+﻿@using Application.MtGCard_Service.DTO
+@using MtGCard_Service.DTO
+@if (card != null)
+{
+    <h2>@(card.Name)</h2>
+    <img src="@(card.ImageUrl)" />
+    <div>
+        <p>@(card.Text)</p>
+        @if (card.Rulings != null)
+        {
+            @foreach (var rule in card.Rulings.OrderBy(x => x.Date))
+            {
+                        <p><b>@($"{rule.Date}")</b> @($"{rule.Text}")</p>
+            }
+                <br />
+                <br />
+        }
+    </div>
+    <div>
+                <select @bind="@playerId">
+            @foreach (var player in PlayerList)
+            {
+                <option value="@player.PlayerId">@player.PlayerName</option>
+            }
+                </select>
+                <button @onclick="SaveCard">Lägg till listan</button>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public MtGCardRecordDTO? card { get; set; }
+    [Parameter]
+    public List<MtGPlayerRecord_DTO>? PlayerList { get; set; }
+    [Parameter]
+    public EventCallback<int> onSaveCard { get; set; }
+    public int playerId { get; set; }
+
+    public async Task SaveCard()
+    {
+        if (playerId >= 0)
+            await onSaveCard.InvokeAsync(playerId);
+        StateHasChanged();
+    }
+}

@@ -1,0 +1,23 @@
+﻿@page "/"
+@inject MtGCard_Service.MtGCommanderService _commanderService
+@inject IJSRuntime JSRuntime
+<PageTitle>Index</PageTitle>
+<h1>Cardgame companion app</h1>
+@if (showNew == false)
+{
+    <button @onclick="MakeNewGame">New Game settings</button>
+}
+else
+{
+    <div>
+        <input type="number" @bind="NumOfPlayers" min="2" max="5" />
+        <h2>Player names</h2>
+        @foreach (var i in Enumerable.Range(0, NumOfPlayers))
+        {
+            <br />
+            <input type="text" @bind="Name[i]" />
+        }
+        <br />
+        <button @onclick="Save">New Game</button>
+    </div>
+}

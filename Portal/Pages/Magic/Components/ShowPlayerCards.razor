@@ -1,0 +1,28 @@
+﻿@using MtGCard_Service.DTO
+
+<div class="d-flex flex-wrap flex-column bd-highlight mb-3" id="SavedCards">
+    <h2>Saved cards</h2>
+    @foreach (var player in PlayerList)
+    {
+        <h3>@player.PlayerName</h3>
+        <div class="d-flex flex-wrap flex-row bd-highlight mb-3">
+            @foreach (var card in player.CardList)
+            {
+                <div class="p-2 bd-highlight">
+                    <h3>@card.Name</h3>
+                    <img src="@card.ImageUrl" onclick="@(() => DeleteCard(card.Id,player.PlayerIndex))" />
+                </div>
+            }
+        </div>
+        <br />
+    }
+</div>
+@code {
+    [Parameter]
+    public List<MtGPlayerWithCardListRecord_DTO> PlayerList { get; set; }
+    [Parameter]
+    public EventCallback<MtGDeleteCard_DTO> onDeleteCard { get; set; }
+
+    public async Task DeleteCard(string cardId,int playerIndex) =>
+            await onDeleteCard.InvokeAsync(new MtGDeleteCard_DTO(cardId,playerIndex));
+}

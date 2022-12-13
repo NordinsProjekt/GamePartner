@@ -1,4 +1,5 @@
-﻿using MtGCard_Service.DTO;
+﻿using Microsoft.JSInterop;
+using MtGCard_Service.DTO;
 using System.Runtime.CompilerServices;
 
 namespace Portal.Pages.Magic
@@ -6,6 +7,7 @@ namespace Portal.Pages.Magic
     public partial class CommanderV2
     {
         string SearchText { get; set; }
+        private bool ShowClickedCardResult { get; set; } = false;
         private async void SearchForCard()
         {
             if (!string.IsNullOrWhiteSpace(SearchText))
@@ -20,7 +22,12 @@ namespace Portal.Pages.Magic
             _commanderService.ClearSearchResult();
             StateHasChanged();
         }
-        protected void ShowCard(string cardId) => _commanderService.SetClickedCard(cardId);
+        protected async void ShowCard(string cardId)
+        {
+            _commanderService.SetClickedCard(cardId);
+            await JS.InvokeVoidAsync("OnScrollEvent");
+            StateHasChanged();
+        }
         protected void AddCardToPlayer(int id)
         {
             _commanderService.AddCardToPlayer(id, _commanderService.GetClickedCard());
@@ -28,5 +35,12 @@ namespace Portal.Pages.Magic
         }
         protected void DeleteCard(MtGDeleteCard_DTO playerCard) =>
             _commanderService.RemoveCardFromPlayer(playerCard.PlayerIndex,playerCard.CardId);
+        public void Top10()
+        {
+            if (ShowClickedCardResult == true)
+                ShowClickedCardResult = false;
+            else
+                ShowClickedCardResult = true;
+        }
     }
 }

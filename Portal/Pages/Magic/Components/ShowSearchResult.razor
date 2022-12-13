@@ -1,5 +1,5 @@
 ﻿@using Application.MtGCard_Service.DTO
-@if (List.Count > 0)
+@if (List.Count > 0 && show)
 {
     <div id="SearchResult" class="d-flex flex-wrap flex-row bd-highlight mb-3">
         @foreach (var item in List.OrderBy(x => x.Name))
@@ -17,5 +17,7 @@
     public List<MtGCardRecordDTO>? List { get; set; }
     [Parameter]
     public EventCallback<string> onShowCard { get; set; }
+    [Parameter]
+    public bool show { get; set; } = true;
     private async Task ShowCard(string id) => await onShowCard.InvokeAsync(id);
 }

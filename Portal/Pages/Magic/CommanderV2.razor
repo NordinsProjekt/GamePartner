@@ -1,5 +1,6 @@
 ﻿@page "/Magic/Commander/V2"
 @inject MtGCard_Service.MtGCommanderService _commanderService
+@inject MtGCard_Service.MtGCardBufferService _buffer
 @inject IJSRuntime JS
 <h1>Commander V2</h1>
 <input type="text" @bind="SearchText" />
@@ -12,9 +13,7 @@
 <ShowSearchResult onShowCard="ShowCard"
                   show="ShowClickedCardResult"
                   List="_commanderService.GetTop10ClickedCards()" />
-<ShowSearchResult 
-    onShowCard="ShowCard" 
-    List="_commanderService.GetSearchResult()" />
+<CardPager Jump="5" onClickedCard="ShowCard" _rep="_buffer" SearchText="@SearchText" />
 <ShowPlayerCards 
     onDeleteCard="DeleteCard" 
     PlayerList="_commanderService.GetPlayerListWithCardList()" />

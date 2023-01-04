@@ -7,7 +7,7 @@
         <div class="d-flex flex-row flex-wrap">
             @foreach (var card in _rep.GetCards(index,Jump).ToList())
             {
-                    <div class="p-2 bd-highlight">
+                    <div class="p-2 bd-highlight" @onclick="(() => ClickedCard(card.Id))">
                         <h3>@card.Name</h3>
                         <img src="@card.ImageUrl" />
                     </div>
@@ -29,18 +29,21 @@
 
 @code {
     [Parameter]
-    public MtGCardBufferService _rep { get; set; }
+    public MtGCardBufferService? _rep { get; set; }
     [Parameter]
     public int Jump { get; set; } = 5;
-    private int index { get; set; } = 5;
+    [Parameter]
+    public string? SearchText { get; set; }
+    [Parameter]
+    public EventCallback<string> onClickedCard { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    private int index { get; set; } = 5;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await _rep.PopulateCardList("zombie");
+        if (SearchText != null && _rep != null)
+            await _rep.PopulateCardList(SearchText);
     }
-    public void UpdatePager(int num)
-    {
-        index = num+Jump;
-        StateHasChanged();
-    }
+
+    public void UpdatePager(int num) => index = num+Jump;
+    private async Task ClickedCard(string id) => await onClickedCard.InvokeAsync(id);
 }

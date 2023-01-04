@@ -12,7 +12,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddTransient<IMtGCardRepository, SearchForCard>();
 builder.Services.AddSingleton<IMtGSearchBuffer, SearchBuffer>();
-//builder.Services.AddScoped(_ => new MtGCommanderService(new SearchForCard(), 4));
+builder.Services.AddScoped<MtGCardBufferService>();
 builder.Services.AddScoped<MtGCommanderService>();
 builder.Services.AddSession();
 var app = builder.Build();

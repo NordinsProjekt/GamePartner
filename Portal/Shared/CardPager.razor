@@ -1,0 +1,46 @@
+﻿@using Application.MtGCard_Service.DTO
+@using MtGCard_Service
+<h2>CardPager</h2>
+@if (_rep != null)
+{
+    <div>
+        <div class="d-flex flex-row flex-wrap">
+            @foreach (var card in _rep.GetCards(index,Jump).ToList())
+            {
+                    <div class="p-2 bd-highlight">
+                        <h3>@card.Name</h3>
+                        <img src="@card.ImageUrl" />
+                    </div>
+            }
+        </div>
+        <div class="d-flex flex-row">
+            @{
+                int j = 1;
+            }
+        @for (int i = 0; i <= _rep.Count/Jump; i += 1)
+        {
+            int x = i*Jump;
+            <div style="padding: 5px;" @onclick="(() => UpdatePager(x))"><p><u>@j</u></p></div>
+            j++;
+        }
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public MtGCardBufferService _rep { get; set; }
+    [Parameter]
+    public int Jump { get; set; } = 5;
+    private int index { get; set; } = 5;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await _rep.PopulateCardList("zombie");
+    }
+    public void UpdatePager(int num)
+    {
+        index = num+Jump;
+        StateHasChanged();
+    }
+}

@@ -9,6 +9,7 @@ namespace MtGCard_Service.Classes
 {
     public class MtGPlayer
     {
+        private MtGCommander commander;
         private MtGPlayerInfo info;
         private MtGPlayerLife life;
         private List<MtGCardRecordDTO> cardList = new List<MtGCardRecordDTO>();

@@ -6,14 +6,25 @@
 <input type="text" @bind="SearchText" />
 <button @onclick="SearchForCard">Search for a card</button>
 <button @onclick="Top10">Show Top 10 Cards</button>
-<InfoCard 
-    onSaveCard="AddCardToPlayer" 
-    card="_commanderService.GetClickedCard()" 
-    PlayerList="_commanderService.GetPlayerList()" />
-<ShowSearchResult onShowCard="ShowCard"
+@if(ShowProgress)
+{
+    <div class="col-md-4 p-3">
+        <center><img src="images/searching.gif" /></center>
+    </div>
+}
+else
+{
+    <InfoCard onSaveCard="AddCardToPlayer"
+          card="_commanderService.GetClickedCard()"
+          PlayerList="_commanderService.GetPlayerList()" />
+    <h2 @onclick="Top10">Top 10 Cards</h2>
+    <ShowSearchResult onShowCard="ShowCard"
                   show="ShowClickedCardResult"
                   List="_commanderService.GetTop10ClickedCards()" />
-<CardPager Jump="5" onClickedCard="ShowCard" _rep="_buffer" SearchText="@SearchText" />
-<ShowPlayerCards 
-    onDeleteCard="DeleteCard" 
-    PlayerList="_commanderService.GetPlayerListWithCardList()" />
+    <h2 @onclick="SwitchCardPager">Search Result</h2>
+    <CardPager Jump="5" onClickedCard="ShowCard" _rep="_buffer" SearchText="@SearchText" Show="ShowCardPager" />
+
+    <h2 @onclick="SwitchPlayerCards">Saved Player Cards</h2>
+    <ShowPlayerCards onDeleteCard="DeleteCard" Show="ShowPlayerCards"
+                 PlayerList="_commanderService.GetPlayerListWithCardList()" />
+}

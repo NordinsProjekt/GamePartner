@@ -141,6 +141,13 @@ namespace MtGCard_Service
             var card = searchResult.Where(x=> x.Id == id).FirstOrDefault();
             if (card != null)
                 clickedCard = card;
+            else
+            {
+                if (_bufferContext != null)
+                {
+                    clickedCard = _bufferContext.GetCardById(id);
+                }
+            }
             if (_bufferContext != null && card != null)
                 _bufferContext.AddClickedCard(card);
         }
@@ -225,10 +232,24 @@ namespace MtGCard_Service
             return result.OrderByDescending(x => x.NumOfTimesClicked).Select(c => c.Card).ToList();
         }
 
+        public void SetCommanderForPlayer(int playerId, string cardId)
+        {
+            CheckPlayerIndex(playerId);
+            CheckSelectedCard(cardId);
+            players[playerId].SetCommanderCard(clickedCard);
+        }
+
         private void CheckPlayerIndex(int playerIndex)
         {
             if (playerIndex > players.Count - 1 && playerIndex < 0)
                 throw new PlayerIndexException("Player doesnt exist", playerIndex);
         }
+
+        private void CheckSelectedCard(string cardId) 
+        {
+            if (clickedCard == null || clickedCard.Id != cardId)
+                throw new System.Exception("Card doesnt exist in search reult");
+        }
+
     }
 }

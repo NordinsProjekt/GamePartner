@@ -26,6 +26,8 @@ namespace Infrastructure.MtGCard_API
 
         private List<MtGCardRecordDTO> ConvertICardToDTO(IOperationResult<List<ICard>> list)
         {
+            if (list == null)
+                return default;
             List<MtGCardRecordDTO> dtoList = new();
             foreach (var card in list.Value)
                 dtoList.Add(MappingFunctions.MapICardToNewDto(card));

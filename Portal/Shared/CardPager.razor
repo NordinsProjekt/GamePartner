@@ -1,7 +1,6 @@
 ﻿@using Application.MtGCard_Service.DTO
 @using MtGCard_Service
-<h2>CardPager</h2>
-@if (_rep != null)
+@if (_rep != null && Show == true)
 {
     <div>
         <div class="d-flex flex-row flex-wrap">
@@ -36,6 +35,8 @@
     public string? SearchText { get; set; }
     [Parameter]
     public EventCallback<string> onClickedCard { get; set; }
+    [Parameter]
+    public bool Show { get; set; } = true;
 
     private int index { get; set; } = 5;
     protected override async Task OnAfterRenderAsync(bool firstRender)

@@ -17,7 +17,7 @@
         }
     </div>
     <div>
-                <select @bind="@playerId">
+            <select @bind="@playerId">
             @foreach (var player in PlayerList)
             {
                 <option value="@player.PlayerId">@player.PlayerName</option>

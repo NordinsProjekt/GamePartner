@@ -33,5 +33,13 @@ namespace MtGCard_API
                 result.NumOfTimesClicked++;
         }
         public List<ClickedCardClass> GetClickedCardList() { return clickedList; }
+
+        public MtGCardRecordDTO GetCardById(string id)
+        {
+            var c = clickedList.Where(c=>c.Card.Id == id).FirstOrDefault();
+            if (c != null)
+                return c.Card;
+            return default(MtGCardRecordDTO);
+        }
     }
 }

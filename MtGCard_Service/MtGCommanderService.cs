@@ -1,11 +1,13 @@
 ﻿using Application.MtGCard_Service.DTO;
 using Application.MtGCard_Service.Interface;
 using MtGCard_Service.Classes;
+using MtGCard_Service.Classes.Extensions;
 using MtGCard_Service.DTO;
 using MtGCard_Service.Exception;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +16,7 @@ namespace MtGCard_Service
 {
     public class MtGCommanderService
     {
-        private List<MtGPlayer> players = new List<MtGPlayer>();
+        public List<MtGPlayer> players = new List<MtGPlayer>();
         private List<MtGCardRecordDTO> searchResult = new List<MtGCardRecordDTO>();
         private MtGCardRecordDTO? clickedCard = null;
         private IMtGCardRepository _context;
@@ -63,7 +65,7 @@ namespace MtGCard_Service
         public int GetPlayerLifeTotal(int playerIndex)
         {
             CheckPlayerIndex(playerIndex);
-            return players[playerIndex].GetPlayerLifeTotal;
+            return players[playerIndex].LifeTotal;
         }
 
         public int GetPlayerPoisonCountTotal(int playerIndex)
@@ -84,7 +86,7 @@ namespace MtGCard_Service
         public void PlayerTakesDamage(int playerIndex,int damage)
         {
             CheckPlayerIndex(playerIndex);
-            players[playerIndex].TakeDamage(damage);
+            players[playerIndex].DoDamage(damage);
         }
 
         public void PlayerTakesPoisonDamage(int playerIndex,int poisonDamage)
@@ -95,7 +97,7 @@ namespace MtGCard_Service
         public void PlayerGainLife(int playerIndex,int lifeGain)
         {
             CheckPlayerIndex(playerIndex);
-            players[playerIndex].GainLife(lifeGain);
+            players[playerIndex].Heal(lifeGain);
         }
         public void PlayerHealsPoisonDamage(int playerIndex,int poisonDamageReduced)
         {
@@ -239,13 +241,14 @@ namespace MtGCard_Service
             players[playerId].SetCommanderCard(clickedCard);
         }
 
-        private void CheckPlayerIndex(int playerIndex)
+        public bool CheckPlayerIndex(int playerIndex)
         {
             if (playerIndex > players.Count - 1 && playerIndex < 0)
-                throw new PlayerIndexException("Player doesnt exist", playerIndex);
+                return false;
+            return true;
         }
 
-        private void CheckSelectedCard(string cardId) 
+        public void CheckSelectedCard(string cardId) 
         {
             if (clickedCard == null || clickedCard.Id != cardId)
                 throw new System.Exception("Card doesnt exist in search reult");

@@ -11,7 +11,7 @@ namespace MtGCard_Service.Classes
     {
         private MtGCommander commander;
         private MtGPlayerInfo info;
-        private MtGPlayerLife life;
+        public MtGPlayerLife life;
         private List<MtGCardRecordDTO> cardList = new List<MtGCardRecordDTO>();
 
         public MtGPlayer(int playerId, string playerName, int numberOfPlayers)
@@ -20,7 +20,7 @@ namespace MtGCard_Service.Classes
             life = new MtGPlayerLife(40, 0, numberOfPlayers);
         }
 
-        public int GetPlayerLifeTotal
+        public int LifeTotal
         {
             get { return life.PlayerLife; }
             private set { }
@@ -42,10 +42,7 @@ namespace MtGCard_Service.Classes
         }
 
         public int GetPlayerCommanderDamage(int commanderPlayerIndex) => life.GetPlayerCommanderDamage(commanderPlayerIndex);
-
-        public void TakeDamage(int damage) => life.PlayerTakeDamage(damage);
         public void TakePoisonDamage(int poisonDamage) => life.PlayerTakePoisonDamage(poisonDamage);
-        public void GainLife(int lifeGain) => life.PlayerGainsLife(lifeGain);
         public void RemovePoisonCounters(int poisonCounters) => life.PlayerRemovePoisonCounters(poisonCounters);
         public void TakeCommanderDamage(int playerCommanderIndex,int commanderDamage) 
             => life.PlayerTakesCommanderDamage(playerCommanderIndex,commanderDamage);

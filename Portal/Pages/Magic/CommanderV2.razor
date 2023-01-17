@@ -22,7 +22,7 @@ else
                   show="ShowClickedCardResult"
                   List="_commanderService.GetTop10ClickedCards()" />
     <h2 @onclick="SwitchCardPager">Search Result</h2>
-    <CardPager Jump="5" onClickedCard="ShowCard" _rep="_buffer" SearchText="@SearchText" Show="ShowCardPager" />
+    <CardPager Jump="5" onClickedCard="ShowCard" _rep="_buffer" Show="ShowCardPager" />
 
     <h2 @onclick="SwitchPlayerCards">Saved Player Cards</h2>
     <ShowPlayerCards onDeleteCard="DeleteCard" Show="ShowPlayerCards"

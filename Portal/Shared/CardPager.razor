@@ -41,8 +41,8 @@
     private int index { get; set; } = 5;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (SearchText != null && _rep != null)
-            await _rep.PopulateCardList(SearchText);
+        //if (SearchText != null && _rep != null)
+        //    await _rep.PopulateCardList(SearchText);
     }
     public void UpdatePager(int num) => index = num+Jump;
     private async Task ClickedCard(string id) => await onClickedCard.InvokeAsync(id);

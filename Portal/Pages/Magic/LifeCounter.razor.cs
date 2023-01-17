@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MtGCard_Service;
+using MtGCard_Service.Classes.Extensions;
 using MtGCard_Service.DTO;
+using MtGCard_Service.Extensions;
 using System.Reflection;
 
 namespace Portal.Pages.Magic
@@ -12,13 +14,13 @@ namespace Portal.Pages.Magic
         IJSRuntime JsRuntime { get; set; }
         public async Task Damage(int playerId,int damage)
         {
-            _commanderService.PlayerTakesDamage(playerId, damage);
+            _commanderService.GetPlayer(playerId).DoDamage(damage);
             await DrawLifeCounter(playerId);
         }
             
         public async Task Heal(int playerId,int heal)
         {
-            _commanderService.PlayerGainLife(playerId, heal);
+            _commanderService.GetPlayer(playerId).Heal(heal);
             await DrawLifeCounter(playerId);
         }
             

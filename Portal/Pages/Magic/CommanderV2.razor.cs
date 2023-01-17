@@ -15,8 +15,10 @@ namespace Portal.Pages.Magic
         {
             if (!string.IsNullOrWhiteSpace(SearchText))
             {
-                ShowProgress= true;
-                await _commanderService.SearchForCard(SearchText);
+                //Bygg ihop buffer och commanderservice till en lista. Det blir fel överallt.
+                ShowProgress = true;
+                await _buffer.PopulateCardList(SearchText);
+                //await _commanderService.Sea
                 ShowProgress= false;
                 StateHasChanged();
             }

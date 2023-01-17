@@ -1,6 +1,8 @@
 ﻿using Infrastructure.MtGCard_API;
 using MtGCard_API;
 using MtGCard_Service;
+using MtGCard_Service.Classes.Extensions;
+using MtGCard_Service.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,8 +39,8 @@ namespace UnitTest_MtGCommanderService
         {
             MockData _rep = new MockData();
             MtGCommanderService mcs = new MtGCommanderService(_rep, 4);
-            mcs.PlayerGainLife(2, 5);
-            Assert.True(mcs.GetPlayerLifeTotal(2) == 45);
+            mcs.GetPlayer(2).Heal(5);
+            Assert.True(mcs.GetPlayer(2).LifeTotal == 45);
         }
 
         [Fact]

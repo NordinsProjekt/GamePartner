@@ -6,7 +6,7 @@
         @foreach (var player in PlayerList)
         {
             <h3>@player.PlayerName</h3>
-            <CommanderCardWindow commander="player.Commander" />
+            <CommanderCardWindow commander="player.Commander" PlayerIndex="player.PlayerIndex" onDelete="RemoveCommander" />
             <div class="d-flex flex-wrap flex-row bd-highlight mb-3">
                 @foreach (var card in player.CardList)
                 {
@@ -35,9 +35,15 @@
 
     public void UseAsCommander(string cardId, int playerIndex)
     {
-        var com = PlayerList.Where(x => x.PlayerIndex == playerIndex).FirstOrDefault();
+        var player = PlayerList.Where(x => x.PlayerIndex == playerIndex).FirstOrDefault();
         var card = PlayerList[playerIndex].CardList.Where(x => x.Id == cardId).FirstOrDefault();
-        com.Commander.SetCommanderCard(card);
-        PlayerList[playerIndex].CardList.Remove(card);
+        player.Commander.SetCommanderCard(card);
+    }
+
+    public async Task RemoveCommander(int playerIndex)
+    {
+        var player = PlayerList.Where(x => x.PlayerIndex == playerIndex).FirstOrDefault();
+        player.Commander.RemoveCommanderCard();
+        player.Commander.ResetDiedCounter();
     }
 }

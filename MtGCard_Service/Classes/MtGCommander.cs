@@ -9,7 +9,7 @@ namespace MtGCard_Service.Classes
 {
     public class MtGCommander
     {
-        private MtGCardRecordDTO commanderCard { get; set; }
+        private MtGCardRecordDTO? commanderCard { get; set; }
         private int diedCounter { get; set; }
         public MtGCommander() { }
 
@@ -30,5 +30,6 @@ namespace MtGCard_Service.Classes
             => this.diedCounter = 0;
         public int GetDiedAmount()
             => this.diedCounter;
+        public void RemoveCommanderCard() => commanderCard = null;
     }
 }

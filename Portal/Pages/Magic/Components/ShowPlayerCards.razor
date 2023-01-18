@@ -1,16 +1,19 @@
-﻿@using MtGCard_Service.DTO
+﻿@using MtGCard_Service.Classes;
+@using MtGCard_Service.DTO
 @if (Show)
 {
     <div class="d-flex flex-wrap flex-column bd-highlight mb-3" id="SavedCards">
         @foreach (var player in PlayerList)
         {
             <h3>@player.PlayerName</h3>
+            <CommanderCardWindow commander="player.Commander" />
             <div class="d-flex flex-wrap flex-row bd-highlight mb-3">
                 @foreach (var card in player.CardList)
                 {
-                    <div class="p-2 bd-highlight">
+                    <div class="p-2 bd-highlight flex-row">
                         <h3>@card.Name</h3>
-                        <img src="@card.ImageUrl" onclick="@(() => DeleteCard(card.Id,player.PlayerIndex))" />
+                        <img src="@card.ImageUrl" onclick="@(() => DeleteCard(card.Id,player.PlayerIndex))" /><br />
+                        <button @onclick="(() => UseAsCommander(card.Id,player.PlayerIndex))">Use as Commander</button>
                     </div>
                 }
             </div>
@@ -29,4 +32,12 @@
 
     public async Task DeleteCard(string cardId,int playerIndex) =>
             await onDeleteCard.InvokeAsync(new MtGDeleteCard_DTO(cardId,playerIndex));
+
+    public void UseAsCommander(string cardId, int playerIndex)
+    {
+        var com = PlayerList.Where(x => x.PlayerIndex == playerIndex).FirstOrDefault();
+        var card = PlayerList[playerIndex].CardList.Where(x => x.Id == cardId).FirstOrDefault();
+        com.Commander.SetCommanderCard(card);
+        PlayerList[playerIndex].CardList.Remove(card);
+    }
 }

@@ -51,7 +51,7 @@ namespace MtGCard_Service
         {
             List<MtGPlayerWithCardListRecord_DTO> list = new List<MtGPlayerWithCardListRecord_DTO>();
             foreach (var player in players)
-                list.Add(new MtGPlayerWithCardListRecord_DTO(player.GetPlayerId, player.GetPlayerName, GetPlayerCardList(player.GetPlayerId)));
+                list.Add(new MtGPlayerWithCardListRecord_DTO(player.GetPlayerId, player.GetPlayerName, GetPlayerCardList(player.GetPlayerId),player.GetCommander()));
             return list;
         }
 

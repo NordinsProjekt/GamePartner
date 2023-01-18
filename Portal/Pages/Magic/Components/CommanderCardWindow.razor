@@ -1,0 +1,19 @@
+﻿@using MtGCard_Service.Classes;
+<h3>CommanderCardWindow</h3>
+@if (commander != null && commander.GetCommanderCard() != null)
+{
+    <div class="d-flex flex-row">
+    <div class="d-flex flex-column">
+        <h3>@commander.GetCommanderCard().Name</h3>
+        <img src="@commander.GetCommanderCard().ImageUrl" />
+    </div>
+    <div class="d-flex flex-column">
+        <p>Died: @commander.GetDiedAmount()</p>
+    </div>
+</div>
+}
+
+@code {
+    [Parameter]
+    public MtGCommander? commander { get; set; }
+}

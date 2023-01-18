@@ -9,7 +9,7 @@ namespace MtGCard_Service.Classes
 {
     public class MtGCommander
     {
-        private MtGCardRecordDTO commanderCard;
+        private MtGCardRecordDTO commanderCard { get; set; }
         private int diedCounter { get; set; }
         public MtGCommander() { }
 

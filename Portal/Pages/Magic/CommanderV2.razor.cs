@@ -17,33 +17,23 @@ namespace Portal.Pages.Magic
             {
                 //Bygg ihop buffer och commanderservice till en lista. Det blir fel överallt.
                 ShowProgress = true;
-                await _buffer.PopulateCardList(SearchText);
-                //await _commanderService.Sea
+                await _commanderService.SearchForCard(SearchText);
+                //await _buffer.PopulateCardList(SearchText);
                 ShowProgress= false;
                 StateHasChanged();
             }
         }
 
         private void SwitchCardPager()
-        {
-            if (ShowCardPager == true)
-                ShowCardPager = false;
-            else
-                ShowCardPager = true;
-        }
+            => ShowCardPager = SwitchValues(ShowCardPager);
         private void SwitchPlayerCards()
-        {
-            if (ShowPlayerCards == true)
-                ShowPlayerCards = false;
-            else
-                ShowPlayerCards = true;
-        }
+            => ShowPlayerCards = SwitchValues(ShowPlayerCards);
         private void ClearFields()
         {
             _commanderService.ClearClickedCard();
-            //_commanderService.ClearSearchResult();
             StateHasChanged();
         }
+        //Lägg till kort i commanderService istället för buffer.
         protected async void ShowCard(string cardId)
         {
             _commanderService.SetClickedCard(cardId);
@@ -64,5 +54,8 @@ namespace Portal.Pages.Magic
             else
                 ShowClickedCardResult = true;
         }
+
+        private bool SwitchValues(bool value)
+            => value? false : true;
     }
 }

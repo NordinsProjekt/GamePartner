@@ -61,7 +61,6 @@ namespace Portal.Pages.Magic
         {
             string[] arr = new string[2] { _commanderService.GetPlayerPoisonCountTotal(playerId).ToString(), "poison_" + playerId };
             await JsRuntime.InvokeVoidAsync("DrawPoisonCounter", arr);
-
         }
     }
 }

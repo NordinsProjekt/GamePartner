@@ -27,6 +27,8 @@ namespace MtGCard_Service
             return list;
         }
 
+        public List<MtGCardRecordDTO> GetCardList() => savedCards.ToList();
+
         public int Count
         {
             get

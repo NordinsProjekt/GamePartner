@@ -1,4 +1,5 @@
 ﻿using Application.MtGCard_Service.DTO;
+using Domain.MtGDomain.DTO;
 using MtGCard_Service.Classes;
 namespace UnitTest_MtGCommanderService
 {

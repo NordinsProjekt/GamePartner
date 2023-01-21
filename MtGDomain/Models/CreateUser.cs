@@ -32,14 +32,14 @@ namespace MtGDomain.Models
         public string Name { get; set; }
         public int Age { get; set; }
 
-        public bool IsModelValid()
+        public override bool IsModelValid()
         {
             SetRules();
             base.Validate(this);
             return IsValid;
         }
 
-        public void SetRules()
+        public override void SetRules()
         {
             Rules.Add(new Rule("Age", new() { new IsAbove(5) }));
         }

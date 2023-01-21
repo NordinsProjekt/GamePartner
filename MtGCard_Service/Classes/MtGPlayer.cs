@@ -1,4 +1,5 @@
 ﻿using Application.MtGCard_Service.DTO;
+using Domain.MtGDomain.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;

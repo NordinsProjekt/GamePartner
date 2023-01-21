@@ -9,7 +9,7 @@ namespace MtGCard_Service.Classes
 {
     public class MtGPlayer
     {
-        private MtGCommander commander;
+        private MtGCommander commander = new();
         private MtGPlayerInfo info;
         public MtGPlayerLife life;
         private List<MtGCardRecordDTO> cardList = new List<MtGCardRecordDTO>();
@@ -40,6 +40,7 @@ namespace MtGCard_Service.Classes
         {
             get { return info.Id; }
         }
+        public MtGCommander GetCommander() => commander;
 
         public int GetPlayerCommanderDamage(int commanderPlayerIndex) => life.GetPlayerCommanderDamage(commanderPlayerIndex);
         public void TakePoisonDamage(int poisonDamage) => life.PlayerTakePoisonDamage(poisonDamage);

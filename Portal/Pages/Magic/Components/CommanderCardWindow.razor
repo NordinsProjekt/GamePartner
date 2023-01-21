@@ -1,0 +1,25 @@
+﻿@using MtGCard_Service.Classes;
+<h3>CommanderCardWindow</h3>
+@if (commander != null && commander.GetCommanderCard() != null)
+{
+    <div class="d-flex flex-row flex-gap">
+        <div class="d-flex flex-column">
+            <h3>@commander.GetCommanderCard().Name</h3>
+            <img src="@commander.GetCommanderCard().ImageUrl" /><br />
+            <button @onclick="RemoveCommanderCard">Remove</button>
+        </div>
+        <div class="d-flex flex-column">
+            <h3>Died: @commander.GetDiedAmount()</h3>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int PlayerIndex { get; set; }
+    [Parameter]
+    public MtGCommander? commander { get; set; }
+    [Parameter]
+    public EventCallback<int> onDelete { get; set; }
+    private async Task RemoveCommanderCard() => await onDelete.InvokeAsync(PlayerIndex);
+}

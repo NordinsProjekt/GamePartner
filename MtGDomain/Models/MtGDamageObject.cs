@@ -24,7 +24,5 @@ namespace MtGDomain.Models
             PlayerId = playerId;
             Unit = unit;
         }
-
-        
     }
 }

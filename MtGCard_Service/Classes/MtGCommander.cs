@@ -9,12 +9,17 @@ namespace MtGCard_Service.Classes
 {
     public class MtGCommander
     {
-        private MtGCardRecordDTO commanderCard;
+        private MtGCardRecordDTO? commanderCard { get; set; }
         private int diedCounter { get; set; }
         public MtGCommander() { }
 
         public void SetCommanderCard(MtGCardRecordDTO commanderCard)
-            => this.commanderCard = commanderCard;
+        {
+            if (commanderCard.Types.Contains("Creature") && commanderCard.SuperTypes != null 
+                && commanderCard.SuperTypes.Contains("Legendary"))
+                this.commanderCard = commanderCard;
+        }
+            
         public MtGCardRecordDTO GetCommanderCard()
         {
             if (commanderCard != null)
@@ -30,5 +35,6 @@ namespace MtGCard_Service.Classes
             => this.diedCounter = 0;
         public int GetDiedAmount()
             => this.diedCounter;
+        public void RemoveCommanderCard() => commanderCard = null;
     }
 }

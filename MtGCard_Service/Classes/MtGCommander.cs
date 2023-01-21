@@ -15,7 +15,8 @@ namespace MtGCard_Service.Classes
 
         public void SetCommanderCard(MtGCardRecordDTO commanderCard)
         {
-            if (commanderCard.Types.Contains("Creature") && commanderCard.SuperTypes.Contains("Legendary"))
+            if (commanderCard.Types.Contains("Creature") && commanderCard.SuperTypes != null 
+                && commanderCard.SuperTypes.Contains("Legendary"))
                 this.commanderCard = commanderCard;
         }
             

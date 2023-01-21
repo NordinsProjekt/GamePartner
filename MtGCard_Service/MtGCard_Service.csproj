@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="CommanderService\Extensions\" />
-    <Folder Include="NewFolder\" />
   </ItemGroup>
 
   <ItemGroup>

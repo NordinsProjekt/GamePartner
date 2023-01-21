@@ -14,7 +14,11 @@ namespace MtGCard_Service.Classes
         public MtGCommander() { }
 
         public void SetCommanderCard(MtGCardRecordDTO commanderCard)
-            => this.commanderCard = commanderCard;
+        {
+            if (commanderCard.Types.Contains("Creature"))
+                this.commanderCard = commanderCard;
+        }
+            
         public MtGCardRecordDTO GetCommanderCard()
         {
             if (commanderCard != null)

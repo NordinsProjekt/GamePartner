@@ -2,16 +2,16 @@
 <h3>CommanderCardWindow</h3>
 @if (commander != null && commander.GetCommanderCard() != null)
 {
-    <div class="d-flex flex-row">
-    <div class="d-flex flex-column">
-        <h3>@commander.GetCommanderCard().Name</h3>
-        <img src="@commander.GetCommanderCard().ImageUrl" /><br />
-        <button @onclick="RemoveCommanderCard">Remove</button>
+    <div class="d-flex flex-row flex-gap">
+        <div class="d-flex flex-column">
+            <h3>@commander.GetCommanderCard().Name</h3>
+            <img src="@commander.GetCommanderCard().ImageUrl" /><br />
+            <button @onclick="RemoveCommanderCard">Remove</button>
+        </div>
+        <div class="d-flex flex-column">
+            <h3>Died: @commander.GetDiedAmount()</h3>
+        </div>
     </div>
-    <div class="d-flex flex-column">
-        <p>Died: @commander.GetDiedAmount()</p>
-    </div>
-</div>
 }
 
 @code {

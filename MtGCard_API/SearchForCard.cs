@@ -1,5 +1,6 @@
 ﻿using Application.MtGCard_Service.DTO;
 using Application.MtGCard_Service.Interface;
+using Domain.MtGDomain.DTO;
 using MtgApiManager.Lib.Core;
 using MtgApiManager.Lib.Model;
 using MtgApiManager.Lib.Service;

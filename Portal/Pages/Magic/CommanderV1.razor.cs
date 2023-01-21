@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using MtGCard_Service.DTO;
 using MtGCard_Service;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Domain.MtGDomain.DTO;
 
 namespace Portal.Pages.Magic
 {

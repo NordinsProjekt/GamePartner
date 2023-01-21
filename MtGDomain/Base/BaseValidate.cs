@@ -13,7 +13,7 @@ namespace MtGDomain.Base
     abstract public class BaseValidate
     {
         public List<IRule> Rules = new List<IRule>();
-        public bool IsValid { get; private set; } = true;
+        protected bool IsValid { get; set; } = true;
         public bool WasValidated { get; private set; } = false;
         public List<string> Errors { get; private set; } = new List<string>();
 
@@ -43,6 +43,17 @@ namespace MtGDomain.Base
             Errors.Add(message);
             IsValid = false;
         }
+        /// <summary>
+        ///    SetRules();
+        ///    base.Validate(this);
+        ///    return IsValid;
+        /// </summary>
+        /// <returns>True/False</returns>
+        abstract public bool IsModelValid();
+        /// <summary>
+        /// Rules.Add(new Rule("Age", new() { new IsAbove(5) }));
+        /// </summary>
+        abstract public void SetRules();
     }
 
 }

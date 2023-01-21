@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.MtGCard_Service.DTO
+namespace Domain.MtGDomain.DTO
 {
     public sealed record MtGRulingRecord_DTO(string Date,string Text);
 }

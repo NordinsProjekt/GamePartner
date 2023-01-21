@@ -1,5 +1,6 @@
 ﻿using Application.MtGCard_Service.DTO;
 using Application.MtGCard_Service.Interface;
+using Domain.MtGDomain.DTO;
 
 namespace Application.MtGCard_Service
 {

@@ -1,4 +1,6 @@
 ﻿using Application.MtGCard_Service.DTO;
+using Domain.MtGDomain.DTO;
+using MtGDomain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +17,8 @@ namespace MtGCard_Service.Classes
 
         public void SetCommanderCard(MtGCardRecordDTO commanderCard)
         {
-            if (commanderCard.Types.Contains("Creature") && commanderCard.SuperTypes != null 
-                && commanderCard.SuperTypes.Contains("Legendary"))
+            UseCardAsCommander test = new(commanderCard);
+            if (test.IsModelValid())
                 this.commanderCard = commanderCard;
         }
             

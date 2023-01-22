@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace MtGDomain.Rules
 {
-    public class StringMatch : IRequirement
+    public class StringMatchExact : IRequirement
     {
         private object Value { get; set; }
-        public StringMatch(string value) { Value = value; }
+        public StringMatchExact(string value) { Value = value; }
 
         public bool Validate(object obj)
         {

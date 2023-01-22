@@ -35,8 +35,8 @@ namespace MtGDomain.Models
 
         public override void SetRules()
         {
-            Rules.Add(new Rule("Types", new() { new StringMatch("Creature") }));
-            Rules.Add(new Rule("SuperTypes", new() { new StringMatch("Legendary") }));
+            Rules.Add(new Rule("Types", new() { new StringMatchExact("Creature") }));
+            Rules.Add(new Rule("SuperTypes", new() { new StringMatchExact("Legendary") }));
         }
     }
 }

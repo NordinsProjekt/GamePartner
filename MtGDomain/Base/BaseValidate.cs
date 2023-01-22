@@ -30,7 +30,7 @@ namespace MtGDomain.Base
                         bool Valid = req.Validate(propertyInfo.GetValue(obj, null));
                         if (Valid == false)
                         {
-                            Log($"Property: {namn} failed validation");
+                            Log($"Property: {namn} failed validation, rule "+req.GetType().Name);
                         }
                     }
                 }

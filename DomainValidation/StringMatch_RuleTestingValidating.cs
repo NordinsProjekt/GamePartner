@@ -13,28 +13,35 @@ namespace DomainValidation
         [Fact]
         public void StringMatch_SettingHej_ValueIsHej_ShouldMatch()
         {
-            StringMatch stringMatch = new("Hej");
+            StringMatchExact stringMatch = new("Hej");
             Assert.True(stringMatch.Validate("Hej"));
         }
 
         [Fact]
         public void StringMatch_SettingHej_ValueIsHej2_ShouldNotMatch()
         {
-            StringMatch stringMatch = new("Hej");
+            StringMatchExact stringMatch = new("Hej");
             Assert.False(stringMatch.Validate("Hej2"));
         }
 
         [Fact]
         public void StringMatch_SettingHej_ValueIsStringArrayWithHejAndHej2_ShouldMatch()
         {
-            StringMatch stringMatch = new("Hej");
+            StringMatchExact stringMatch = new("Hej");
             Assert.True(stringMatch.Validate(new string[] {"Hej2","Hej"}));
+        }
+
+        [Fact]
+        public void StringMatch_SettingHej_ValueIsStringArrayOfRandomText_ShouldNOTMatch()
+        {
+            StringMatchExact stringMatch = new("Hejsan");
+            Assert.False(stringMatch.Validate(new string[] { "Hej2", "Hej", "TEST", "Apple" }));
         }
 
         [Fact]
         public void StringMatch_SettingHej_ValueIsIntFive_ShouldNotMatch()
         {
-            StringMatch stringMatch = new("Hej");
+            StringMatchExact stringMatch = new("Hej");
             Assert.False(stringMatch.Validate(5));
         }
     }

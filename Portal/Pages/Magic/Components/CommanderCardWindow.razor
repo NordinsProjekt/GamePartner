@@ -7,6 +7,12 @@
             <h3>@commander.GetCommanderCard().Name</h3>
             <img src="@commander.GetCommanderCard().ImageUrl" /><br />
             <button @onclick="RemoveCommanderCard">Remove</button>
+            <div"d-flex flex-row">
+                <h3>Death: </h3>
+                <button @onclick="AddDeathToCommander">+1</button>
+                <button @onclick="RemoveDeathToCommander">-1</button>
+            </div>
+
         </div>
         <div class="d-flex flex-column">
             <h3>Died: @commander.GetDiedAmount()</h3>
@@ -21,5 +27,13 @@
     public MtGCommander? commander { get; set; }
     [Parameter]
     public EventCallback<int> onDelete { get; set; }
+    [Parameter]
+    public EventCallback<int> onAddDeath { get; set; }
+    [Parameter]
+    public EventCallback<int> onRemoveDeath { get; set; }
+
     private async Task RemoveCommanderCard() => await onDelete.InvokeAsync(PlayerIndex);
+    private async Task AddDeathToCommander() => await onAddDeath.InvokeAsync(PlayerIndex);
+    private async Task RemoveDeathToCommander() => await onRemoveDeath.InvokeAsync(PlayerIndex);
+
 }

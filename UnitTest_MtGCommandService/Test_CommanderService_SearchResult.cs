@@ -50,7 +50,7 @@ namespace UnitTest_MtGCommanderService
         {
             MockData _rep = new MockData();
             SearchBuffer _buffer = new SearchBuffer();
-            _buffer.AddToSearchBuffer("Test", new List<MtGCardRecordDTO>() { new MtGCardRecordDTO("TestCard", "1", "TestCard", null, "image url", "fop3jdf32", null, null) });
+            _buffer.AddToSearchBuffer("Test", new List<MtGCardRecordDTO>() { new MtGCardRecordDTO("TestCard", "1", "TestCard", null,null, "image url", "fop3jdf32", null, null) });
             MtGCommanderService mcs = new MtGCommanderService(_rep,_buffer);
             await mcs.SearchForCard("Test");
             var cards = mcs.GetSearchResult();
@@ -63,7 +63,7 @@ namespace UnitTest_MtGCommanderService
         {
             MockData _rep = new MockData();
             SearchBuffer _buffer = new SearchBuffer();
-            _buffer.AddToSearchBuffer("Test", new List<MtGCardRecordDTO>() { new MtGCardRecordDTO("TestCard", "1", "TestCard", null, "image url", "fop3jdf32",null, null) });
+            _buffer.AddToSearchBuffer("Test", new List<MtGCardRecordDTO>() { new MtGCardRecordDTO("TestCard", "1", "TestCard", null,null, "image url", "fop3jdf32",null, null) });
             MtGCommanderService mcs = new MtGCommanderService(_rep, _buffer);
             mcs.CreateNumPlayers(4);
             await mcs.SearchForCard("Test34");

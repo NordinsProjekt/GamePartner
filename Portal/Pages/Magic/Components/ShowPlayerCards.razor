@@ -6,7 +6,8 @@
         @foreach (var player in PlayerList)
         {
             <h3>@player.PlayerName</h3>
-            <CommanderCardWindow commander="player.Commander" PlayerIndex="player.PlayerIndex" onDelete="RemoveCommander" />
+            <CommanderCardWindow commander="player.Commander" PlayerIndex="player.PlayerIndex" onDelete="RemoveCommander"
+                onAddDeath="AddDeathToCommander" onRemoveDeath="RemoveDeathToCommander" />
             <div class="d-flex flex-wrap flex-row bd-highlight mb-3">
                 @foreach (var card in player.CardList)
                 {
@@ -14,6 +15,12 @@
                         <h3>@card.Name</h3>
                         <img src="@card.ImageUrl" onclick="@(() => DeleteCard(card.Id,player.PlayerIndex))" /><br />
                         <button @onclick="(() => UseAsCommander(card.Id,player.PlayerIndex))">Use as Commander</button>
+                        <div class="flex-column">
+                            @foreach (var ability in card.Abilities)
+                            {
+                                <div>@ability.ToString()</div>
+                            }
+                        </div>
                     </div>
                 }
             </div>
@@ -45,5 +52,16 @@
         var player = PlayerList.Where(x => x.PlayerIndex == playerIndex).FirstOrDefault();
         player.Commander.RemoveCommanderCard();
         player.Commander.ResetDiedCounter();
+    }
+    public async Task AddDeathToCommander(int playerIndex)
+    {
+        var player = PlayerList.Where(x => x.PlayerIndex == playerIndex).FirstOrDefault();
+        player.Commander.CommanderDied();
+    }
+
+    public async Task RemoveDeathToCommander(int playerIndex)
+    {
+        var player = PlayerList.Where(x => x.PlayerIndex == playerIndex).FirstOrDefault();
+        player.Commander.CommanderDiedHeal();
     }
 }

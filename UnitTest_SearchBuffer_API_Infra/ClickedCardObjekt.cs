@@ -17,7 +17,7 @@ namespace UnitTest_SearchBuffer_API_Infra
         public void CheckIfClickedCardCounterWorks_AddACardThreeTimes_ShouldReturnCountThree()
         {
             var buffer = new SearchBuffer();
-            var card = new MtGCardRecordDTO("testcard","1","hello",null,null,null,null,null);
+            var card = new MtGCardRecordDTO("testcard","1","hello",null,null,null,null,null,null);
             buffer.AddClickedCard(card);
             buffer.AddClickedCard(card);
             buffer.AddClickedCard(card);

@@ -33,6 +33,13 @@ namespace MtGCard_Service.Classes
 
         public void CommanderDied()
             => this.diedCounter++;
+        public void CommanderDiedHeal()
+        {
+            if (diedCounter > 1)
+                diedCounter--;
+            else
+                ResetDiedCounter();
+        }
         public void ResetDiedCounter()
             => this.diedCounter = 0;
         public int GetDiedAmount()

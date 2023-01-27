@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MtGDomain.Models.Interfaces
+namespace MtGDomain.Interfaces
 {
-    public interface IIsValid
+    public interface IGetDto<T>
     {
+        public T GetDTO();
     }
 }

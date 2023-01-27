@@ -18,10 +18,12 @@ else
           card="_commanderService.GetClickedCard()"
           PlayerList="_commanderService.GetPlayerList()" />
     <h2 @onclick="Top10">Top 10 Cards</h2>
+
     <ShowSearchResult onShowCard="ShowCard"
                   show="ShowClickedCardResult"
                   List="_commanderService.GetTop10ClickedCards()" />
     <h2 @onclick="SwitchCardPager">Search Result</h2>
+
     <CardPager Jump="5" onClickedCard="@ShowCard" cardList="@_commanderService.GetSearchResult()" Show="@ShowCardPager" />
 
     <h2 @onclick="SwitchPlayerCards">Saved Player Cards</h2>

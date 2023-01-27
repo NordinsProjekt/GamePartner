@@ -9,7 +9,7 @@ namespace UnitTest_MtGCommanderService
         [Fact]
         public void TryToSetCommanderCard_WithAnAcceptedCard_ShouldReturnTheCard()
         {
-            MtGCardRecordDTO card = new("Testcard", "1", "Testcard", new(), "www.", "11", new string[] { "Creature" }, new string[] { "Legendary" });
+            MtGCardRecordDTO card = new("Testcard", "1", "Testcard",new(), new(), "www.", "11", new string[] { "Creature" }, new string[] { "Legendary" });
             MtGCommander com = new();
             com.SetCommanderCard(card);
             Assert.Equal(card, com.GetCommanderCard());

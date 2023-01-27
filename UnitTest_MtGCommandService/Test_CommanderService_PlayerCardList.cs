@@ -26,7 +26,7 @@ namespace UnitTest_MtGCommanderService
         {
             MockData _rep = new MockData();
             MtGCommanderService mcs = new MtGCommanderService(_rep, 4);
-            MtGCardRecordDTO card = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, "https://www.img.com", "FR54",null,null);
+            MtGCardRecordDTO card = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null,null, "https://www.img.com", "FR54",null,null);
             mcs.AddCardToPlayer(1, card);
             Assert.True(mcs.GetPlayerCardList(1).Count() == 1);
         }
@@ -36,7 +36,7 @@ namespace UnitTest_MtGCommanderService
         {
             MockData _rep = new MockData();
             MtGCommanderService mcs = new MtGCommanderService(_rep, 4);
-            MtGCardRecordDTO card = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, "https://www.img.com", "FR54", null, null);
+            MtGCardRecordDTO card = new MtGCardRecordDTO("TestCard", "1", "This is a testcard",null, null, "https://www.img.com", "FR54", null, null);
             mcs.AddCardToPlayer(1, card);
             mcs.AddCardToPlayer(1, card);
             mcs.RemoveCardFromPlayer(1, card.Id);
@@ -48,7 +48,7 @@ namespace UnitTest_MtGCommanderService
         {
             MockData _rep = new MockData();
             MtGCommanderService mcs = new MtGCommanderService(_rep, 4);
-            MtGCardRecordDTO card = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, "https://www.img.com", "FR54", null, null);
+            MtGCardRecordDTO card = new MtGCardRecordDTO("TestCard", "1", "This is a testcard",null, null, "https://www.img.com", "FR54", null, null);
             mcs.AddCardToPlayer(1, card);
             mcs.RemoveCardFromPlayer(1, card.Id);
             mcs.AddCardToPlayer(1, card);
@@ -61,7 +61,7 @@ namespace UnitTest_MtGCommanderService
         {
             MockData _rep = new MockData();
             MtGCommanderService mcs = new MtGCommanderService(_rep, 4);
-            MtGCardRecordDTO card = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, "https://www.img.com", "FR54", null, null);
+            MtGCardRecordDTO card = new MtGCardRecordDTO("TestCard", "1", "This is a testcard",null, null, "https://www.img.com", "FR54", null, null);
             mcs.AddCardToPlayer(1, card);
             mcs.RemoveCardFromPlayer(1, card.Id);
             mcs.AddCardToPlayer(1, card);

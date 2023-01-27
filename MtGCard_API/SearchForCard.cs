@@ -19,7 +19,7 @@ namespace Infrastructure.MtGCard_API
                           .AllAsync();
                 return ConvertICardToDTO(result);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return new List<MtGCardRecordDTO>();
             }
@@ -27,11 +27,18 @@ namespace Infrastructure.MtGCard_API
 
         private List<MtGCardRecordDTO> ConvertICardToDTO(IOperationResult<List<ICard>> list)
         {
-            if (list.IsSuccess == false)
-                return default;
             List<MtGCardRecordDTO> dtoList = new();
+            if (list.IsSuccess == false)
+                return dtoList;
+            
             foreach (var card in list.Value)
-                dtoList.Add(MappingFunctions.MapICardToNewDto(card));
+            {
+                var convertedCard = MappingFunctions.MapICardToMtGCardObject(card).GetDTO();
+                if (convertedCard != null)
+                {
+                    dtoList.Add(convertedCard);
+                }
+            }
             return dtoList;
         }
     }

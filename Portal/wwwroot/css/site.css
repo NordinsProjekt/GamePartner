@@ -66,3 +66,7 @@ a, .btn-link {
     width: 223px;
     height: auto;
 }
+
+#CommanderWindow{
+    border: solid 2px black;
+}

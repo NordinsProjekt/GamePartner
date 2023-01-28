@@ -1,11 +1,11 @@
 ﻿@using MtGCard_Service.Classes;
-<h3>CommanderCardWindow</h3>
+<h3>Commander</h3>
 @if (commander != null && commander.GetCommanderCard() != null)
 {
-    <div class="d-flex flex-row flex-gap">
-        <div class="d-flex flex-column">
+    <div class="d-flex flex-row flex-gap" id="CommanderWindow" style="width: 500px">
+        <div class="d-flex flex-column" style="width: 233px; padding:5px;">
             <h3>@commander.GetCommanderCard().Name</h3>
-            <img src="@commander.GetCommanderCard().ImageUrl" /><br />
+            <img src="@commander.GetCommanderCard().ImageUrl" style="height: 300px; width: 223px;" /><br />
             <button @onclick="RemoveCommanderCard">Remove</button>
             <div"d-flex flex-row">
                 <h3>Death: </h3>

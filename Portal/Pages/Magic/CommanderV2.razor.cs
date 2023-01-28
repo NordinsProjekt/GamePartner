@@ -9,7 +9,7 @@ namespace Portal.Pages.Magic
         string SearchText { get; set; }
         private bool ShowClickedCardResult { get; set; } = false;
         private bool ShowCardPager { get; set; } = true;
-        private bool ShowPlayerCards { get; set; } = true;
+        
         public bool ShowProgress { get; set; } = false;
         private async void SearchForCard()
         {
@@ -26,8 +26,6 @@ namespace Portal.Pages.Magic
 
         private void SwitchCardPager()
             => ShowCardPager = SwitchValues(ShowCardPager);
-        private void SwitchPlayerCards()
-            => ShowPlayerCards = SwitchValues(ShowPlayerCards);
         private void ClearFields()
         {
             _commanderService.ClearClickedCard();
@@ -45,8 +43,7 @@ namespace Portal.Pages.Magic
             _commanderService.AddCardToPlayer(id, _commanderService.GetClickedCard());
             ClearFields();
         }
-        protected void DeleteCard(MtGDeleteCard_DTO playerCard) =>
-            _commanderService.RemoveCardFromPlayer(playerCard.PlayerIndex,playerCard.CardId);
+
         public void Top10() //Buggig
         {
             if (ShowClickedCardResult == true)

@@ -26,7 +26,5 @@ else
 
     <CardPager Jump="5" onClickedCard="@ShowCard" cardList="@_commanderService.GetSearchResult()" Show="@ShowCardPager" />
 
-    <h2 @onclick="SwitchPlayerCards">Saved Player Cards</h2>
-    <ShowPlayerCards onDeleteCard="DeleteCard" Show="ShowPlayerCards"
-                 PlayerList="_commanderService.GetPlayerListWithCardList()" />
+
 }

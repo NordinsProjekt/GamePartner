@@ -5,16 +5,16 @@
     <div class="d-flex flex-wrap flex-column bd-highlight mb-3" id="SavedCards">
         @foreach (var player in PlayerList)
         {
-            <h3>@player.PlayerName</h3>
-            <CommanderCardWindow commander="player.Commander" PlayerIndex="player.PlayerIndex" onDelete="RemoveCommander"
+            <h3>@player.GetPlayerName</h3>
+            <CommanderCardWindow commander="player.GetCommander()" PlayerIndex="player.GetPlayerId" onDelete="RemoveCommander"
                 onAddDeath="AddDeathToCommander" onRemoveDeath="RemoveDeathToCommander" />
             <div class="d-flex flex-wrap flex-row bd-highlight mb-3">
                 @foreach (var card in player.CardList)
                 {
                     <div class="p-2 bd-highlight flex-row">
                         <h3>@card.Name</h3>
-                        <img src="@card.ImageUrl" onclick="@(() => DeleteCard(card.Id,player.PlayerIndex))" /><br />
-                        <button @onclick="(() => UseAsCommander(card.Id,player.PlayerIndex))">Use as Commander</button>
+                        <img src="@card.ImageUrl" onclick="@(() => DeleteCard(card.Id,player.GetPlayerId))" /><br />
+                        <button @onclick="(() => UseAsCommander(card.Id,player.GetPlayerId))">Use as Commander</button>
                         <div class="flex-column">
                             @foreach (var ability in card.Abilities)
                             {
@@ -31,7 +31,7 @@
 
 @code {
     [Parameter]
-    public List<MtGPlayerWithCardListRecord_DTO> PlayerList { get; set; }
+    public List<MtGPlayer> PlayerList { get; set; }
     [Parameter]
     public EventCallback<MtGDeleteCard_DTO> onDeleteCard { get; set; }
     [Parameter]
@@ -42,26 +42,27 @@
 
     public void UseAsCommander(string cardId, int playerIndex)
     {
-        var player = PlayerList.Where(x => x.PlayerIndex == playerIndex).FirstOrDefault();
+        var player = PlayerList.Where(x => x.GetPlayerId == playerIndex).FirstOrDefault();
         var card = PlayerList[playerIndex].CardList.Where(x => x.Id == cardId).FirstOrDefault();
-        player.Commander.SetCommanderCard(card);
+        player.SetCommanderCard(card);
+        
     }
 
     public async Task RemoveCommander(int playerIndex)
     {
-        var player = PlayerList.Where(x => x.PlayerIndex == playerIndex).FirstOrDefault();
-        player.Commander.RemoveCommanderCard();
-        player.Commander.ResetDiedCounter();
+        var player = PlayerList.Where(x => x.GetPlayerId == playerIndex).FirstOrDefault();
+        player.GetCommander().RemoveCommanderCard();
+        player.GetCommander().ResetDiedCounter();
     }
     public async Task AddDeathToCommander(int playerIndex)
     {
-        var player = PlayerList.Where(x => x.PlayerIndex == playerIndex).FirstOrDefault();
-        player.Commander.CommanderDied();
+        var player = PlayerList.Where(x => x.GetPlayerId == playerIndex).FirstOrDefault();
+        player.GetCommander().CommanderDied();
     }
 
     public async Task RemoveDeathToCommander(int playerIndex)
     {
-        var player = PlayerList.Where(x => x.PlayerIndex == playerIndex).FirstOrDefault();
-        player.Commander.CommanderDiedHeal();
+        var player = PlayerList.Where(x => x.GetPlayerId == playerIndex).FirstOrDefault();
+        player.GetCommander().CommanderDiedHeal();
     }
 }

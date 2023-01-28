@@ -9,8 +9,8 @@ namespace MtGCard_Service.Classes.Extensions
     public static class MtGPlayerExstension
     {
         public static void DoDamage(this MtGPlayer player, int damage) => 
-            player.life.PlayerTakeDamage(damage);
+            player.GetPlayerLifeObject().PlayerTakeDamage(damage);
         public static void Heal(this MtGPlayer player, int lifeGain) => 
-            player.life.PlayerGainsLife(lifeGain);
+            player.GetPlayerLifeObject().PlayerGainsLife(lifeGain);
     }
 }

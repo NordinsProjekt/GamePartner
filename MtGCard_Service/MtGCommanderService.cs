@@ -255,5 +255,8 @@ namespace MtGCard_Service
                 throw new System.Exception("Card doesnt exist in search reult");
         }
 
+        public List<MtGPlayer> GetPlayerListRef()
+            => players;
+
     }
 }

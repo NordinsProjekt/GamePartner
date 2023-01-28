@@ -1,0 +1,18 @@
+﻿@page "/Magic/Boardstate"
+@using MtGCard_Service.DTO;
+@inject MtGCard_Service.MtGCommanderService CommanderService
+<h1>Boardstate</h1>
+    <h2 @onclick="SwitchPlayerCards">Saved Player Cards</h2>
+    <ShowPlayerCards onDeleteCard="DeleteCard" Show="ShowPlayerCards"
+                 PlayerList="CommanderService.GetPlayerListRef()" />
+@code {
+    private bool ShowPlayerCards { get; set; } = true;
+    private void SwitchPlayerCards()
+        => ShowPlayerCards = SwitchValues(ShowPlayerCards);
+
+    protected void DeleteCard(MtGDeleteCard_DTO playerCard)
+        => CommanderService.RemoveCardFromPlayer(playerCard.PlayerIndex, playerCard.CardId);
+
+    private bool SwitchValues(bool value)
+        => value ? false : true;
+}

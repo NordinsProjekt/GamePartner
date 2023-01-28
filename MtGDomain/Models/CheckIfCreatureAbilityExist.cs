@@ -11,6 +11,7 @@ namespace MtGDomain.Models
         private static List<string> list = new()
         {
             "First strike",
+            "Deathtouch",
             "Trample",
             "Lifelink",
             "Flying",

@@ -29,14 +29,7 @@ namespace MtGDomain.Models
             get => text;
             set
             {
-                //Behöver matcha en lista över abilities.
-                //funkar inte som det är tänkt.
-
-                var temp = value.Split("\n")[0].Split(",");
-                for (int i = 0; i < temp.Length; i++)
-                {
-                    abilities.Add(temp[i].Trim().FirstCharToUpper());
-                }
+                abilities = CheckIfCreatureAbilityExist.GiveAbilityKeywordsFromText(value).ToList();
                 text = value;
             }
         }

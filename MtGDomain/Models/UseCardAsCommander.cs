@@ -11,8 +11,8 @@ namespace MtGDomain.Models
 {
     public class UseCardAsCommander : BaseValidate
     {
-        private string[] Types;
-        private string[] SuperTypes;
+        public string[] Types { get; private set; }
+        public string[] SuperTypes { get; private set; }
         public UseCardAsCommander(MtGCardRecordDTO card) 
         {
             if (card.Types == null)

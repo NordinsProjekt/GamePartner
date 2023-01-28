@@ -17,7 +17,7 @@ namespace MtGDomain.Base
         public bool WasValidated { get; private set; } = false;
         public List<string> Errors { get; private set; } = new List<string>();
 
-        public bool Validate(object obj)
+        public void Validate(object obj)
         {
             foreach (PropertyInfo propertyInfo in obj.GetType().GetProperties())
             {
@@ -35,7 +35,6 @@ namespace MtGDomain.Base
                     }
                 }
             }
-            return true;
         }
 
         private void Log(string message)

@@ -8,19 +8,19 @@ namespace MtGDomain.Rules
 {
     public class StringMatch : IRequirement
     {
-        private object Value { get; set; }
+        private string Value { get; set; }
         public StringMatch(string value) { Value = value; }
 
         public bool Validate(object obj)
         {
             if (obj.GetType() == typeof(string))
-                return ((string)obj).ToLower() == ((string)Value).ToLower();
+                return ((string)obj).ToLower() == Value.ToLower();
             if (obj.GetType().IsArray == true)
             {
-                dynamic text = obj;
+                string[] text = (string[])obj;
                 foreach (var s in text)
                 {
-                    if (((string)Value).ToLower() == ((string)(s)).ToLower())
+                    if (Value.ToLower() == s.ToLower())
                     { return true; }
                 }
             }

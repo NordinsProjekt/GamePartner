@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UnitTest_MtGDomain
+namespace UnitTestForSolution._0._4_Domain.Models.Extensions
 {
-    [Trait("Domain", "Extensions")]
-    public class Extensions
+    [Trait("Domain", "StringExtension")]
+    public class StringExtension_Test
     {
         [Fact]
         public void Test_FirstLetterToUpper_ShouldReturnStringWithFirstLetterUppercase()

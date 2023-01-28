@@ -6,22 +6,22 @@ using System.Threading.Tasks;
 
 namespace MtGDomain.Enums
 {
-    public enum Abilities
+    public enum CreatureAbilities
     {
         None,
-        FirstStrike,
+        Firststrike,
         Trample,
         Lifelink,
         Flying,
-        SwampWalk,
-        MountainWalk,
-        IslandWalk,
-        PlainsWalk,
-        ForestWalk,
-        DoubleStrike,
+        Swampwalk,
+        Mountainwalk,
+        Islandwalk,
+        Plainswalk,
+        Forestwalk,
+        Doublestrike,
         Fear,
         Shroud,
         Unblockable,
-        HexProof
+        Hexproof
     }
 }

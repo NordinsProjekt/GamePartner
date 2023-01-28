@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DomainValidation
+namespace UnitTestForSolution._0._4_Domain.Rules
 {
     [Trait("Domain", "IsUnder Rule Validating")]
-    public class IsUnder_RuleTestingValidating
+    public class IsUnder_Test
     {
         [Fact]
         public void IsUnderINT_SettingFive_ValueIsFour_ShouldReturnTrue()
@@ -51,5 +51,6 @@ namespace DomainValidation
             IsUnder isUnder = new((decimal)5.5);
             Assert.False(isUnder.Validate((decimal)6));
         }
+
     }
 }

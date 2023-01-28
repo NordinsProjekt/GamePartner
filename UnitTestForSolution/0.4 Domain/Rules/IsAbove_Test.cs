@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DomainValidation
+namespace UnitTestForSolution._0._4_Domain.Rules
 {
     [Trait("Domain", "IsAbove Rule Validating")]
-    public class IsAbove_RuleTestingValidating
+    public class IsAbove_Test
     {
         [Fact]
         public void IsAboveINT_SettingFive_ValueIsFour_ShouldReturnFalse()

@@ -1,9 +1,14 @@
-using MtGDomain.Models;
+﻿using MtGDomain.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace DomainValidation
+namespace UnitTestForSolution._0._4_Domain.Models
 {
     [Trait("Domain", "Validation CreateUserValidating")]
-    public class CreateUserTestingValidation
+    public class CreateUser_Test
     {
         [Fact]
         public void CreateUser_WithAge4_ShouldNotBeValid()
@@ -30,10 +35,9 @@ namespace DomainValidation
         [Fact]
         public void CreateUserWithRulesTest_SetAgeTo4_ModelShouldNOTBeValid_ErrorsShouldBeOne()
         {
-            CreateUserWithRules cu = new() { Name = "Markus Nordin",Age = 4 };
+            CreateUserWithRules cu = new() { Name = "Markus Nordin", Age = 4 };
             Assert.False(cu.IsModelValid());
             Assert.True(cu.Errors.Count() == 1);
         }
-
     }
 }

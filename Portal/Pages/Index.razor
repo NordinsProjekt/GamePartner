@@ -1,11 +1,16 @@
 ﻿@page "/"
-@inject MtGCard_Service.MtGCommanderService _commanderService
+@inject MtGCard_Service.MtGCommanderService CommanderService
 @inject IJSRuntime JSRuntime
 <PageTitle>Index</PageTitle>
 <h1>Cardgame companion app</h1>
 @if (showNew == false)
 {
     <button @onclick="MakeNewGame">New Game settings</button>
+    if (CommanderService.GetPlayerList().Count > 0)
+    {
+        <p style="color: red">You will erase everything if you make new settings.</p>
+    }
+    
 }
 else
 {
@@ -15,7 +20,7 @@ else
         @foreach (var i in Enumerable.Range(0, NumOfPlayers))
         {
             <br />
-            <input type="text" @bind="Name[i]" />
+            <input type="text" @bind="Name[i]" placeholder="Player @(i+1)" />
         }
         <br />
         <button @onclick="Save">New Game</button>

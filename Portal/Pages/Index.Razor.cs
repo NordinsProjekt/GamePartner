@@ -29,7 +29,7 @@
                     Name[i] = "Player " + (i + 1);
                 list.Add(Name[i]);
             }
-            _commanderService.CreatePlayers(NumOfPlayers, list);
+            CommanderService.CreatePlayers(NumOfPlayers, list);
             showNew = false;
         }
 

@@ -70,3 +70,10 @@ a, .btn-link {
 #CommanderWindow{
     border: solid 2px black;
 }
+.CreatureAbilityClass {
+    background-color: gray;
+    color: black;
+    border: solid 1px black;
+    display: inline-block;
+    padding: 2px;
+}

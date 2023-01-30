@@ -1,5 +1,5 @@
 ﻿using Microsoft.JSInterop;
-using MtGCard_Service.DTO;
+using Domain.MtGDomain.DTO;
 using System.Runtime.CompilerServices;
 
 namespace Portal.Pages.Magic
@@ -17,7 +17,7 @@ namespace Portal.Pages.Magic
             {
                 //Bygg ihop buffer och commanderservice till en lista. Det blir fel överallt.
                 ShowProgress = true;
-                await _commanderService.SearchForCard(SearchText);
+                await CommanderService.SearchForCard(SearchText);
                 //await _buffer.PopulateCardList(SearchText);
                 ShowProgress= false;
                 StateHasChanged();
@@ -28,19 +28,19 @@ namespace Portal.Pages.Magic
             => ShowCardPager = SwitchValues(ShowCardPager);
         private void ClearFields()
         {
-            _commanderService.ClearClickedCard();
+            CommanderService.ClearClickedCard();
             StateHasChanged();
         }
         //Lägg till kort i commanderService istället för buffer.
         protected async void ShowCard(string cardId)
         {
-            _commanderService.SetClickedCard(cardId);
+            CommanderService.SetClickedCard(cardId);
             await JS.InvokeVoidAsync("OnScrollEvent");
             StateHasChanged();
         }
         protected void AddCardToPlayer(int id)
         {
-            _commanderService.AddCardToPlayer(id, _commanderService.GetClickedCard());
+            CommanderService.AddCardToPlayer(id, CommanderService.GetClickedCard());
             ClearFields();
         }
 

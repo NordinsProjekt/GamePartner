@@ -1,17 +1,10 @@
-﻿using Application.MtGCard_Service.DTO;
+﻿
 using Application.MtGCard_Service.Interface;
 using Domain.MtGDomain.DTO;
 using MtGCard_Service.Classes;
 using MtGCard_Service.Classes.Extensions;
 using MtGCard_Service.DTO;
-using MtGCard_Service.Exception;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace MtGCard_Service
 {

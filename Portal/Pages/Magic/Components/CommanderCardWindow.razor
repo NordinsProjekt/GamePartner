@@ -7,7 +7,7 @@
             <h3>@commander.GetCommanderCard().Name</h3>
             <img src="@commander.GetCommanderCard().ImageUrl" style="height: 300px; width: 223px;" /><br />
             <button @onclick="RemoveCommanderCard">Remove</button>
-            <div"d-flex flex-row">
+            <div class="d-flex flex-row" style="padding: 5px;">
                 <h3>Death: </h3>
                 <button @onclick="AddDeathToCommander">+1</button>
                 <button @onclick="RemoveDeathToCommander">-1</button>

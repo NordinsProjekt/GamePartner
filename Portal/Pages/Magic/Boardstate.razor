@@ -1,6 +1,7 @@
 ﻿@page "/Magic/Boardstate"
 @using MtGCard_Service.DTO;
 @inject MtGCard_Service.MtGCommanderService CommanderService
+@inject NavigationManager NavManager
 <h1>Boardstate</h1>
     <h2 @onclick="SwitchPlayerCards">Saved Player Cards</h2>
     <ShowPlayerCards onDeleteCard="DeleteCard" Show="ShowPlayerCards"
@@ -15,4 +16,11 @@
 
     private bool SwitchValues(bool value)
         => value ? false : true;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        int numOfPlayers = CommanderService.PlayerCount;
+        if (numOfPlayers == 0)
+            NavManager.NavigateTo("/", false);
+    }
 }

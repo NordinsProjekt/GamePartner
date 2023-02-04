@@ -4,6 +4,7 @@ using Infrastructure.MtGCard_API;
 using Application.MtGCard_Service.Interface;
 using MtGCard_Service;
 using MtGCard_API;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,7 @@ builder.Services.AddSingleton<IMtGSearchBuffer, SearchBuffer>();
 builder.Services.AddScoped<MtGCardBufferService>();
 builder.Services.AddScoped<MtGCommanderService>();
 builder.Services.AddSession();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

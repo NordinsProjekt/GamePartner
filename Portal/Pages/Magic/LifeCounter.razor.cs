@@ -12,6 +12,8 @@ namespace Portal.Pages.Magic
     {
         [Inject]
         IJSRuntime JsRuntime { get; set; }
+        [Inject]
+        NavigationManager NavManager { get; set; }
         public async Task Damage(int playerId,int damage)
         {
             _commanderService.GetPlayer(playerId).DoDamage(damage);
@@ -42,6 +44,8 @@ namespace Portal.Pages.Magic
             {
                 var players = _commanderService.GetPlayerList();
                 int numPlayers = _commanderService.PlayerCount;
+                if (numPlayers == 0)
+                    NavManager.NavigateTo("/", false);
                 for (int i = 0; i < numPlayers; i++)
                 {
                     string[] arr = new string[2] { _commanderService.GetPlayerLifeTotal(i).ToString(), "life_" + players[i].PlayerId };

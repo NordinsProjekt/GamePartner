@@ -1,11 +1,14 @@
 ﻿using Microsoft.JSInterop;
 using Domain.MtGDomain.DTO;
 using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Components;
 
 namespace Portal.Pages.Magic
 {
     public partial class CommanderV2
     {
+        [Inject]
+        NavigationManager NavManager { get; set; }
         string SearchText { get; set; }
         private bool ShowClickedCardResult { get; set; } = false;
         private bool ShowCardPager { get; set; } = true;
@@ -23,7 +26,12 @@ namespace Portal.Pages.Magic
                 StateHasChanged();
             }
         }
-
+        protected override void OnAfterRender(bool firstRender)
+        {
+            int numOfPlayers = CommanderService.PlayerCount;
+            if (numOfPlayers == 0)
+                NavManager.NavigateTo("/", false);
+        }
         private void SwitchCardPager()
             => ShowCardPager = SwitchValues(ShowCardPager);
         private void ClearFields()

@@ -13,12 +13,13 @@
                 {
                     <div class="p-2 bd-highlight flex-row">
                         <h3>@card.Name</h3>
-                        <img src="@card.ImageUrl" onclick="@(() => DeleteCard(card.Id,player.GetPlayerId))" /><br />
+                        <img src="@card.ImageUrl"/><br />
+                        <button @onclick="@(() => DeleteCard(card.Id,player.GetPlayerId))">Remove</button>
                         <button @onclick="(() => UseAsCommander(card.Id,player.GetPlayerId))">Use as Commander</button>
                         <div class="flex-column">
                             @foreach (var ability in card.Abilities)
                             {
-                                <div class="CreatureAbilityClass" >@ability.ToString()</div>
+                                <div class="CreatureAbilityClass" style="font-size: 15px;">@ability.ToString()</div>
                             }
                         </div>
                     </div>

@@ -1,4 +1,5 @@
 ﻿using Domain.MtGDomain.DTO;
+using FluentAssertions;
 using MtGCard_Service.Classes;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace UnitTestForSolution._0._3_Application.Classes
         {
             MtGCommander com = new();
             var c = com.GetCommanderCard();
-            Assert.Equal(default(MtGCardRecordDTO), c);
+            c.Should().BeNull();
         }
 
         [Fact]

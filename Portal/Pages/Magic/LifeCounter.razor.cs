@@ -45,7 +45,7 @@ namespace Portal.Pages.Magic
                 var players = _commanderService.GetPlayerList();
                 int numPlayers = _commanderService.PlayerCount;
                 if (numPlayers == 0)
-                    NavManager.NavigateTo("/", false);
+                    NavManager.NavigateTo("/Magic", false);
                 for (int i = 0; i < numPlayers; i++)
                 {
                     string[] arr = new string[2] { _commanderService.GetPlayerLifeTotal(i).ToString(), "life_" + players[i].PlayerId };

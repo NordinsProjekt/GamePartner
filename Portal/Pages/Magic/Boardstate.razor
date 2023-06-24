@@ -1,4 +1,5 @@
-﻿@page "/Magic/Boardstate"
+﻿@layout MagicLayout
+@page "/Magic/Boardstate"
 @using MtGCard_Service.DTO;
 @inject MtGCard_Service.MtGCommanderService CommanderService
 @inject NavigationManager NavManager
@@ -21,6 +22,6 @@
     {
         int numOfPlayers = CommanderService.PlayerCount;
         if (numOfPlayers == 0)
-            NavManager.NavigateTo("/", false);
+            NavManager.NavigateTo("/Magic", false);
     }
 }

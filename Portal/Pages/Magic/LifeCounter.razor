@@ -1,4 +1,5 @@
-﻿@page "/Magic/LifeCounter"
+﻿@layout MagicLayout
+@page "/Magic/LifeCounter"
 @inject MtGCard_Service.MtGCommanderService _commanderService
 <h1>LifeCounter</h1>
 @foreach(var player in _commanderService.GetPlayerList())

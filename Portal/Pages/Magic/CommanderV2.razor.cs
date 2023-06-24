@@ -30,7 +30,7 @@ namespace Portal.Pages.Magic
         {
             int numOfPlayers = CommanderService.PlayerCount;
             if (numOfPlayers == 0)
-                NavManager.NavigateTo("/", false);
+                NavManager.NavigateTo("/Magic", false);
         }
         private void SwitchCardPager()
             => ShowCardPager = SwitchValues(ShowCardPager);

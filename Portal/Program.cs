@@ -1,10 +1,9 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using Infrastructure.MtGCard_API;
 using Application.MtGCard_Service.Interface;
-using MtGCard_Service;
 using MtGCard_API;
-using Microsoft.Extensions.Options;
+using GenerateGuid.Extensions;
+using MtGCard_Service.Extensions;
+using GenerateGuid.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,9 +12,9 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddTransient<IMtGCardRepository, SearchForCard>();
 builder.Services.AddSingleton<IMtGSearchBuffer, SearchBuffer>();
-builder.Services.AddScoped<MtGCardBufferService>();
-builder.Services.AddScoped<MtGCommanderService>();
+builder.Services.AddMtGBoardState();
 builder.Services.AddSession();
+builder.Services.AddGuidGenerator();
 
 var app = builder.Build();
 

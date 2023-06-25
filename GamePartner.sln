@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MtGDomain", "MtGDomain\MtGD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestForSolution", "UnitTestForSolution\UnitTestForSolution.csproj", "{A551A316-278A-4FA7-B5C4-BC58A2E53DDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateGuid", "GenerateGuid\GenerateGuid.csproj", "{0DCCA24A-81DC-4987-846D-A3812806943C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateGuid", "GenerateGuid\GenerateGuid.csproj", "{0DCCA24A-81DC-4987-846D-A3812806943C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

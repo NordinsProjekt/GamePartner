@@ -1,0 +1,17 @@
+﻿@layout GuidLayout
+@page "/Guid/GenerateSingle"
+@using GenerateGuid.Interfaces;
+@inject IGuidGeneratorService GuidService;
+<h1>Guid - Index</h1>
+
+<p>@LatestGeneratedGuid</p>
+<button @onclick="GenerateGuid">Generate</button>
+
+@code {
+    private Guid? LatestGeneratedGuid { get; set; } = Guid.Empty;
+
+    private void GenerateGuid()
+    {
+        LatestGeneratedGuid = GuidService.GenerateGuid();
+    }
+}

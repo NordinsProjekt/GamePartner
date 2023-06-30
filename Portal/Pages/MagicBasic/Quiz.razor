@@ -1,10 +1,31 @@
 ﻿@layout MagicBasicLayout
 @page "/MagicBasic/Quiz"
+@using Application.MtGCard_Service.Interface;
+@using Domain.MtGDomain.DTO
+@inject IMtGCardRepository Repo
+
 <h1>Quiz</h1>
 <p>
     Se en bild och välj om arten kommer från ett create card,
     enchantment, instant, sorcery, artefact, land etc etc
 </p>
-@code {
+@if (GameStart is false)
+{
+    <button id="startquiz" @onclick="StartQuiz">Starta Quizet</button>
+}
+else
+{
+    <p>Quiz time</p>
+}
 
+@code {
+    public bool GameStart { get; set; } = false;
+    public List<MtGCardRecordDTO> List { get; set; }
+
+    private async void StartQuiz()
+    {
+        GameStart = true;
+        List = await Repo.GetRandomCardsFromApi("ALA");
+        StateHasChanged();
+    }
 }

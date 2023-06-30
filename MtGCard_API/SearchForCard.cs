@@ -9,10 +9,15 @@ namespace Infrastructure.MtGCard_API
 {
     public class SearchForCard : IMtGCardRepository
     {
+        private readonly IMtgServiceProvider mtgServiceProvider;
+
+        public SearchForCard(IMtgServiceProvider mtgServiceProvider) 
+        {
+            this.mtgServiceProvider = mtgServiceProvider;
+        }
         public async Task<List<MtGCardRecordDTO>> GetCardsByName(string name)
         {
-            IMtgServiceProvider serviceProvider = new MtgServiceProvider();
-            ICardService service = serviceProvider.GetCardService();
+            ICardService service = mtgServiceProvider.GetCardService();
             try
             {
                 var result = await service.Where(x => x.Name, name)
@@ -24,7 +29,21 @@ namespace Infrastructure.MtGCard_API
                 return new List<MtGCardRecordDTO>();
             }
         }
-
+        public async Task<List<MtGCardRecordDTO>> GetRandomCardsFromApi(string setname)
+        {
+            ISetService serviceSet = mtgServiceProvider.GetSetService();
+            ICardService service = mtgServiceProvider.GetCardService();
+            try
+            {
+                var result = await service.Where(x => x.SetName, setname)
+                          .AllAsync();
+                return ConvertICardToDTO(result);
+            }
+            catch (Exception ex)
+            {
+                return new List<MtGCardRecordDTO>();
+            }
+        }
         private List<MtGCardRecordDTO> ConvertICardToDTO(IOperationResult<List<ICard>> list)
         {
             List<MtGCardRecordDTO> dtoList = new();

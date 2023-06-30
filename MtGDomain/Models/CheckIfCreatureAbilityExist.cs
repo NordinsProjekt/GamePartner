@@ -32,6 +32,7 @@ namespace MtGDomain.Models
         public static IEnumerable<string> GiveAbilityKeywordsFromText(string text)
         {
             List<string> temp = new();
+            if (string.IsNullOrEmpty(text)) return list;
             foreach (var ability in list)
             {
                 if (text.ToLower().Contains(ability.ToLower()))

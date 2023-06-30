@@ -4,12 +4,14 @@ using MtGCard_API;
 using GenerateGuid.Extensions;
 using MtGCard_Service.Extensions;
 using GenerateGuid.Interfaces;
+using MtgApiManager.Lib.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddTransient<IMtgServiceProvider, MtgServiceProvider>();
 builder.Services.AddTransient<IMtGCardRepository, SearchForCard>();
 builder.Services.AddSingleton<IMtGSearchBuffer, SearchBuffer>();
 builder.Services.AddMtGBoardState();

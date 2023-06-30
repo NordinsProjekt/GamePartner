@@ -11,5 +11,6 @@ namespace Application.MtGCard_Service.Interface
     public interface IMtGCardRepository
     {
         public Task<List<MtGCardRecordDTO>> GetCardsByName(string name);
+        Task<List<MtGCardRecordDTO>> GetRandomCardsFromApi(string setname);
     }
 }

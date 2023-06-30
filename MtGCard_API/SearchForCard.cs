@@ -1,5 +1,4 @@
-﻿using Application.MtGCard_Service.DTO;
-using Application.MtGCard_Service.Interface;
+﻿using Application.MtGCard_Service.Interface;
 using Domain.MtGDomain.DTO;
 using MtgApiManager.Lib.Core;
 using MtgApiManager.Lib.Model;
@@ -31,7 +30,7 @@ namespace Infrastructure.MtGCard_API
         }
         public async Task<List<MtGCardRecordDTO>> GetRandomCardsFromApi(string setname)
         {
-            ISetService serviceSet = mtgServiceProvider.GetSetService();
+            
             ICardService service = mtgServiceProvider.GetCardService();
             try
             {
@@ -43,6 +42,12 @@ namespace Infrastructure.MtGCard_API
             {
                 return new List<MtGCardRecordDTO>();
             }
+        }
+
+        public async Task<List<MtGSetRecordDTO>> GetAllSets()
+        {
+            ISetService serviceSet = mtgServiceProvider.GetSetService();
+            return ConvertISettoDTO(await serviceSet.AllAsync());
         }
         private List<MtGCardRecordDTO> ConvertICardToDTO(IOperationResult<List<ICard>> list)
         {
@@ -59,6 +64,20 @@ namespace Infrastructure.MtGCard_API
                 }
             }
             return dtoList;
+        }
+
+        private List<MtGSetRecordDTO> ConvertISettoDTO(IOperationResult<List<ISet>> list)
+        {
+            List<MtGSetRecordDTO> mtGSets = new List<MtGSetRecordDTO>();
+            if (list.IsSuccess == false)
+                return mtGSets;
+
+            foreach (var set in list.Value)
+            {
+                mtGSets.Add(new MtGSetRecordDTO(set.Name,set.Code));
+            }
+
+            return mtGSets;
         }
     }
 }

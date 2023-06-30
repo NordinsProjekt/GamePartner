@@ -21,11 +21,14 @@ else
 @code {
     public bool GameStart { get; set; } = false;
     public List<MtGCardRecordDTO> List { get; set; }
+    public List<MtGSetRecordDTO> Sets  { get; set; }
 
     private async void StartQuiz()
     {
         GameStart = true;
-        List = await Repo.GetRandomCardsFromApi("ALA");
+        Sets = await Repo.GetAllSets();
+        List = await Repo.GetRandomCardsFromApi(Sets.First().SetCode);
+        
         StateHasChanged();
     }
 }

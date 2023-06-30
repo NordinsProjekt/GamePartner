@@ -1,11 +1,5 @@
-﻿using Application.MtGCard_Service.DTO;
-using Application.MtGCard_Service.Interface;
+﻿using Application.MtGCard_Service.Interface;
 using Domain.MtGDomain.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MtGCard_API
 {
@@ -36,5 +30,15 @@ namespace MtGCard_API
             };
             return list;
         }
+
+        public async Task<List<MtGSetRecordDTO>> GetAllSets()
+        {
+            return new()
+            {
+                new MtGSetRecordDTO("Innistrad","INI"),
+                new MtGSetRecordDTO("The Dark","TDK")
+            };
+        }
+
     }
 }

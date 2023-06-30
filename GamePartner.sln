@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormattingText", "Formattin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormattingTextTests", "FormattingTextTests\FormattingTextTests.csproj", "{B511B463-A0B0-43FE-9DF1-4307BC8F3BEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrontendMagicBasicTests", "FrontendMagicBasicTests\FrontendMagicBasicTests.csproj", "{E633A557-4189-4FED-82D8-AA3CB934DD3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrontendMagicBasicTests", "FrontendMagicBasicTests\FrontendMagicBasicTests.csproj", "{E633A557-4189-4FED-82D8-AA3CB934DD3B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

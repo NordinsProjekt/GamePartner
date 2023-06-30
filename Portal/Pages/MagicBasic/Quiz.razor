@@ -1,34 +1,51 @@
 ﻿@layout MagicBasicLayout
 @page "/MagicBasic/Quiz"
 @using Application.MtGCard_Service.Interface;
+@using Portal.Pages.MagicBasic.Components;
 @using Domain.MtGDomain.DTO
 @inject IMtGCardRepository Repo
 
 <h1>Quiz</h1>
-<p>
-    Se en bild och välj om arten kommer från ett create card,
-    enchantment, instant, sorcery, artefact, land etc etc
-</p>
+<ScoreBoard />
+
 @if (GameStart is false)
 {
+    <p>
+        Se en bild och välj om arten kommer från ett create card,
+        enchantment, instant, sorcery, artefact, land etc etc
+    </p>
     <button id="startquiz" @onclick="StartQuiz">Starta Quizet</button>
 }
 else
 {
     <p>Quiz time</p>
+    if (QuizCard is not null)
+    {
+        <img src=@QuizCard.ImageUrl />
+        <button>Answer</button>
+    }
+
 }
 
 @code {
     public bool GameStart { get; set; } = false;
     public List<MtGCardRecordDTO> List { get; set; }
     public List<MtGSetRecordDTO> Sets  { get; set; }
+    public MtGCardRecordDTO QuizCard { get; set; }
+    private int Index { get; set; }
+    private int Max { get; set; }
 
     private async void StartQuiz()
     {
-        GameStart = true;
+
         Sets = await Repo.GetAllSets();
-        List = await Repo.GetRandomCardsFromApi(Sets.First().SetCode);
-        
+        List = await Repo.GetRandomCardsFromApi(Sets.First().SetName);
+        Max = List.Count();
+        Index = 0;
+        if (Index >= Max)
+            return;
+        QuizCard = List[Index];
+        GameStart = true;
         StateHasChanged();
     }
 }

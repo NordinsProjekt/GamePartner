@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using AngleSharp.Dom;
 using Bunit;
 using Microsoft.AspNetCore.Components.Web;
+using Portal.Pages.MagicBasic.Components;
 
 namespace FrontendMagicBasicTests
 {
@@ -112,6 +113,45 @@ namespace FrontendMagicBasicTests
             var count = quiz.Instance.List.Count;
 
             Assert.True(count > 0);
+        }
+
+        [Fact]
+        public async Task StartQuiz_DoesQuestionDivLoad_ShouldReturnTrue()
+        {
+            var quiz = GetComponent();
+            var button = quiz.Find("#startquiz");
+
+            await button.ClickAsync(new MouseEventArgs());
+            var window = quiz.FindAll("#QuizWindow");
+            
+            Assert.True(window.Count() == 1);
+        }
+
+        [Fact]
+        public async Task StartQuiz_DoesQuestionDivHaveFiveButtons_ShouldReturnTrue()
+        {
+            var quiz = GetComponent();
+            var button = quiz.Find("#startquiz");
+
+            await button.ClickAsync(new MouseEventArgs());
+            var window = quiz.Find("#QuizWindow");
+            var children = window.ChildNodes.Where(x => x.NodeName.Equals("BUTTON")).ToList();
+
+            Assert.True(children.Count() == 5);
+        }
+
+        [Fact]
+        public async Task StartQuiz_AnswerCorrect_ScoreShouldBeOne()
+        {
+            var quiz = GetComponent();
+            var button = quiz.Find("#startquiz");
+
+            await button.ClickAsync(new MouseEventArgs());
+            var correctButton = quiz.Find("#Creature");
+            await correctButton.ClickAsync(new MouseEventArgs());
+            int score = quiz.FindComponent<ScoreBoard>().Instance.Score;
+
+            Assert.True(score == 1);
         }
 
     }

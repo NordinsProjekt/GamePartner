@@ -3,48 +3,114 @@
 @using Application.MtGCard_Service.Interface;
 @using Portal.Pages.MagicBasic.Components;
 @using Domain.MtGDomain.DTO
+@using Portal.DTO
 @inject IMtGCardRepository Repo
 
 <h1>Quiz</h1>
-<ScoreBoard />
+<ScoreBoard Score="@Score" />
 
 @if (GameStart is false)
 {
     <p>
-        Se en bild och välj om arten kommer från ett create card,
-        enchantment, instant, sorcery, artefact, land etc etc
+        Se namnet på kortet och välj om det kommer från ett creature card,
+        enchantment, instant, sorcery eller artefact.
     </p>
-    <button id="startquiz" @onclick="StartQuiz">Starta Quizet</button>
+    if (Loading is true)
+    {
+        <p>Loading.......please wait</p>
+    }
+    else
+    {
+        <button id="startquiz" @onclick="StartQuiz">Starta Quizet</button>
+    }
 }
 else
 {
     <p>Quiz time</p>
     if (QuizCard is not null)
     {
-        <img src=@QuizCard.ImageUrl />
-        <button>Answer</button>
+        <div id="QuizWindow">
+            <p>Cardname: @QuizCard.Name</p>
+            <button id="Enchantment" @onclick='(() => CheckAnswer("enchantment"))'>Enchantment</button>
+            <button id="Artefact" @onclick='(() => CheckAnswer("artefact"))'>Artefact</button>
+            <button id="Creature" @onclick='(() => CheckAnswer("creature"))'>Creature</button>
+            <button id="Instant" @onclick='(() => CheckAnswer("instant"))'>Instant</button>
+            <button id="Sorcery" @onclick='(() => CheckAnswer("sorcery"))'>Sorcery</button>
+        </div>
+        <ShowResult Result="@Result" />
     }
 
 }
 
 @code {
     public bool GameStart { get; set; } = false;
+    public ResultRecord Result { get; set; }
     public List<MtGCardRecordDTO> List { get; set; }
-    public List<MtGSetRecordDTO> Sets  { get; set; }
     public MtGCardRecordDTO QuizCard { get; set; }
     private int Index { get; set; }
     private int Max { get; set; }
+    private bool Loading { get; set; } = false;
+    private int Score { get; set; } = 0;
 
     private async void StartQuiz()
     {
-
-        Sets = await Repo.GetAllSets();
-        List = await Repo.GetRandomCardsFromApi(Sets.First().SetName);
+        Score = 0;
+        Loading = true;
+        List = await Repo.GetBoosterPackFromSet("10E");
+        List = FilterList();
         Max = List.Count();
         Index = 0;
-        if (Index >= Max)
+        Loading = false;
+        SetQuizCard();
+    }
+
+    private void CheckAnswer(string text)
+    {
+        var match = QuizCard.Types.Any(x => x.ToLower().Contains(text));
+        if (match)
+        {
+            Score++;
+            Index++;
+            Result = new ResultRecord(true, QuizCard.ImageUrl);
+            SetQuizCard();
+            StateHasChanged();
             return;
+        }
+        Index++;
+        Result = new ResultRecord(false,QuizCard.ImageUrl);
+        SetQuizCard();
+        StateHasChanged(); 
+    }
+
+    private List<MtGCardRecordDTO> FilterList()
+    {
+        List<MtGCardRecordDTO> newList = new();
+        foreach (var item in List)
+        {
+            if (item.Types.Any(x => x.ToLower().Equals("land") || 
+            x.ToLower().Equals("battle") || 
+            x.ToLower().Equals("planeswalker")))
+            {
+                continue;
+            }
+            if (item.ImageUrl is "" || item.ImageUrl is null)
+                continue;
+            newList.Add(item);
+        }
+        return newList;
+    }
+
+    private void SetQuizCard()
+    {
+        if (Index >= Max)
+        {
+            GameStart = false;
+            Loading = false;
+            StateHasChanged();
+            return;
+        }
         QuizCard = List[Index];
+        Loading = false;
         GameStart = true;
         StateHasChanged();
     }

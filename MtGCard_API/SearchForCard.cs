@@ -28,6 +28,7 @@ namespace Infrastructure.MtGCard_API
                 return new List<MtGCardRecordDTO>();
             }
         }
+
         public async Task<List<MtGCardRecordDTO>> GetRandomCardsFromApi(string setname)
         {
             
@@ -42,6 +43,13 @@ namespace Infrastructure.MtGCard_API
             {
                 return new List<MtGCardRecordDTO>();
             }
+        }
+
+        public async Task<List<MtGCardRecordDTO>> GetBoosterPackFromSet(string setcode)
+        {
+            ISetService serviceSet = mtgServiceProvider.GetSetService();
+            var cards = await serviceSet.GenerateBoosterAsync(setcode);
+            return ConvertICardToDTO(cards);
         }
 
         public async Task<List<MtGSetRecordDTO>> GetAllSets()

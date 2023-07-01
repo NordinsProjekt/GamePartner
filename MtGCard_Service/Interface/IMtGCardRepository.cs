@@ -7,5 +7,6 @@ namespace Application.MtGCard_Service.Interface
         Task<List<MtGCardRecordDTO>> GetCardsByName(string name);
         Task<List<MtGCardRecordDTO>> GetRandomCardsFromApi(string setname);
         Task<List<MtGSetRecordDTO>> GetAllSets();
+        Task<List<MtGCardRecordDTO>> GetBoosterPackFromSet(string setcode);
     }
 }

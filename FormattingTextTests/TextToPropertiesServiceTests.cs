@@ -3,6 +3,7 @@ using FormattingText.Interfaces;
 
 namespace FormattingTextTests
 {
+    [Trait("Application", "Formatting text")]
     public class TextToPropertiesServiceTests
     {
         private ITextToPropertiesService GetService()

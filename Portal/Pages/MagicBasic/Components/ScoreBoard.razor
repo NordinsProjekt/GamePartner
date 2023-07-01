@@ -1,17 +1,12 @@
-﻿<h3>ScoreBoard</h3>
+﻿@layout MagicBasicLayout
+<h3>ScoreBoard</h3>
 <p>Score: @Score</p>
 @code {
-    private int Score { get; set; } = 0;
+    [Parameter]
+    public int Score { get; set; } = 0;
 
-    public void Reset()
+    protected override async Task OnParametersSetAsync()
     {
-        Score = 0;
-        StateHasChanged();
-    }
-
-    public void Add()
-    {
-        Score++;
         StateHasChanged();
     }
 }

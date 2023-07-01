@@ -141,18 +141,18 @@ namespace FrontendMagicBasicTests
         }
 
         [Fact]
-        public async Task StartQuiz_AnswerCorrect_ScoreShouldBeOne()
+        public async Task StartQuiz_AnswerWrong_ScoreShouldBeZero()
         {
             var quiz = GetComponent();
             var button = quiz.Find("#startquiz");
 
             await button.ClickAsync(new MouseEventArgs());
-            var correctButton = quiz.Find("#Creature");
+            var correctButton = quiz.Find("#Artefact");
             await correctButton.ClickAsync(new MouseEventArgs());
             int score = quiz.FindComponent<ScoreBoard>().Instance.Score;
 
-            Assert.True(score == 1);
+            Assert.True(score == 0);
         }
-
+        
     }
 }

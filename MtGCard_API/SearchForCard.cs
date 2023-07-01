@@ -29,13 +29,13 @@ namespace Infrastructure.MtGCard_API
             }
         }
 
-        public async Task<List<MtGCardRecordDTO>> GetRandomCardsFromApi(string setname)
+        public async Task<List<MtGCardRecordDTO>> GetRandomCardsFromApi(string setCode)
         {
             
             ICardService service = mtgServiceProvider.GetCardService();
             try
             {
-                var result = await service.Where(x => x.SetName, setname)
+                var result = await service.Where(x => x.Set, setCode)
                           .AllAsync();
                 return ConvertICardToDTO(result);
             }

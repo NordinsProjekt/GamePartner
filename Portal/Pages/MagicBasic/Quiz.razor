@@ -3,10 +3,11 @@
 @using Application.MtGCard_Service.Interface;
 @using Portal.Pages.MagicBasic.Components;
 @using Domain.MtGDomain.DTO
+@using MtGDomain.Extensions;
 @using Portal.DTO
 @inject IMtGCardRepository Repo
 
-<h1>Quiz</h1>
+<h1>Quiz - Innistrad Edition</h1>
 <ScoreBoard Score="@Score" />
 
 @if (GameStart is false)
@@ -56,7 +57,7 @@ else
     {
         Score = 0;
         Loading = true;
-        List = await Repo.GetBoosterPackFromSet("10E");
+        List = await Repo.GetRandomCardsFromApi("ISD");
         List = FilterList();
         Max = List.Count();
         Index = 0;
@@ -84,20 +85,8 @@ else
 
     private List<MtGCardRecordDTO> FilterList()
     {
-        List<MtGCardRecordDTO> newList = new();
-        foreach (var item in List)
-        {
-            if (item.Types.Any(x => x.ToLower().Equals("land") || 
-            x.ToLower().Equals("battle") || 
-            x.ToLower().Equals("planeswalker")))
-            {
-                continue;
-            }
-            if (item.ImageUrl is "" || item.ImageUrl is null)
-                continue;
-            newList.Add(item);
-        }
-        return newList;
+        return List.RemoveMtGType(new string[]{ "land","planeswalker","battle"})
+            .Shuffle().Take(20).ToList();
     }
 
     private void SetQuizCard()

@@ -50,7 +50,7 @@ namespace FrontendMagicBasicTests
             Assert.NotNull(button);
             button.Click();
 
-            Assert.Throws<ElementNotFoundException>(() => quiz.Find("button"));
+            Assert.Throws<ElementNotFoundException>(() => quiz.Find("#startquiz"));
         }
 
         [Fact]
@@ -70,13 +70,13 @@ namespace FrontendMagicBasicTests
         public async Task StartQuiz_CheckIfButtonIsMissing_ShouldNotContainButton()
         {
             var quiz = GetComponent();
-            var buttonElement = quiz.Find("button");
+            var button = quiz.Find("#startquiz");
 
-            buttonElement.Click();
+            button.Click();
 
             var html = quiz.Markup;
 
-            Assert.DoesNotContain("button",html);
+            Assert.DoesNotContain("#startquiz",html);
         }
 
         [Fact]

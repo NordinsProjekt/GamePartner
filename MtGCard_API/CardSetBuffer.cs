@@ -24,7 +24,6 @@ namespace MtGCard_API
             return set.List;
         }
 
-
         public bool AddSet(MtGCardSet set)
         {
             var receviedSet = Sets.FirstOrDefault(x => x.SetCode.Equals(set.SetCode));

@@ -155,6 +155,21 @@ namespace FrontendMagicBasicTests
 
             Assert.True(score == 0);
         }
-        
+
+        [Fact]
+        public async Task StartQuiz_DoesQuizWindowCmc_ShouldReturnTrue()
+        {
+            var quiz = GetComponent();
+            var inputselect = quiz.Find("select");
+            inputselect.Change<string>("CMC");
+
+            var button = quiz.Find("#startquiz");
+
+            await button.ClickAsync(new MouseEventArgs());
+            var window = quiz.FindAll("#QuizWindowCMC");
+
+            Assert.True(window.Count() == 1);
+        }
+
     }
 }

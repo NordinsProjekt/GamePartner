@@ -16,7 +16,7 @@ namespace UnitTestForSolution._0._2_Infrastructure
         public void CheckIfClickedCardCounterWorks_AddACardThreeTimes_ShouldReturnCountThree()
         {
             var buffer = new SearchBuffer();
-            var card = new MtGCardRecordDTO("testcard", "1", "hello", null, null, null, null, null, null);
+            var card = new MtGCardRecordDTO("testcard", "1", "hello", null, null, null, null, null, null,0);
             buffer.AddClickedCard(card);
             buffer.AddClickedCard(card);
             buffer.AddClickedCard(card);

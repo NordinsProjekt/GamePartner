@@ -5,6 +5,7 @@ using GenerateGuid.Extensions;
 using MtGCard_Service.Extensions;
 using GenerateGuid.Interfaces;
 using MtgApiManager.Lib.Service;
+using MtGCard_Service.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddTransient<IMtgServiceProvider, MtgServiceProvider>();
 builder.Services.AddTransient<IMtGCardRepository, SearchForCard>();
 builder.Services.AddSingleton<IMtGSearchBuffer, SearchBuffer>();
+builder.Services.AddSingleton<ICardSetBuffer, CardSetBuffer>();
 builder.Services.AddMtGBoardState();
 builder.Services.AddSession();
 builder.Services.AddGuidGenerator();

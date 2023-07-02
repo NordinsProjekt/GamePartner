@@ -42,7 +42,7 @@ namespace UnitTestForSolution._0._2_Infrastructure
         {
             var api = Substitute.For<IMtGCardRepository>();
             api.GetCardsByName(default).ReturnsForAnyArgs(new List<MtGCardRecordDTO>()
-            { new MtGCardRecordDTO("Glissa", "234", "Deathtouch",null,new(),null,null,null,null) });
+            { new MtGCardRecordDTO("Glissa", "234", "Deathtouch",null,new(),null,null,null,null,0) });
             var result = api.GetCardsByName("Gli").Result;
             Assert.True(result.Count == 1);
         }

@@ -15,12 +15,14 @@ namespace UnitTestForSolution._0._3_Application
     [Trait("Application", "CommanderService Everything")]
     public class MtGCommanderService_Test
     {
+        private MtGCardRecordDTO GetTestCard()
+            => new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null, "https://www.img.com", "FR54", null, null, 0);
         [Fact]
         public void AddingACardToPlayerCardList_Player2WillGetTheCard_TheListShouldHaveCount1()
         {
             MockData _rep = new MockData();
             MtGCommanderService mcs = new MtGCommanderService(_rep, 4);
-            MtGCardRecordDTO card = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null, "https://www.img.com", "FR54", null, null);
+            MtGCardRecordDTO card = GetTestCard();
             mcs.AddCardToPlayer(1, card);
             Assert.True(mcs.GetPlayerCardList(1).Count() == 1);
         }
@@ -30,7 +32,7 @@ namespace UnitTestForSolution._0._3_Application
         {
             MockData _rep = new MockData();
             MtGCommanderService mcs = new MtGCommanderService(_rep, 4);
-            MtGCardRecordDTO card = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null, "https://www.img.com", "FR54", null, null);
+            MtGCardRecordDTO card = GetTestCard(); 
             mcs.AddCardToPlayer(1, card);
             mcs.AddCardToPlayer(1, card);
             mcs.RemoveCardFromPlayer(1, card.Id);
@@ -42,7 +44,7 @@ namespace UnitTestForSolution._0._3_Application
         {
             MockData _rep = new MockData();
             MtGCommanderService mcs = new MtGCommanderService(_rep, 4);
-            MtGCardRecordDTO card = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null, "https://www.img.com", "FR54", null, null);
+            MtGCardRecordDTO card = GetTestCard();
             mcs.AddCardToPlayer(1, card);
             mcs.RemoveCardFromPlayer(1, card.Id);
             mcs.AddCardToPlayer(1, card);
@@ -55,8 +57,7 @@ namespace UnitTestForSolution._0._3_Application
         {
             MockData _rep = new MockData();
             MtGCommanderService mcs = new MtGCommanderService(_rep, 4);
-            MtGCardRecordDTO card = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null, "https://www.img.com", "FR54", null, null);
-            mcs.AddCardToPlayer(1, card);
+            MtGCardRecordDTO card = GetTestCard();
             mcs.RemoveCardFromPlayer(1, card.Id);
             mcs.AddCardToPlayer(1, card);
             mcs.RemoveCardFromPlayer(1, card.Id);
@@ -187,7 +188,7 @@ namespace UnitTestForSolution._0._3_Application
         {
             MockData _rep = new MockData();
             SearchBuffer _buffer = new SearchBuffer();
-            _buffer.AddToSearchBuffer("Test", new List<MtGCardRecordDTO>() { new MtGCardRecordDTO("TestCard", "1", "TestCard", null, null, "image url", "fop3jdf32", null, null) });
+            _buffer.AddToSearchBuffer("Test", new List<MtGCardRecordDTO>() { GetTestCard() });
             MtGCommanderService mcs = new MtGCommanderService(_rep, _buffer);
             await mcs.SearchForCard("Test");
             var cards = mcs.GetSearchResult();
@@ -200,7 +201,7 @@ namespace UnitTestForSolution._0._3_Application
         {
             MockData _rep = new MockData();
             SearchBuffer _buffer = new SearchBuffer();
-            _buffer.AddToSearchBuffer("Test", new List<MtGCardRecordDTO>() { new MtGCardRecordDTO("TestCard", "1", "TestCard", null, null, "image url", "fop3jdf32", null, null) });
+            _buffer.AddToSearchBuffer("Test", new List<MtGCardRecordDTO>() { GetTestCard() });
             MtGCommanderService mcs = new MtGCommanderService(_rep, _buffer);
             mcs.CreateNumPlayers(4);
             await mcs.SearchForCard("Test34");

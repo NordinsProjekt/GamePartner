@@ -5,7 +5,7 @@
     [Parameter]
     public int Score { get; set; } = 0;
 
-    protected override async Task OnParametersSetAsync()
+    protected override void OnParametersSet()
     {
         StateHasChanged();
     }

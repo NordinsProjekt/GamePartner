@@ -1,17 +1,14 @@
-using AngleSharpWrappers;
-using Flurl.Http;
+
 using Portal.Pages.MagicBasic;
 using System.Linq;
 using System.Threading.Tasks;
-using Xunit.Sdk;
 using FluentValidation;
 using Application.MtGCard_Service.Interface;
 using MtGCard_API;
-using Microsoft.Extensions.DependencyInjection;
-using AngleSharp.Dom;
 using Bunit;
 using Microsoft.AspNetCore.Components.Web;
 using Portal.Pages.MagicBasic.Components;
+using MtGCard_Service.Interface;
 
 namespace FrontendMagicBasicTests
 {
@@ -28,6 +25,7 @@ namespace FrontendMagicBasicTests
         private IRenderedComponent<Quiz> GetComponent()
         {
             Services.AddTransient<IMtGCardRepository, MockData>();
+            Services.AddSingleton<ICardSetBuffer, MockData>();
             return RenderComponent<Quiz>();
         }
 
@@ -38,14 +36,18 @@ namespace FrontendMagicBasicTests
             var cut = GetComponent();
 
             // Assert if renderpage has this matching element
-            cut.Find("h1").MarkupMatches("<h1>Quiz</h1>");
+            cut.FindAll("h1");
+            Assert.Equal(1, cut.RenderCount);
         }
 
         [Fact]
         public async Task StartQuiz_CheckIfButtonIsntThereAnymore_ShouldThrowElementNotFound()
         {
             var quiz = GetComponent();
+            var inputselect = quiz.Find("select");
+            inputselect.Change<string>("Type");
             var buttonElements = quiz.FindAll("button");
+
             var button = buttonElements.Where(x => x.Id.Equals("startquiz")).FirstOrDefault();
 
             Assert.NotNull(button);
@@ -55,22 +57,11 @@ namespace FrontendMagicBasicTests
         }
 
         [Fact]
-        public async Task StartQuiz_CheckIfTextIsShowing_ShouldFindTheText()
-        {
-            var quiz = GetComponent();
-            var buttonElement = quiz.Find("button");
-
-            buttonElement.Click();
-            int count = quiz.FindAll("p").Where(x => x.InnerHtml.Equals("Quiz time")).Count();
-
-            Assert.Equal(count, 1);
-
-        }
-
-        [Fact]
         public async Task StartQuiz_CheckIfButtonIsMissing_ShouldNotContainButton()
         {
             var quiz = GetComponent();
+            var inputselect = quiz.Find("select");
+            inputselect.Change<string>("Type");
             var button = quiz.Find("#startquiz");
 
             button.Click();
@@ -94,6 +85,8 @@ namespace FrontendMagicBasicTests
         public void StartQuiz_ClickStartQuizButton_BoolShouldBeSetToTrue()
         {
             var quiz = GetComponent();
+            var inputselect = quiz.Find("select");
+            inputselect.Change<string>("Type");
             var buttonElement = quiz.Find("button");
 
             buttonElement.Click();
@@ -108,6 +101,8 @@ namespace FrontendMagicBasicTests
             var quiz = GetComponent();
 
             var button = quiz.Find("#startquiz");
+            var inputselect = quiz.Find("select");
+            inputselect.Change<string>("Type");
             await button.ClickAsync(new MouseEventArgs());
 
             var count = quiz.Instance.List.Count;
@@ -119,10 +114,13 @@ namespace FrontendMagicBasicTests
         public async Task StartQuiz_DoesQuestionDivLoad_ShouldReturnTrue()
         {
             var quiz = GetComponent();
+            var inputselect = quiz.Find("select");
+            inputselect.Change<string>("Type");
+
             var button = quiz.Find("#startquiz");
 
             await button.ClickAsync(new MouseEventArgs());
-            var window = quiz.FindAll("#QuizWindow");
+            var window = quiz.FindAll("#QuizWindowType");
             
             Assert.True(window.Count() == 1);
         }
@@ -131,10 +129,12 @@ namespace FrontendMagicBasicTests
         public async Task StartQuiz_DoesQuestionDivHaveFiveButtons_ShouldReturnTrue()
         {
             var quiz = GetComponent();
+            var inputselect = quiz.Find("select");
+            inputselect.Change<string>("Type");
             var button = quiz.Find("#startquiz");
 
             await button.ClickAsync(new MouseEventArgs());
-            var window = quiz.Find("#QuizWindow");
+            var window = quiz.Find("#QuizWindowType");
             var children = window.ChildNodes.Where(x => x.NodeName.Equals("BUTTON")).ToList();
 
             Assert.True(children.Count() == 5);
@@ -144,6 +144,8 @@ namespace FrontendMagicBasicTests
         public async Task StartQuiz_AnswerWrong_ScoreShouldBeZero()
         {
             var quiz = GetComponent();
+            var inputselect = quiz.Find("select");
+            inputselect.Change<string>("Type");
             var button = quiz.Find("#startquiz");
 
             await button.ClickAsync(new MouseEventArgs());

@@ -20,7 +20,7 @@ namespace Infrastructure.MtGCard_API
             try
             {
                 var result = await service.Where(x => x.Name, name)
-                          .AllAsync();
+                    .AllAsync();
                 return ConvertICardToDTO(result);
             }
             catch (Exception ex)
@@ -31,12 +31,13 @@ namespace Infrastructure.MtGCard_API
 
         public async Task<List<MtGCardRecordDTO>> GetRandomCardsFromApi(string setCode)
         {
-            
             ICardService service = mtgServiceProvider.GetCardService();
             try
             {
                 var result = await service.Where(x => x.Set, setCode)
-                          .AllAsync();
+                    .Where(x => x.Page, 1)
+                    .Where(x => x.PageSize, 100)
+                    .AllAsync();
                 return ConvertICardToDTO(result);
             }
             catch (Exception ex)
@@ -57,6 +58,7 @@ namespace Infrastructure.MtGCard_API
             ISetService serviceSet = mtgServiceProvider.GetSetService();
             return ConvertISettoDTO(await serviceSet.AllAsync());
         }
+
         private List<MtGCardRecordDTO> ConvertICardToDTO(IOperationResult<List<ICard>> list)
         {
             List<MtGCardRecordDTO> dtoList = new();
@@ -86,6 +88,34 @@ namespace Infrastructure.MtGCard_API
             }
 
             return mtGSets;
+        }
+
+        public async Task<List<MtGCardRecordDTO>> GetAllCardsFromASet(string setCode)
+        {
+            ICardService service = mtgServiceProvider.GetCardService();
+            List<MtGCardRecordDTO> list = new List<MtGCardRecordDTO>();
+            try
+            {
+                var result = await service.Where(x => x.Set, setCode)
+                    .Where(x => x.Page, 1)
+                    .Where(x => x.PageSize, 100)
+                    .AllAsync();
+                int pageCount = result.PagingInfo.TotalCount;
+                list.AddRange(ConvertICardToDTO(result));
+                for (int i = 2; i <= result.PagingInfo.TotalCount; i++)
+                {
+                    var temp = await service.Where(x => x.Set, setCode)
+                    .Where(x => x.Page, i)
+                    .Where(x => x.PageSize, 100)
+                    .AllAsync();
+                    list.AddRange(ConvertICardToDTO(result));
+                }
+                return list;
+            }
+            catch (Exception ex)
+            {
+                return new List<MtGCardRecordDTO>();
+            }
         }
     }
 }

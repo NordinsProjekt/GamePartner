@@ -22,6 +22,7 @@ namespace MtGDomain.Models
         public string MultiverseId { get; set; }
         public string[] Types { get; set; }
         public string[] SuperTypes { get; set; }
+        public int Cmc { get; set; }
         public MtGCardObject() { }
 
         public string Text
@@ -49,7 +50,7 @@ namespace MtGDomain.Models
         {
             if (IsModelValid())
             {
-                MtGCardRecordDTO dto = new MtGCardRecordDTO(Name, Id, Text, Rulings, abilities, ImageUrl, MultiverseId, Types, SuperTypes);
+                MtGCardRecordDTO dto = new MtGCardRecordDTO(Name, Id, Text, Rulings, abilities, ImageUrl, MultiverseId, Types, SuperTypes,Cmc);
                 return dto;
             }
             return default(MtGCardRecordDTO);

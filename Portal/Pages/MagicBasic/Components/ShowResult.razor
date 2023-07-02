@@ -19,7 +19,7 @@
     [Parameter]
     public ResultRecord Result { get; set; }
 
-    protected override async Task OnParametersSetAsync()
+    protected override void OnParametersSet()
     {
         StateHasChanged();
     }

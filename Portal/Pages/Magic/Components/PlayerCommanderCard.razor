@@ -19,7 +19,7 @@
         await _commanderService.SearchForCard(SearchText);
     }
 
-    public async Task ShowCard(string cardId)
+    public void ShowCard(string cardId)
     {
         _commanderService.SetClickedCard(cardId);
     } 

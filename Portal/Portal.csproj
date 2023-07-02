@@ -16,6 +16,7 @@
     <ProjectReference Include="..\GenerateGuid\GenerateGuid.csproj" />
     <ProjectReference Include="..\MtGCard_API\MtGCard_API.csproj" />
     <ProjectReference Include="..\MtGCard_Service\MtGCard_Service.csproj" />
+    <ProjectReference Include="..\MtGDomain\MtGDomain.csproj" />
   </ItemGroup>
 
 </Project>

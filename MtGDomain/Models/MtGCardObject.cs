@@ -23,6 +23,10 @@ namespace MtGDomain.Models
         public string[] Types { get; set; }
         public string[] SuperTypes { get; set; }
         public int Cmc { get; set; }
+
+        public bool IsColorLess { get; set; }
+        public bool IsMultiColor { get; set; }
+        public string ManaCost { get; set; }
         public MtGCardObject() { }
 
         public string Text
@@ -50,7 +54,8 @@ namespace MtGDomain.Models
         {
             if (IsModelValid())
             {
-                MtGCardRecordDTO dto = new MtGCardRecordDTO(Name, Id, Text, Rulings, abilities, ImageUrl, MultiverseId, Types, SuperTypes,Cmc);
+                MtGCardRecordDTO dto = new MtGCardRecordDTO(Name, Id, Text, Rulings, abilities, ImageUrl, MultiverseId, Types,
+                    SuperTypes,Cmc, IsColorLess, IsMultiColor, ManaCost);
                 return dto;
             }
             return default(MtGCardRecordDTO);

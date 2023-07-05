@@ -12,24 +12,41 @@ namespace MtGCard_API
 {
     public class CardSetBuffer : ICardSetBuffer
     {
-        public List<MtGCardSet> Sets { get; set; } = new List<MtGCardSet>();
+        private List<MtGCardSet> sets { get; set; } = new List<MtGCardSet>();
 
         public CardSetBuffer() { }
 
         public List<MtGCardRecordDTO>? GetSet(string setCode)
         {
-            var set = Sets.FirstOrDefault(x => x.SetCode.Equals(setCode));
+            var set = sets.FirstOrDefault(x => x.SetCode.Equals(setCode));
             if (set == null)
                 return null;
-            return set.List;
+
+            List<MtGCardRecordDTO> list = new List<MtGCardRecordDTO>();
+
+            foreach (var item in set.List)
+            {
+                list.Add(new MtGCardRecordDTO(item.Name, item.Id, item.Text, item.Rulings, item.Abilities,
+                    item.ImageUrl, item.MultiverseId, item.Types, item.SuperTypes, item.Cmc,
+                    item.IsColorLess, item.IsMultiColor, item.ManaCost));
+            }
+            return list;
         }
 
         public bool AddSet(MtGCardSet set)
         {
-            var receviedSet = Sets.FirstOrDefault(x => x.SetCode.Equals(set.SetCode));
+            var receviedSet = sets.FirstOrDefault(x => x.SetCode.Equals(set.SetCode));
             if (receviedSet == null)
             {
-                Sets.Add(set);
+                List<MtGCardRecordDTO> list = new List<MtGCardRecordDTO>();
+                foreach (var item in set.List)
+                {
+                    list.Add(new MtGCardRecordDTO(item.Name, item.Id, item.Text, item.Rulings, item.Abilities,
+                        item.ImageUrl, item.MultiverseId, item.Types, item.SuperTypes, item.Cmc,
+                        item.IsColorLess, item.IsMultiColor, item.ManaCost));
+                }
+                MtGCardSet cardSet = new MtGCardSet(list, set.SetName, set.SetCode);
+                sets.Add(cardSet);
                 return true;
             }
             return false;

@@ -100,15 +100,15 @@ namespace Infrastructure.MtGCard_API
                     .Where(x => x.Page, 1)
                     .Where(x => x.PageSize, 100)
                     .AllAsync();
-                int pageCount = result.PagingInfo.TotalCount;
+                int pageCount = result.PagingInfo.TotalPages;
                 list.AddRange(ConvertICardToDTO(result));
-                for (int i = 2; i <= result.PagingInfo.TotalCount; i++)
+                for (int i = 2; i <= pageCount; i++)
                 {
-                    var temp = await service.Where(x => x.Set, setCode)
+                    var newCards = await service.Where(x => x.Set, setCode)
                     .Where(x => x.Page, i)
                     .Where(x => x.PageSize, 100)
                     .AllAsync();
-                    list.AddRange(ConvertICardToDTO(result));
+                    list.AddRange(ConvertICardToDTO(newCards));
                 }
                 return list;
             }

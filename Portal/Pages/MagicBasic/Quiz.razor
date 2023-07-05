@@ -1,6 +1,7 @@
 ﻿@layout MagicBasicLayout
 @page "/MagicBasic/Quiz"
 @using Application.MtGCard_Service.Interface;
+@using MtGCard_Service.Classes;
 @using MtGCard_Service.Interface;
 @using MtGDomain.DTO;
 @using MtGDomain.Enum;
@@ -10,9 +11,9 @@
 @using MtGDomain.Extensions;
 @using Portal.DTO
 @inject IMtGCardRepository Repo
-@inject ICardSetBuffer MtGSetBuffer
+@inject ICardSetBuffer Buffer
 
-<h1>Quiz - Innistrad Edition</h1>
+<h1>Quiz - The Dark Edition</h1>
 <ScoreBoard Score="@Score" />
 
 @if (GameStart is false)
@@ -27,8 +28,8 @@
     }
     else
     {
-        <EditForm Model="@model">
-            <InputSelect @bind-Value="model.Quiz">
+        <EditForm Model="@Model">
+            <InputSelect @bind-Value="Model.Quiz">
                 <option>CMC</option>
                 <option>Type</option>
                 <option>Color</option>
@@ -41,14 +42,14 @@ else
 {
     if (QuizCard is not null)
     {
-        @switch (model.Quiz)
+        @switch (Model.Quiz)
         {
             case QuizType.Type:
                 <div id="QuizWindowType">
                     <h2>Vilken typ har detta kortet?</h2>
                     <p>Cardname: @QuizCard.Name</p>
                     <button id="Enchantment" @onclick='(() => CheckAnswer("enchantment"))'>Enchantment</button>
-                    <button id="Artefact" @onclick='(() => CheckAnswer("artefact"))'>Artefact</button>
+                    <button id="Artefact" @onclick='(() => CheckAnswer("artefact"))'>Artifact</button>
                     <button id="Creature" @onclick='(() => CheckAnswer("creature"))'>Creature</button>
                     <button id="Instant" @onclick='(() => CheckAnswer("instant"))'>Instant</button>
                     <button id="Sorcery" @onclick='(() => CheckAnswer("sorcery"))'>Sorcery</button>
@@ -58,15 +59,25 @@ else
                 <div id="QuizWindowCMC">
                     <h2>Hur mycket CMC har detta kortet?</h2>
                     <p>Cardname: @QuizCard.Name</p>
-                    <EditForm Model="@model">
-                            <InputNumber @bind-Value="@model.CmcValue" />
+                    <EditForm Model="@Model">
+                            <InputNumber @bind-Value="@Model.CmcValue" id="inputCmc" />
                             <button id="CmcCheck" @onclick="CheckAnswerCmC">Send</button>
                     </EditForm>
                 </div>
                 break;
             case QuizType.Color:
                 <div id="QuizWindowColor">
-
+                    <h2>Vilken/Vilka färger har kortet?</h2>
+                    <p>Cardname: @QuizCard.Name</p>
+                    <EditForm Model="@Model">
+                       <label for="blue">Blue</label><InputCheckbox DisplayName="Blue" @bind-Value="@Model.Color.Blue" type="checkbox" id="blue" /> |
+                        <label for="white">White</label><InputCheckbox DisplayName="White" @bind-Value="@Model.Color.White" type="checkbox" id="white" /> |
+                        <label for="red">Red</label><InputCheckbox DisplayName="Red" @bind-Value="@Model.Color.Red" type="checkbox" id="red" /> |
+                        <label for="black">Black</label><InputCheckbox DisplayName="Black" @bind-Value="@Model.Color.Black" type="checkbox" id="black" /> |
+                        <label for="green">Green</label><InputCheckbox DisplayName="Green" @bind-Value="@Model.Color.Green" type="checkbox" id="green" />
+                        <button id="ColorCheck" @onclick="CheckAnswerColor">Send</button>
+                    </EditForm>
+                    
                 </div>
                 break;
             default:
@@ -79,54 +90,120 @@ else
 }
 
 @code {
+    public MtGQuizModel Model = new MtGQuizModel();
 
-
-    Model model = new Model();
-
-    class Model
-    {
-        public QuizType Quiz { get; set; }
-        public int CmcValue { get; set; }
-    }
-    public InputSelect<string[]> QuizSelector { get; set; } = new();
     public bool GameStart { get; set; } = false;
     public ResultRecord Result { get; set; }
     public List<MtGCardRecordDTO>? List { get; set; }
     public MtGCardRecordDTO? QuizCard { get; set; }
-    private int Index { get; set; }
-    private int Max { get; set; }
+    private int Index { get; set; } = 0;
+    private int Max { get; set; } = 0;
     private bool Loading { get; set; } = false;
     private int Score { get; set; } = 0;
     public string[] selector = new string[] { "Cardtype", "Card CMC", "Card Color" };
 
     private async void StartQuiz()
     {
-        Console.WriteLine(model.Quiz.ToString());
         Score = 0;
         Loading = true;
-        var listFromBuffer = MtGSetBuffer.GetSet("DRK");
+        List<MtGCardRecordDTO>? cardsFromBuffer = Buffer.GetSet("DRK");
 
-        if (listFromBuffer is null)
+        if (cardsFromBuffer is null)
         {
-            List = await Repo.GetRandomCardsFromApi("DRK");
-            MtGCardSet set = new MtGCardSet(List.ToList(), "The Dark", "DRK");
-            MtGSetBuffer.AddSet(set);
-        }
-        else
-        {
-            List = listFromBuffer;
+            cardsFromBuffer = new();
+            cardsFromBuffer =  await Repo.GetAllCardsFromASet("DRK");
         }
 
-        List = FilterList();
+        List = FilterList(cardsFromBuffer);
+        List = List.Shuffle().Take(20).ToList();
         Max = List.Count();
         Index = 0;
         Loading = false;
         SetQuizCard();
     }
+    private void CheckAnswerColor()
+    {
+        if(QuizCard.ManaCost.Contains("W"))
+        {
+            if (Model.Color.White is not true)
+            {
+                Result = new ResultRecord(false, QuizCard.ImageUrl);
+                Index++;
+                SetQuizCard();
+                StateHasChanged();
+                return;
+            }    
+        }
+
+        if (QuizCard.ManaCost.Contains("B"))
+        {
+            if (Model.Color.Black is not true)
+            {
+                Result = new ResultRecord(false, QuizCard.ImageUrl);
+                Index++;
+                SetQuizCard();
+                StateHasChanged();
+                return;
+            }
+        }
+
+        if (QuizCard.ManaCost.Contains("U"))
+        {
+            if (Model.Color.Blue is not true)
+            {
+                Result = new ResultRecord(false, QuizCard.ImageUrl);
+                Index++;
+                SetQuizCard();
+                StateHasChanged();
+                return;
+            }
+        }
+
+        if (QuizCard.ManaCost.Contains("R"))
+        {
+            if (Model.Color.Red is not true)
+            {
+                Result = new ResultRecord(false, QuizCard.ImageUrl);
+                Index++;
+                SetQuizCard();
+                StateHasChanged();
+                return;
+            }
+        }
+
+        if (QuizCard.ManaCost.Contains("G"))
+        {
+            if (Model.Color.Green is not true)
+            {
+                Result = new ResultRecord(false, QuizCard.ImageUrl);
+                Index++;
+                SetQuizCard();
+                StateHasChanged();
+                return;
+            }
+        }
+
+        if (QuizCard.IsColorLess)
+        {
+            if (Model.Color.Black || Model.Color.Green || Model.Color.Red || Model.Color.Blue || Model.Color.White)
+            {
+                Result = new ResultRecord(false, QuizCard.ImageUrl);
+                Index++;
+                SetQuizCard();
+                StateHasChanged();
+                return;
+            }
+        }
+        Score++;
+        Index++;
+        Result = new ResultRecord(true, QuizCard.ImageUrl);
+        SetQuizCard();
+        StateHasChanged();
+    }
 
     private void CheckAnswerCmC()
     {
-        if (QuizCard.Cmc == model.CmcValue)
+        if (QuizCard.Cmc == Model.CmcValue)
         {
             Score++;
             Index++;
@@ -159,10 +236,9 @@ else
         StateHasChanged(); 
     }
 
-    private List<MtGCardRecordDTO> FilterList()
+    private List<MtGCardRecordDTO> FilterList(List<MtGCardRecordDTO> cards)
     {
-        return List.RemoveMtGType(new string[]{ "land","planeswalker","battle"})
-            .Shuffle().Take(20).ToList();
+        return cards.RemoveMtGType(new string[] { "land", "planeswalker", "battle" });
     }
 
     private void SetQuizCard()
@@ -179,7 +255,7 @@ else
 
     private void EndQuiz()
     {
-        model = new();
+        Model = new();
         List = new();
         QuizCard = null;
         GameStart = false;

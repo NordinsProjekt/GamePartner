@@ -51,5 +51,8 @@ namespace MtGCard_API
             }
             return false;
         }
+
+        public bool DoesSetExist(string setCode)
+            => sets.Any(x=>x.SetCode.Equals(setCode));
     }
 }

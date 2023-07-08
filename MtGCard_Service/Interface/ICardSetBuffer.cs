@@ -12,5 +12,6 @@ namespace MtGCard_Service.Interface
     {
         List<MtGCardRecordDTO>? GetSet(string SetCode);
         bool AddSet(MtGCardSet set);
+        bool DoesSetExist(string setCode);
     }
 }

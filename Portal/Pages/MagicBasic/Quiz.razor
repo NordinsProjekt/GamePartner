@@ -46,7 +46,7 @@ else
         {
             case QuizType.Type:
                 <div id="QuizWindowType">
-                    <h2>Vilken typ har detta kortet?</h2>
+                    <h2>Vilken typ har detta kortet? @(Index+1) / @List.Count</h2>
                     <p>Cardname: @QuizCard.Name</p>
                     <button id="Enchantment" @onclick='(() => CheckAnswer("enchantment"))'>Enchantment</button>
                     <button id="Artefact" @onclick='(() => CheckAnswer("artefact"))'>Artifact</button>
@@ -57,7 +57,7 @@ else
                 break;
             case QuizType.CMC:
                 <div id="QuizWindowCMC">
-                    <h2>Hur mycket CMC har detta kortet?</h2>
+                    <h2>Hur mycket CMC har detta kortet? @(Index + 1) / @List.Count</h2>
                     <p>Cardname: @QuizCard.Name</p>
                     <EditForm Model="@Model">
                             <InputNumber @bind-Value="@Model.CmcValue" id="inputCmc" />
@@ -67,7 +67,7 @@ else
                 break;
             case QuizType.Color:
                 <div id="QuizWindowColor">
-                    <h2>Vilken/Vilka färger har kortet?</h2>
+                    <h2>Vilken/Vilka färger har kortet? @(Index + 1) / @List.Count</h2>
                     <p>Cardname: @QuizCard.Name</p>
                     <EditForm Model="@Model">
                        <label for="blue">Blue</label><InputCheckbox DisplayName="Blue" @bind-Value="@Model.Color.Blue" type="checkbox" id="blue" /> |
@@ -102,27 +102,51 @@ else
     private int Score { get; set; } = 0;
     public string[] selector = new string[] { "Cardtype", "Card CMC", "Card Color" };
 
+    protected override async Task OnInitializedAsync()
+    {
+        await PopulateBuffer();
+    }
+
     private async void StartQuiz()
     {
         Score = 0;
         Loading = true;
-        List<MtGCardRecordDTO>? cardsFromBuffer = Buffer.GetSet("DRK");
-
-        if (cardsFromBuffer is null)
-        {
-            cardsFromBuffer = new();
-            cardsFromBuffer =  await Repo.GetAllCardsFromASet("DRK");
-        }
-
-        List = FilterList(cardsFromBuffer);
+        var cards = await GetCards();
+        List = FilterList(cards);
         List = List.Shuffle().Take(20).ToList();
         Max = List.Count();
         Index = 0;
         Loading = false;
         SetQuizCard();
     }
+
+    private async Task<List<MtGCardRecordDTO>> GetCards()
+    {
+        List<MtGCardRecordDTO>? cardsFromBuffer = Buffer.GetSet("DRK");
+        return cardsFromBuffer;
+    }
+
+    private async Task PopulateBuffer()
+    {
+        List<(string Name, string Code)> Sets = new() {
+            ( "The Dark", "DRK" ),
+            ("Dark Ascension","DKA"),
+            ("Innistrad","ISD")
+        };
+        foreach (var set in Sets)
+        {
+            if(! Buffer.DoesSetExist(set.Code))
+            {
+                var cardsFromAPI = await Repo.GetAllCardsFromASet(set.Code);
+                Buffer.AddSet(new MtGCardSet(cardsFromAPI, set.Name, set.Code));
+            }
+        }
+    }
+
+
     private void CheckAnswerColor()
     {
+        //TODO Lägg color kollen innan manacostnaden
         if(QuizCard.ManaCost.Contains("W"))
         {
             if (Model.Color.White is not true)

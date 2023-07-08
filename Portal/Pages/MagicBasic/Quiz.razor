@@ -2,6 +2,7 @@
 @page "/MagicBasic/Quiz"
 @using Application.MtGCard_Service.Interface;
 @using MtGCard_Service.Classes;
+@using MtGCard_Service.DTO;
 @using MtGCard_Service.Interface;
 @using MtGDomain.DTO;
 @using MtGDomain.Enum;
@@ -9,9 +10,6 @@
 @using Domain.MtGDomain.DTO
 @using MtGDomain.Enums
 @using MtGDomain.Extensions;
-@using Portal.DTO
-@inject IMtGCardRepository Repo
-@inject ICardSetBuffer Buffer
 
 <h1>Quiz - The Dark Edition</h1>
 <ScoreBoard Score="@Score" />
@@ -90,59 +88,14 @@ else
 }
 
 @code {
-    public MtGQuizModel Model = new MtGQuizModel();
-
-    public bool GameStart { get; set; } = false;
-    public ResultRecord Result { get; set; }
-    public List<MtGCardRecordDTO>? List { get; set; }
-    public MtGCardRecordDTO? QuizCard { get; set; }
-    private int Index { get; set; } = 0;
-    private int Max { get; set; } = 0;
-    private bool Loading { get; set; } = false;
-    private int Score { get; set; } = 0;
+    public MtGQuizModel Model { get; set; } = new();
     public string[] selector = new string[] { "Cardtype", "Card CMC", "Card Color" };
 
-    protected override async Task OnInitializedAsync()
-    {
-        await PopulateBuffer();
-    }
 
     private async void StartQuiz()
     {
-        Score = 0;
-        Loading = true;
-        var cards = await GetCards();
-        List = FilterList(cards);
-        List = List.Shuffle().Take(20).ToList();
-        Max = List.Count();
-        Index = 0;
-        Loading = false;
-        SetQuizCard();
-    }
 
-    private async Task<List<MtGCardRecordDTO>> GetCards()
-    {
-        List<MtGCardRecordDTO>? cardsFromBuffer = Buffer.GetSet("DRK");
-        return cardsFromBuffer;
     }
-
-    private async Task PopulateBuffer()
-    {
-        List<(string Name, string Code)> Sets = new() {
-            ( "The Dark", "DRK" ),
-            ("Dark Ascension","DKA"),
-            ("Innistrad","ISD")
-        };
-        foreach (var set in Sets)
-        {
-            if(! Buffer.DoesSetExist(set.Code))
-            {
-                var cardsFromAPI = await Repo.GetAllCardsFromASet(set.Code);
-                Buffer.AddSet(new MtGCardSet(cardsFromAPI, set.Name, set.Code));
-            }
-        }
-    }
-
 
     private void CheckAnswerColor()
     {
@@ -247,33 +200,5 @@ else
         Index++;
         Result = new ResultRecord(false,QuizCard.ImageUrl);
         SetQuizCard();
-    }
-
-    private List<MtGCardRecordDTO> FilterList(List<MtGCardRecordDTO> cards)
-    {
-        return cards.RemoveMtGType(new string[] { "land", "planeswalker", "battle" });
-    }
-
-    private void SetQuizCard()
-    {
-        if (Index > Max)
-        {
-            EndQuiz();
-        }
-        QuizCard = List[Index];
-        Loading = false;
-        GameStart = true;
-        StateHasChanged();
-    }
-
-    private void EndQuiz()
-    {
-        Model = new();
-        List = new();
-        QuizCard = null;
-        GameStart = false;
-        Loading = false;
-        StateHasChanged();
-        return;
     }
 }

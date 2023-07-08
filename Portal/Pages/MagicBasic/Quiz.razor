@@ -10,24 +10,25 @@
 @using Domain.MtGDomain.DTO
 @using MtGDomain.Enums
 @using MtGDomain.Extensions;
+@inject IMtGQuizService Service
 
 <h1>Quiz - The Dark Edition</h1>
-<ScoreBoard Score="@Score" />
+<ScoreBoard Score="@State.Score" />
 
-@if (GameStart is false)
+@if (State.GameStart is false)
 {
     <p>
         Se namnet på kortet och välj om det kommer från ett creature card,
         enchantment, instant, sorcery eller artefact.
     </p>
-    if (Loading is true)
+    if (State.Loading is true)
     {
         <p>Loading.......please wait</p>
     }
     else
     {
-        <EditForm Model="@Model">
-            <InputSelect @bind-Value="Model.Quiz">
+        <EditForm Model="@State.Model">
+            <InputSelect @bind-Value="State.Model.Quiz">
                 <option>CMC</option>
                 <option>Type</option>
                 <option>Color</option>
@@ -38,14 +39,14 @@
 }
 else
 {
-    if (QuizCard is not null)
+    if (State.QuizCard is not null)
     {
-        @switch (Model.Quiz)
+        @switch (State.Model.Quiz)
         {
             case QuizType.Type:
                 <div id="QuizWindowType">
-                    <h2>Vilken typ har detta kortet? @(Index+1) / @List.Count</h2>
-                    <p>Cardname: @QuizCard.Name</p>
+                    <h2>Vilken typ har detta kortet? @(State.Index + 1) / @State.List.Count</h2>
+                    <p>Cardname: @State.QuizCard.Name</p>
                     <button id="Enchantment" @onclick='(() => CheckAnswer("enchantment"))'>Enchantment</button>
                     <button id="Artefact" @onclick='(() => CheckAnswer("artefact"))'>Artifact</button>
                     <button id="Creature" @onclick='(() => CheckAnswer("creature"))'>Creature</button>
@@ -55,150 +56,74 @@ else
                 break;
             case QuizType.CMC:
                 <div id="QuizWindowCMC">
-                    <h2>Hur mycket CMC har detta kortet? @(Index + 1) / @List.Count</h2>
-                    <p>Cardname: @QuizCard.Name</p>
-                    <EditForm Model="@Model">
-                            <InputNumber @bind-Value="@Model.CmcValue" id="inputCmc" />
+                    <h2>Hur mycket CMC har detta kortet? @(State.Index + 1) / @State.List.Count</h2>
+                    <p>Cardname: @State.QuizCard.Name</p>
+                    <EditForm Model="@State.Model">
+                        <InputNumber @bind-Value="@State.Model.CmcValue" id="inputCmc" />
                             <button id="CmcCheck" @onclick="CheckAnswerCmC">Send</button>
                     </EditForm>
                 </div>
                 break;
             case QuizType.Color:
                 <div id="QuizWindowColor">
-                    <h2>Vilken/Vilka färger har kortet? @(Index + 1) / @List.Count</h2>
-                    <p>Cardname: @QuizCard.Name</p>
-                    <EditForm Model="@Model">
-                       <label for="blue">Blue</label><InputCheckbox DisplayName="Blue" @bind-Value="@Model.Color.Blue" type="checkbox" id="blue" /> |
-                        <label for="white">White</label><InputCheckbox DisplayName="White" @bind-Value="@Model.Color.White" type="checkbox" id="white" /> |
-                        <label for="red">Red</label><InputCheckbox DisplayName="Red" @bind-Value="@Model.Color.Red" type="checkbox" id="red" /> |
-                        <label for="black">Black</label><InputCheckbox DisplayName="Black" @bind-Value="@Model.Color.Black" type="checkbox" id="black" /> |
-                        <label for="green">Green</label><InputCheckbox DisplayName="Green" @bind-Value="@Model.Color.Green" type="checkbox" id="green" />
+                    <h2>Vilken/Vilka färger har kortet? @(State.Index + 1) / @State.List.Count</h2>
+                    <p>Cardname: @State.QuizCard.Name</p>
+                    <EditForm Model="@State.Model">
+                        <label for="blue">Blue</label><InputCheckbox DisplayName="Blue" @bind-Value="@State.Model.Color.Blue" type="checkbox" id="blue" /> |
+                        <label for="white">White</label><InputCheckbox DisplayName="White" @bind-Value="@State.Model.Color.White" type="checkbox" id="white" /> |
+                        <label for="red">Red</label><InputCheckbox DisplayName="Red" @bind-Value="@State.Model.Color.Red" type="checkbox" id="red" /> |
+                        <label for="black">Black</label><InputCheckbox DisplayName="Black" @bind-Value="@State.Model.Color.Black" type="checkbox" id="black" /> |
+                        <label for="green">Green</label><InputCheckbox DisplayName="Green" @bind-Value="@State.Model.Color.Green" type="checkbox" id="green" />
                         <button id="ColorCheck" @onclick="CheckAnswerColor">Send</button>
                     </EditForm>
                     
                 </div>
                 break;
             default:
-                EndQuiz();
+                Service.EndQuiz();
                 break;
         }
-        <ShowResult Result="@Result" />
+        <ShowResult Result="State.Result" />
     }
 
 }
 
 @code {
-    public MtGQuizModel Model { get; set; } = new();
     public string[] selector = new string[] { "Cardtype", "Card CMC", "Card Color" };
+    public MtGQuizState State { get; set; }
 
+    protected override void OnInitialized()
+    {
+        State = Service.GetQuizState();
+    }
 
     private async void StartQuiz()
     {
-
-    }
-
-    private void CheckAnswerColor()
-    {
-        //TODO Lägg color kollen innan manacostnaden
-        if(QuizCard.ManaCost.Contains("W"))
-        {
-            if (Model.Color.White is not true)
-            {
-                Result = new ResultRecord(false, QuizCard.ImageUrl);
-                Index++;
-                SetQuizCard();
-                return;
-            }    
-        }
-
-        if (QuizCard.ManaCost.Contains("B"))
-        {
-            if (Model.Color.Black is not true)
-            {
-                Result = new ResultRecord(false, QuizCard.ImageUrl);
-                Index++;
-                SetQuizCard();
-                return;
-            }
-        }
-
-        if (QuizCard.ManaCost.Contains("U"))
-        {
-            if (Model.Color.Blue is not true)
-            {
-                Result = new ResultRecord(false, QuizCard.ImageUrl);
-                Index++;
-                SetQuizCard();
-                return;
-            }
-        }
-
-        if (QuizCard.ManaCost.Contains("R"))
-        {
-            if (Model.Color.Red is not true)
-            {
-                Result = new ResultRecord(false, QuizCard.ImageUrl);
-                Index++;
-                SetQuizCard();
-                return;
-            }
-        }
-
-        if (QuizCard.ManaCost.Contains("G"))
-        {
-            if (Model.Color.Green is not true)
-            {
-                Result = new ResultRecord(false, QuizCard.ImageUrl);
-                Index++;
-                SetQuizCard();
-                return;
-            }
-        }
-
-        if (QuizCard.IsColorLess)
-        {
-            if (Model.Color.Black || Model.Color.Green || Model.Color.Red || Model.Color.Blue || Model.Color.White)
-            {
-                Result = new ResultRecord(false, QuizCard.ImageUrl);
-                Index++;
-                SetQuizCard();
-                return;
-            }
-        }
-        Score++;
-        Index++;
-        Result = new ResultRecord(true, QuizCard.ImageUrl);
-        SetQuizCard();
-    }
-
-    private void CheckAnswerCmC()
-    {
-        if (QuizCard.Cmc == Model.CmcValue)
-        {
-            Score++;
-            Index++;
-            Result = new ResultRecord(true, QuizCard.ImageUrl);
-            SetQuizCard();
-            return;
-        }
-        Index++;
-        Result = new ResultRecord(false, QuizCard.ImageUrl);
-        SetQuizCard();
+        State.Loading = true;
+        await Service.StartQuiz("DRK", State.Model.Quiz);
+        State.Loading = false;
+        StateHasChanged();
     }
 
     private void CheckAnswer(string text)
     {
-        var match = QuizCard.Types.Any(x => x.ToLower().Contains(text));
-        if (match)
-        {
-            Score++;
-            Index++;
-            Result = new ResultRecord(true, QuizCard.ImageUrl);
-            SetQuizCard();
-            return;
-        }
-        Index++;
-        Result = new ResultRecord(false,QuizCard.ImageUrl);
-        SetQuizCard();
+        Service.CheckAnswer(text);
+        StateHasChanged();
     }
+
+
+    private void CheckAnswerCmC()
+    {
+        Service.CheckAnswerCmC();
+        StateHasChanged();
+    }
+    
+
+    private void CheckAnswerColor()
+    {
+        Service.CheckAnswerColor();
+        StateHasChanged();
+    }
+    
+
 }

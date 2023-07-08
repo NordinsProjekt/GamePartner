@@ -53,7 +53,7 @@ namespace MtGCard_API
 
         public bool DoesSetExist(string setCode)
         {
-            throw new NotImplementedException();
+            return true;
         }
     }
 }

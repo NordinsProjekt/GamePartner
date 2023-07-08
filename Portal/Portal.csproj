@@ -19,4 +19,8 @@
     <ProjectReference Include="..\MtGDomain\MtGDomain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTO\" />
+  </ItemGroup>
+
 </Project>

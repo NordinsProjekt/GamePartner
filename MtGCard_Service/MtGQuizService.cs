@@ -4,14 +4,8 @@ using MtGCard_Service.Classes;
 using MtGCard_Service.DTO;
 using MtGCard_Service.Interface;
 using MtGDomain.DTO;
+using MtGDomain.Enum;
 using MtGDomain.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MtGCard_Service
 {
@@ -19,21 +13,13 @@ namespace MtGCard_Service
     {
         private readonly ICardSetBuffer buffer;
         private readonly IMtGCardRepository cardRepo;
-        private MtGQuizModel model;
-        public bool GameStart { get; set; } = false;
-        public ResultRecord Result { get; set; }
-        public List<MtGCardRecordDTO>? List { get; set; }
-        public MtGCardRecordDTO? QuizCard { get; set; }
-        private int Index { get; set; } = 0;
-        private int Max { get; set; } = 0;
-        private bool Loading { get; set; } = false;
-        private int Score { get; set; } = 0;
+        private MtGQuizState state = new();
 
         List<(string Name, string Code)> Sets = new()
             {
-                ( "The Dark", "DRK" ),
-                ("Dark Ascension","DKA"),
-                ("Innistrad","ISD")
+                ("The Dark", "DRK" ),
+                //("Dark Ascension","DKA"),
+                //("Innistrad","ISD")
             };
 
         public MtGQuizService(ICardSetBuffer buffer, IMtGCardRepository cardRepo)
@@ -49,17 +35,18 @@ namespace MtGCard_Service
             return newList;
         }
 
-        public async Task<bool> StartQuiz(string setCode)
+        public async Task<bool> StartQuiz(string setCode, QuizType quizType)
         {
-            model = new();
-            Score = 0;
-            Loading = true;
+            state.Model.Quiz = quizType;
+            await PopulateBuffer();
+            state.Score = 0;
+            state.Loading = true;
             var cards = await GetCards();
-            List = FilterList(cards);
-            List = List.Shuffle().Take(20).ToList();
-            Max = List.Count();
-            Index = 0;
-            Loading = false;
+            state.List = FilterList(cards);
+            state.List = state.List.Shuffle().Take(20).ToList();
+            state.Max = state.List.Count();
+            state.Index = 0;
+            state.Loading = false;
             SetQuizCard();
             return true;
         }
@@ -69,7 +56,7 @@ namespace MtGCard_Service
             return cardsFromBuffer;
         }
 
-        private async Task PopulateBuffer(CancellationToken cancellationToken)
+        private async Task PopulateBuffer()
         {
             foreach (var set in Sets)
             {
@@ -80,135 +67,140 @@ namespace MtGCard_Service
                 }
             }
         }
-        private void CheckAnswerColor()
+        public void CheckAnswerColor()
         {
             //TODO Lägg color kollen innan manacostnaden
-            if (QuizCard.ManaCost.Contains("W"))
+            if (state.QuizCard.ManaCost.Contains("W"))
             {
-                if (model.Color.White is not true)
+                if (state.Model.Color.White is not true)
                 {
-                    Result = new ResultRecord(false, QuizCard.ImageUrl);
-                    Index++;
+                    state.Result = new ResultRecord(false, state.QuizCard.ImageUrl);
+                    state.Index++;
                     SetQuizCard();
                     return;
                 }
             }
 
-            if (QuizCard.ManaCost.Contains("B"))
+            if (state.QuizCard.ManaCost.Contains("B"))
             {
-                if (model.Color.Black is not true)
+                if (state.Model.Color.Black is not true)
                 {
-                    Result = new ResultRecord(false, QuizCard.ImageUrl);
-                    Index++;
+                    state.Result = new ResultRecord(false, state.QuizCard.ImageUrl);
+                    state.Index++;
                     SetQuizCard();
                     return;
                 }
             }
 
-            if (QuizCard.ManaCost.Contains("U"))
+            if (state.QuizCard.ManaCost.Contains("U"))
             {
-                if (model.Color.Blue is not true)
+                if (state.Model.Color.Blue is not true)
                 {
-                    Result = new ResultRecord(false, QuizCard.ImageUrl);
-                    Index++;
+                    state.Result = new ResultRecord(false, state.QuizCard.ImageUrl);
+                    state.Index++;
                     SetQuizCard();
                     return;
                 }
             }
 
-            if (QuizCard.ManaCost.Contains("R"))
+            if (state.QuizCard.ManaCost.Contains("R"))
             {
-                if (model.Color.Red is not true)
+                if (state.Model.Color.Red is not true)
                 {
-                    Result = new ResultRecord(false, QuizCard.ImageUrl);
-                    Index++;
+                    state.Result = new ResultRecord(false, state.QuizCard.ImageUrl);
+                    state.Index++;
                     SetQuizCard();
                     return;
                 }
             }
 
-            if (QuizCard.ManaCost.Contains("G"))
+            if (state.QuizCard.ManaCost.Contains("G"))
             {
-                if (model.Color.Green is not true)
+                if (state.Model.Color.Green is not true)
                 {
-                    Result = new ResultRecord(false, QuizCard.ImageUrl);
-                    Index++;
+                    state.Result = new ResultRecord(false, state.QuizCard.ImageUrl);
+                    state.Index++;
                     SetQuizCard();
                     return;
                 }
             }
 
-            if (QuizCard.IsColorLess)
+            if (state.QuizCard.IsColorLess)
             {
-                if (model.Color.Black || model.Color.Green || model.Color.Red || model.Color.Blue || model.Color.White)
+                if (state.Model.Color.Black || state.Model.Color.Green || state.Model.Color.Red || state.Model.Color.Blue || state.Model.Color.White)
                 {
-                    Result = new ResultRecord(false, QuizCard.ImageUrl);
-                    Index++;
+                    state.Result = new ResultRecord(false, state.QuizCard.ImageUrl);
+                    state.Index++;
                     SetQuizCard();
                     return;
                 }
             }
-            Score++;
-            Index++;
-            Result = new ResultRecord(true, QuizCard.ImageUrl);
+            state.Score++;
+            state.Index++;
+            state.Result = new ResultRecord(true, state.QuizCard.ImageUrl);
             SetQuizCard();
         }
 
-        private void CheckAnswerCmC()
+        public void CheckAnswerCmC()
         {
-            if (QuizCard.Cmc == model.CmcValue)
+            if (state.QuizCard.Cmc == state.Model.CmcValue)
             {
-                Score++;
-                Index++;
-                Result = new ResultRecord(true, QuizCard.ImageUrl);
+                state.Score++;
+                state.Index++;
+                state.Result = new ResultRecord(true, state.QuizCard.ImageUrl);
                 SetQuizCard();
                 return;
             }
-            Index++;
-            Result = new ResultRecord(false, QuizCard.ImageUrl);
+            state.Index++;
+            state.Result = new ResultRecord(false, state.QuizCard.ImageUrl);
             SetQuizCard();
         }
 
-        private void CheckAnswer(string text)
+        public void CheckAnswer(string text)
         {
-            var match = QuizCard.Types.Any(x => x.ToLower().Contains(text));
+            var match = state.QuizCard.Types.Any(x => x.ToLower().Contains(text));
             if (match)
             {
-                Score++;
-                Index++;
-                Result = new ResultRecord(true, QuizCard.ImageUrl);
+                state.Score++;
+                state.Index++;
+                state.Result = new ResultRecord(true, state.QuizCard.ImageUrl);
                 SetQuizCard();
                 return;
             }
-            Index++;
-            Result = new ResultRecord(false, QuizCard.ImageUrl);
+            state.Index++;
+            state.Result = new ResultRecord(false, state.QuizCard.ImageUrl);
             SetQuizCard();
         }
 
         private void SetQuizCard()
         {
-            if (Index > Max)
+            if (state.Index > state.Max)
             {
                 EndQuiz();
             }
-            QuizCard = List[Index];
-            Loading = false;
-            GameStart = true;
+            state.QuizCard = state.List[state.Index];
+            state.Loading = false;
+            state.GameStart = true;
         }
 
-        private void EndQuiz()
+        public void EndQuiz()
         {
-            model = new();
-            List = new();
-            QuizCard = null;
-            GameStart = false;
-            Loading = false;
+            state.Model = new();
+            state.List = new();
+            state.QuizCard = null;
+            state.GameStart = false;
+            state.Loading = false;
             return;
         }
 
         private List<MtGCardRecordDTO> FilterList(List<MtGCardRecordDTO> cards)
         {
             return cards.RemoveMtGType(new string[] { "land", "planeswalker", "battle" });
+        }
+
+        public MtGQuizState GetQuizState()
+        {
+            return state;
         }
     }
 }

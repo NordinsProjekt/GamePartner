@@ -1,10 +1,8 @@
 ﻿using Application.MtGCard_Service.Interface;
 using Domain.MtGDomain.DTO;
-using MtGCard_Service.Classes;
 using MtGCard_Service.DTO;
 using MtGCard_Service.Interface;
 using MtGDomain.DTO;
-using MtGDomain.Enum;
 using MtGDomain.Extensions;
 
 namespace MtGCard_Service
@@ -35,9 +33,8 @@ namespace MtGCard_Service
             return newList;
         }
 
-        public async Task<bool> StartQuiz(string setCode, QuizType quizType)
+        public async Task<bool> StartQuiz(string setCode)
         {
-            state.Model.Quiz = quizType;
             await PopulateBuffer();
             state.Score = 0;
             state.Loading = true;

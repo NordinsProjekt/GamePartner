@@ -13,7 +13,7 @@ namespace MtGCard_Service.Interface
     public interface IMtGQuizService
     {
         Task<List<(string Name,string Code)>> GetSupportedMtGSets();
-        Task<bool> StartQuiz(string setCode, QuizType quizType);
+        Task<bool> StartQuiz(string setCode);
         MtGQuizState GetQuizState();
         void CheckAnswer(string text);
         void CheckAnswerColor();

@@ -15,7 +15,7 @@ namespace MtGDomain.Rules
         {
             if (obj.GetType() == typeof(string))
                 return ((string)obj).ToLower() == Value.ToLower();
-            if (obj.GetType().IsArray == true && obj.GetType() == typeof(string))
+            if (obj.GetType().IsArray == true)
             {
                 string[] text = (string[])obj;
                 foreach (var s in text)

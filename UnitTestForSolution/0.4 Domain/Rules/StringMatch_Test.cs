@@ -28,7 +28,7 @@ namespace UnitTestForSolution._0._4_Domain.Rules
         public void StringMatch_SettingHej_ValueIsStringArrayWithHejAndHej2_ShouldMatch()
         {
             StringMatch stringMatch = new("Hej");
-            Assert.True(stringMatch.Validate(new string[] { "Hej2", "hej" }));
+            Assert.True(stringMatch.Validate(new string[] { "Hej2", "Hej" }));
         }
 
         [Fact]
@@ -46,10 +46,13 @@ namespace UnitTestForSolution._0._4_Domain.Rules
         }
 
         [Fact]
-        public void StringMatch_SendinIntArray__SettingHej_ValueIsIntFive_ShouldNotMatch()
+        public void StringMatch_SendinIntArray__SettingHej_ValueIsIntFive_ShouldThrowException()
         {
             StringMatch stringMatch = new("Hej");
-            Assert.False(stringMatch.Validate(new int[] {1,2,3,4,5}));
+
+            Action shouldThrow = (() => stringMatch.Validate(new int[] { 1, 2, 3, 4, 5 }));
+
+            Assert.Throws<InvalidCastException>(() => shouldThrow());
         }
     }
 }

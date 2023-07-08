@@ -44,5 +44,12 @@ namespace UnitTestForSolution._0._4_Domain.Rules
             StringMatch stringMatch = new("Hej");
             Assert.False(stringMatch.Validate(5));
         }
+
+        [Fact]
+        public void StringMatch_SendinIntArray__SettingHej_ValueIsIntFive_ShouldNotMatch()
+        {
+            StringMatch stringMatch = new("Hej");
+            Assert.False(stringMatch.Validate(new int[] {1,2,3,4,5}));
+        }
     }
 }

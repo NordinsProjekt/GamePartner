@@ -39,8 +39,7 @@ namespace MtGCard_Service
             state.Score = 0;
             state.Loading = true;
             var cards = await GetCards();
-            state.List = FilterList(cards);
-            state.List = state.List.Shuffle().Take(20).ToList();
+            state.List = cards.Shuffle().Take(20).ToList();
             state.Max = state.List.Count();
             state.Index = 0;
             state.Loading = false;
@@ -60,13 +59,24 @@ namespace MtGCard_Service
                 if (!buffer.DoesSetExist(set.Code))
                 {
                     var cardsFromAPI = await cardRepo.GetAllCardsFromASet(set.Code);
-                    buffer.AddSet(new MtGCardSet(cardsFromAPI, set.Name, set.Code));
+                    var cleanedList = cardsFromAPI.RemoveMtGType(new string[] { "land", "planeswalker", "battle" });
+                    buffer.AddSet(new MtGCardSet(cleanedList, set.Name, set.Code));
                 }
             }
         }
         public void CheckAnswerColor()
         {
-            //TODO Lägg color kollen innan manacostnaden
+            if (state.QuizCard.IsColorLess)
+            {
+                if (state.Model.Color.Black || state.Model.Color.Green || state.Model.Color.Red || state.Model.Color.Blue || state.Model.Color.White)
+                {
+                    state.Result = new ResultRecord(false, state.QuizCard.ImageUrl);
+                    state.Index++;
+                    SetQuizCard();
+                    return;
+                }
+            }
+
             if (state.QuizCard.ManaCost.Contains("W"))
             {
                 if (state.Model.Color.White is not true)
@@ -122,16 +132,6 @@ namespace MtGCard_Service
                 }
             }
 
-            if (state.QuizCard.IsColorLess)
-            {
-                if (state.Model.Color.Black || state.Model.Color.Green || state.Model.Color.Red || state.Model.Color.Blue || state.Model.Color.White)
-                {
-                    state.Result = new ResultRecord(false, state.QuizCard.ImageUrl);
-                    state.Index++;
-                    SetQuizCard();
-                    return;
-                }
-            }
             state.Score++;
             state.Index++;
             state.Result = new ResultRecord(true, state.QuizCard.ImageUrl);
@@ -175,6 +175,7 @@ namespace MtGCard_Service
             {
                 EndQuiz();
             }
+            state.Model.Color.SetAllToFalse();
             state.QuizCard = state.List[state.Index];
             state.Loading = false;
             state.GameStart = true;

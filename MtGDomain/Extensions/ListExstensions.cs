@@ -28,17 +28,22 @@ namespace MtGDomain.Extensions
             int typeCount = types.Count();
             foreach (var item in list)
             {
-                for (int i = 0; i < typeCount; i++)
-                {
-                    if (item.Types.Any(x => x.ToLower().Equals(types[i].ToLower())))
-                        continue;
-                    else
-                        newList.Add(item);
-                }
                 if (item.ImageUrl is "" || item.ImageUrl is null)
                     continue;
+                if (! item.MatchType(types))
+                    newList.Add(item);
             }
             return newList;
+        }
+
+        private static bool MatchType(this MtGCardRecordDTO record, string[] types)
+        {
+            for (int i = 0; i < types.Length; i++)
+            {
+                if (record.Types.Any(x => x.ToLower().Equals(types[i].ToLower())))
+                    return true;
+            }
+            return false;
         }
     }
 }

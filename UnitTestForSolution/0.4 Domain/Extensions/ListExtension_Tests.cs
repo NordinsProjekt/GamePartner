@@ -32,10 +32,16 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         [Fact]
         public void RemoveSpecificTypesFromAList_ShouldReturnNewList_ShouldReduseCountToThree()
         {
-            var cardList = GetCards();
+            List<MtGCardRecordDTO> cardList = new List<MtGCardRecordDTO>()
+            {
+                new MtGCardRecordDTO("Blood Artist","dpoj3ed3290dn","Lose 1 life",new List<MtGRulingRecord_DTO>(),new(),"https://www.image.com","fjeru5489fdj", new string[] { "Creature"}, new string[] { },2,false,false,"{1}{B}"),
+                new MtGCardRecordDTO("Delver of Secrets","dpoj3e544fwn","Flip for 3/2",new List<MtGRulingRecord_DTO>(),new(), "https://www.image.com","fjer32er9fdj", new string[] { "Creature" }, new string[] { },1,false,false,"{U}"),
+                new MtGCardRecordDTO("Blood Tome","dpoj3e213e2n","Lose 5 life",new List<MtGRulingRecord_DTO>(),new(), "https://www.image.com","fjery6y65j", new string[] { }, new string[] { },3,false,false,"{1}{U}"),
+                new MtGCardRecordDTO("Bad Moon","dwqdwq290dn","Black Creature +1/+1",new List<MtGRulingRecord_DTO>(),new(), "https://www.image.com","crfegru5489fdj", new string[]{},new string[]{}, 2,false,false,"{1}{B}{B}")
+            };
             var newList = cardList.RemoveMtGType(new string[] { "creature" });
-            Assert.Equal(5,cardList.Count);
-            Assert.Equal(3, newList.Count);
+            Assert.Equal(4,cardList.Count);
+            Assert.Equal(2, newList.Count);
             Assert.NotStrictEqual(cardList, newList);
             Assert.NotEqual(cardList.GetHashCode(), newList.GetHashCode());
         }

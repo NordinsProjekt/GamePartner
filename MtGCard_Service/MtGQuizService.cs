@@ -3,6 +3,7 @@ using Domain.MtGDomain.DTO;
 using MtGCard_Service.DTO;
 using MtGCard_Service.Interface;
 using MtGDomain.DTO;
+using MtGDomain.Enums;
 using MtGDomain.Extensions;
 
 namespace MtGCard_Service
@@ -77,61 +78,48 @@ namespace MtGCard_Service
                 }
             }
 
-            if (state.QuizCard.ManaCost.Contains("W"))
+            if (state.QuizCard.DoesCardHaveThisColor(MtGColor.Black) != state.Model.Color.Black)
             {
-                if (state.Model.Color.White is not true)
-                {
-                    state.Result = new ResultRecord(false, state.QuizCard.ImageUrl);
-                    state.Index++;
-                    SetQuizCard();
-                    return;
-                }
+                WrongAnswer();
+                return;
             }
 
-            if (state.QuizCard.ManaCost.Contains("B"))
+            if (state.QuizCard.DoesCardHaveThisColor(MtGColor.White) != state.Model.Color.White)
             {
-                if (state.Model.Color.Black is not true)
-                {
-                    state.Result = new ResultRecord(false, state.QuizCard.ImageUrl);
-                    state.Index++;
-                    SetQuizCard();
-                    return;
-                }
+                WrongAnswer();
+                return;
             }
 
-            if (state.QuizCard.ManaCost.Contains("U"))
+            if (state.QuizCard.DoesCardHaveThisColor(MtGColor.Red) != state.Model.Color.Red)
             {
-                if (state.Model.Color.Blue is not true)
-                {
-                    state.Result = new ResultRecord(false, state.QuizCard.ImageUrl);
-                    state.Index++;
-                    SetQuizCard();
-                    return;
-                }
+                WrongAnswer();
+                return;
             }
 
-            if (state.QuizCard.ManaCost.Contains("R"))
+            if (state.QuizCard.DoesCardHaveThisColor(MtGColor.Green) != state.Model.Color.Green)
             {
-                if (state.Model.Color.Red is not true)
-                {
-                    state.Result = new ResultRecord(false, state.QuizCard.ImageUrl);
-                    state.Index++;
-                    SetQuizCard();
-                    return;
-                }
+                WrongAnswer();
+                return;
+            }
+                
+            if (state.QuizCard.DoesCardHaveThisColor(MtGColor.Blue) != state.Model.Color.Blue)
+            {
+                WrongAnswer();
+                return;
             }
 
-            if (state.QuizCard.ManaCost.Contains("G"))
-            {
-                if (state.Model.Color.Green is not true)
-                {
-                    state.Result = new ResultRecord(false, state.QuizCard.ImageUrl);
-                    state.Index++;
-                    SetQuizCard();
-                    return;
-                }
-            }
+            RightAnswer();
+        }
 
+        private void WrongAnswer()
+        {
+            state.Result = new ResultRecord(false, state.QuizCard.ImageUrl);
+            state.Index++;
+            SetQuizCard();
+        }
+
+        private void RightAnswer()
+        {
             state.Score++;
             state.Index++;
             state.Result = new ResultRecord(true, state.QuizCard.ImageUrl);
@@ -171,9 +159,10 @@ namespace MtGCard_Service
 
         private void SetQuizCard()
         {
-            if (state.Index > state.Max)
+            if (state.Index >= state.Max)
             {
                 EndQuiz();
+                return;
             }
             state.Model.Color.SetAllToFalse();
             state.QuizCard = state.List[state.Index];

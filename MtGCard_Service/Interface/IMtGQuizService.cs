@@ -2,6 +2,7 @@
 using MtGCard_Service.Classes;
 using MtGCard_Service.DTO;
 using MtGDomain.Enum;
+using MtGDomain.States;
 using System;
 using System.Collections.Generic;
 using System.Linq;

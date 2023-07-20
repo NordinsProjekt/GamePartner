@@ -5,6 +5,7 @@ using MtGCard_Service.Interface;
 using MtGDomain.DTO;
 using MtGDomain.Enums;
 using MtGDomain.Extensions;
+using MtGDomain.States;
 
 namespace MtGCard_Service
 {
@@ -67,93 +68,44 @@ namespace MtGCard_Service
         }
         public void CheckAnswerColor()
         {
-            if (state.QuizCard.IsColorLess)
-            {
-                if (state.Model.Color.Black || state.Model.Color.Green || state.Model.Color.Red || state.Model.Color.Blue || state.Model.Color.White)
-                {
-                    state.Result = new ResultRecord(false, state.QuizCard.ImageUrl);
-                    state.Index++;
-                    SetQuizCard();
-                    return;
-                }
-            }
-
-            if (state.QuizCard.DoesCardHaveThisColor(MtGColor.Black) != state.Model.Color.Black)
-            {
-                WrongAnswer();
-                return;
-            }
-
-            if (state.QuizCard.DoesCardHaveThisColor(MtGColor.White) != state.Model.Color.White)
-            {
-                WrongAnswer();
-                return;
-            }
-
-            if (state.QuizCard.DoesCardHaveThisColor(MtGColor.Red) != state.Model.Color.Red)
-            {
-                WrongAnswer();
-                return;
-            }
-
-            if (state.QuizCard.DoesCardHaveThisColor(MtGColor.Green) != state.Model.Color.Green)
-            {
-                WrongAnswer();
-                return;
-            }
-                
-            if (state.QuizCard.DoesCardHaveThisColor(MtGColor.Blue) != state.Model.Color.Blue)
-            {
-                WrongAnswer();
-                return;
-            }
-
-            RightAnswer();
-        }
-
-        private void WrongAnswer()
-        {
-            state.Result = new ResultRecord(false, state.QuizCard.ImageUrl);
-            state.Index++;
-            SetQuizCard();
-        }
-
-        private void RightAnswer()
-        {
-            state.Score++;
-            state.Index++;
-            state.Result = new ResultRecord(true, state.QuizCard.ImageUrl);
-            SetQuizCard();
-        }
-
-        public void CheckAnswerCmC()
-        {
-            if (state.QuizCard.Cmc == state.Model.CmcValue)
+            state.Result = state.GetColorQuizResult();
+            if (state.Result.Correct)
             {
                 state.Score++;
                 state.Index++;
-                state.Result = new ResultRecord(true, state.QuizCard.ImageUrl);
                 SetQuizCard();
                 return;
             }
             state.Index++;
-            state.Result = new ResultRecord(false, state.QuizCard.ImageUrl);
+            SetQuizCard();
+            return;
+        }
+
+        public void CheckAnswerCmC()
+        {
+            state.Result = state.GetCmcQuizResult(state.Score);
+            if (state.Result.Correct)
+            {
+                state.Score++;
+                state.Index++;
+                SetQuizCard();
+                return;
+            }
+            state.Index++;
             SetQuizCard();
         }
 
         public void CheckAnswer(string text)
         {
-            var match = state.QuizCard.Types.Any(x => x.ToLower().Contains(text));
-            if (match)
+            state.Result = state.GetTypeQuizResult(text);
+            if (state.Result.Correct)
             {
                 state.Score++;
                 state.Index++;
-                state.Result = new ResultRecord(true, state.QuizCard.ImageUrl);
                 SetQuizCard();
                 return;
             }
             state.Index++;
-            state.Result = new ResultRecord(false, state.QuizCard.ImageUrl);
             SetQuizCard();
         }
 

@@ -1,4 +1,4 @@
-﻿namespace MtGCard_Service.Classes
+﻿namespace MtGDomain.Models
 {
     public class MtGCardColor
     {

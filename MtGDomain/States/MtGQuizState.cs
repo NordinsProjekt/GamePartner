@@ -1,12 +1,8 @@
 ﻿using Domain.MtGDomain.DTO;
-using MtGCard_Service.Classes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MtGDomain.DTO;
+using MtGDomain.Models;
 
-namespace MtGCard_Service.DTO
+namespace MtGDomain.States
 {
     public class MtGQuizState
     {

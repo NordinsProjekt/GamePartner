@@ -18,7 +18,6 @@ namespace MtGDomain.Extensions
             {
                 var temp = unsortedList[rnd.Next(i)];
                 newList.Add(temp);
-                unsortedList.Remove(temp);
             }
             return newList;
         }
@@ -33,10 +32,11 @@ namespace MtGDomain.Extensions
                 {
                     if (item.Types.Any(x => x.ToLower().Equals(types[i].ToLower())))
                         continue;
+                    else
+                        newList.Add(item);
                 }
                 if (item.ImageUrl is "" || item.ImageUrl is null)
                     continue;
-                newList.Add(item);
             }
             return newList;
         }

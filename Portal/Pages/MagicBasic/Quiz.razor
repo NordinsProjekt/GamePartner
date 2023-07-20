@@ -38,7 +38,7 @@
     }
 }
 else
-{
+
     if (State.QuizCard is not null)
     {
         @switch (State.Model.Quiz)
@@ -86,8 +86,6 @@ else
         <ShowResult Result="State.Result" />
     }
 
-}
-
 @code {
     public string[] selector = new string[] { "Cardtype", "Card CMC", "Card Color" };
     public MtGQuizState State { get; set; }
@@ -119,7 +117,7 @@ else
     }
     
 
-    private void CheckAnswerColor()
+   private void CheckAnswerColor()
     {
         Service.CheckAnswerColor();
         StateHasChanged();

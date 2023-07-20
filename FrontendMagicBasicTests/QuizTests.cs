@@ -183,28 +183,6 @@ namespace FrontendMagicBasicTests
             Assert.True(window.Count() == 1);
         }
 
-
-        //Index verkar leva kvar och förstör andra test;
-        //[Fact]
-        //public async Task StartQuizCmc_AnswerCorrectOnQuestion1_CountShouldBeOne()
-        //{
-        //    DisposeComponents();
-        //    var quiz = RenderComponent<Quiz>();
-        //    var inputselect = quiz.Find("select");
-        //    inputselect.Change<string>("CMC");
-
-        //    var button = quiz.Find("#startquiz");
-        //    await button.ClickAsync(new MouseEventArgs());
-
-        //    quiz.Find("#inputCmc").Change(quiz.Instance.QuizCard.Cmc);
-        //    await quiz.Find("#CmcCheck").ClickAsync(new MouseEventArgs());
-
-        //    int score = quiz.FindComponent<ScoreBoard>().Instance.Score;
-
-        //    Assert.Equal(1, score);
-        //    quiz.Dispose();
-        //}
-
         [Fact]
         public async Task StartQuizCmc_AnswerWrongOnQuestion1_CountShouldBeZero()
         {

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Domain.MtGDomain.DTO;
+using MtGDomain.Extensions;
+using MtGDomain.States;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

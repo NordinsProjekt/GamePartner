@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MtGCard_Service.Classes
+namespace MtGDomain.Models
 {
     public class MtGQuizModel
     {

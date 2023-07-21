@@ -1,0 +1,21 @@
+﻿@using Application.MtGCard_Service.Interface;
+@using Domain.MtGDomain.DTO;
+@using MtGDomain.DTO;
+@inject IMtGCardRepository Repo
+<h3>Search for a card</h3>
+
+<input type="text" @bind-value="Text" /> <br />
+<button @onclick="SearchCards">Search</button>
+
+@code {
+    [Parameter]
+    public EventCallback<MtGSearchResultRecord> EventCallback { get; set; }
+    public string Text { get; set; }
+
+    public async void SearchCards()
+    {
+        var result = await Repo.GetCardsByName(Text);
+        var toParent = new MtGSearchResultRecord(result, Text);
+        await EventCallback.InvokeAsync(toParent);
+    }
+}

@@ -1,7 +1,13 @@
 ﻿@layout MagicBasicLayout
 @page "/MagicBasic/CardSearch"
-<h1>CardSearch</h1>
+@using MtGDomain.DTO;
+<h1>Card Search</h1>
 <p>Looking up cards</p>
-@code {
+<MagicCardSearch EventCallback="SearchResult" />
 
+@code {
+    private void SearchResult(MtGSearchResultRecord result)
+    {
+
+    }
 }

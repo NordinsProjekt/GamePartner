@@ -1,10 +1,12 @@
 ﻿@using Application.MtGCard_Service.Interface;
 @using Domain.MtGDomain.DTO;
+@using MtGCard_Service.DTO;
 @using MtGDomain.DTO;
 @inject IMtGCardRepository Repo
 <h3>Search for a card</h3>
 
 <input type="text" @bind-value="Text" /> <br />
+<SearchFilter Model="@SearchFilterModel" />
 <button @onclick="SearchCards">Search</button>
 
 @code {
@@ -12,8 +14,11 @@
     public EventCallback<MtGSearchResultRecord> EventCallback { get; set; }
     public string Text { get; set; }
 
+    private MtGSearchFilter SearchFilterModel { get; set; } = new();
+
     public async void SearchCards()
     {
+
         var result = await Repo.GetCardsByName(Text);
         var toParent = new MtGSearchResultRecord(result, Text);
         await EventCallback.InvokeAsync(toParent);

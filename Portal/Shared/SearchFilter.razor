@@ -1,0 +1,40 @@
+﻿@using MtGCard_Service.DTO;
+@using static Portal.Shared.MagicCardSearch;
+
+<h3>Filters</h3>
+<label for="checkCreature">Creature </label>
+<input type="checkbox" id="checkCreature" @bind-value="Model.Creature" />
+<br />
+<label for="checkEnchantment">Enchantment </label>
+<input type="checkbox" id="checkEnchantment" @bind-value="Model.Enchantment" />
+<br />
+
+<label for="checkInstant">Instant </label>
+<input type="checkbox" id="checkInstant" @bind-value="Model.Instant" />
+<br />
+
+<label for="checkSorcery">Sorcery </label>
+<input type="checkbox" id="checkSorcery" @bind-value="Model.Sorcery" />
+<br />
+
+<label for="checkArtefact">Artefact </label>
+<input type="checkbox" id="checkArtefact" @bind-value="Model.Artefact" />
+<br />
+
+<label for="checkBattle">Battle </label>
+<input type="checkbox" id="checkBattle" @bind-value="Model.Battle" />
+<br />
+
+<label for="checkPlaneswalker">Planeswalker </label>
+<input type="checkbox" id="checkPlaneswalker" @bind-value="Model.Planeswalker" />
+<br />
+
+<label for="checkLand">Land </label>
+<input type="checkbox" id="checkLand" @bind-value="Model.Land" />
+<br />
+
+@code {
+
+    [Parameter]
+    public MtGSearchFilter Model { get; set; }
+}

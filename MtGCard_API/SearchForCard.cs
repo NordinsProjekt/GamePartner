@@ -3,6 +3,7 @@ using Domain.MtGDomain.DTO;
 using MtgApiManager.Lib.Core;
 using MtgApiManager.Lib.Model;
 using MtgApiManager.Lib.Service;
+using MtGCard_API.Extensions;
 using MtGDomain.DTO;
 
 namespace Infrastructure.MtGCard_API
@@ -35,7 +36,7 @@ namespace Infrastructure.MtGCard_API
             ICardService service = mtgServiceProvider.GetCardService();
             try
             {
-                var temp = AddTypeFilter(service, filter);
+                var temp = AddFilters(service, filter);
                 return ConvertICardToDTO(await temp.Where(x=>x.Name,name).AllAsync());
             }
             catch (Exception)
@@ -133,50 +134,12 @@ namespace Infrastructure.MtGCard_API
             }
         }
 
-        private IMtgQueryable<ICardService, CardQueryParameter> AddTypeFilter(
+        private IMtgQueryable<ICardService, CardQueryParameter> AddFilters(
             IMtgQueryable<ICardService, CardQueryParameter> mtgQueryable, MtGSearchFilter filter) 
         {
-            if (filter.Creature)
-            {
-                mtgQueryable.Where(x => x.Types,"Creature");
-            }
+            var result = mtgQueryable.AddTypeFilter(filter);
 
-            if (filter.Enchantment)
-            {
-                mtgQueryable.Where(x => x.Types,"Enchantment");
-            }
-
-            if (filter.Instant)
-            {
-                mtgQueryable.Where(x => x.Types, "Instant");
-            }
-
-            if (filter.Sorcery)
-            {
-                mtgQueryable.Where(x => x.Types, "Sorcery");
-            }
-
-            if (filter.Artefact)
-            {
-                mtgQueryable.Where(x => x.Types, "Artefact");
-            }
-
-            if (filter.Battle)
-            {
-                mtgQueryable.Where(x => x.Types, "Battle");
-            }
-
-            if (filter.Planeswalker)
-            {
-                mtgQueryable.Where(x => x.Types, "Planeswalker");
-            }
-
-            if (filter.Land)
-            {
-                mtgQueryable.Where(x => x.Types, "Land");
-            }
-
-            return mtgQueryable;
+            return result;
         }
     }
 }

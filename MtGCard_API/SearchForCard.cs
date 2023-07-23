@@ -3,6 +3,7 @@ using Domain.MtGDomain.DTO;
 using MtgApiManager.Lib.Core;
 using MtgApiManager.Lib.Model;
 using MtgApiManager.Lib.Service;
+using MtGDomain.DTO;
 
 namespace Infrastructure.MtGCard_API
 {
@@ -23,7 +24,21 @@ namespace Infrastructure.MtGCard_API
                     .AllAsync();
                 return ConvertICardToDTO(result);
             }
-            catch (Exception ex)
+            catch (Exception)
+            {
+                return new List<MtGCardRecordDTO>();
+            }
+        }
+
+        public async Task<List<MtGCardRecordDTO>> GetCardsByName(string name, MtGSearchFilter filter)
+        {
+            ICardService service = mtgServiceProvider.GetCardService();
+            try
+            {
+                var temp = AddTypeFilter(service, filter);
+                return ConvertICardToDTO(await temp.Where(x=>x.Name,name).AllAsync());
+            }
+            catch (Exception)
             {
                 return new List<MtGCardRecordDTO>();
             }
@@ -40,7 +55,7 @@ namespace Infrastructure.MtGCard_API
                     .AllAsync();
                 return ConvertICardToDTO(result);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new List<MtGCardRecordDTO>();
             }
@@ -112,10 +127,56 @@ namespace Infrastructure.MtGCard_API
                 }
                 return list;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new List<MtGCardRecordDTO>();
             }
+        }
+
+        private IMtgQueryable<ICardService, CardQueryParameter> AddTypeFilter(
+            IMtgQueryable<ICardService, CardQueryParameter> mtgQueryable, MtGSearchFilter filter) 
+        {
+            if (filter.Creature)
+            {
+                mtgQueryable.Where(x => x.Types,"Creature");
+            }
+
+            if (filter.Enchantment)
+            {
+                mtgQueryable.Where(x => x.Types,"Enchantment");
+            }
+
+            if (filter.Instant)
+            {
+                mtgQueryable.Where(x => x.Types, "Instant");
+            }
+
+            if (filter.Sorcery)
+            {
+                mtgQueryable.Where(x => x.Types, "Sorcery");
+            }
+
+            if (filter.Artefact)
+            {
+                mtgQueryable.Where(x => x.Types, "Artefact");
+            }
+
+            if (filter.Battle)
+            {
+                mtgQueryable.Where(x => x.Types, "Battle");
+            }
+
+            if (filter.Planeswalker)
+            {
+                mtgQueryable.Where(x => x.Types, "Planeswalker");
+            }
+
+            if (filter.Land)
+            {
+                mtgQueryable.Where(x => x.Types, "Land");
+            }
+
+            return mtgQueryable;
         }
     }
 }

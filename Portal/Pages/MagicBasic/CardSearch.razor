@@ -1,6 +1,9 @@
 ﻿@layout MagicBasicLayout
 @page "/MagicBasic/CardSearch"
+@using Application.MtGCard_Service.Interface;
 @using MtGDomain.DTO;
+@inject IMtGCardRepository Repo
+
 <h1>Card Search</h1>
 <p>Looking up cards</p>
 <MagicCardSearch EventCallback="SearchResult" />
@@ -8,6 +11,6 @@
 @code {
     private void SearchResult(MtGSearchResultRecord result)
     {
-
+        
     }
 }

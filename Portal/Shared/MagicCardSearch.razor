@@ -3,6 +3,7 @@
 @using MtGCard_Service.DTO;
 @using MtGDomain.DTO;
 @inject IMtGCardRepository Repo
+
 <h3>Search for a card</h3>
 
 <input type="text" @bind-value="Text" /> <br />
@@ -18,8 +19,7 @@
 
     public async void SearchCards()
     {
-
-        var result = await Repo.GetCardsByName(Text);
+        var result = await Repo.GetCardsByName(Text, SearchFilterModel);
         var toParent = new MtGSearchResultRecord(result, Text);
         await EventCallback.InvokeAsync(toParent);
     }

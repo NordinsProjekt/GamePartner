@@ -1,5 +1,6 @@
 ﻿using Application.MtGCard_Service.Interface;
 using Domain.MtGDomain.DTO;
+using MtGCard_Service.DTO;
 using MtGCard_Service.Interface;
 using MtGDomain.DTO;
 
@@ -54,6 +55,11 @@ namespace MtGCard_API
         public bool DoesSetExist(string setCode)
         {
             return true;
+        }
+
+        public Task<List<MtGCardRecordDTO>> GetCardsByName(string name, MtGSearchFilter filter)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -17,7 +17,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         {
             var card = new MtGCardRecordDTO("Blood Artist", "dpoj3ed3290dn", "Lose 1 life", new List<MtGRulingRecord_DTO>(),
                 new(), "https://www.image.com", "fjeru5489fdj", new string[] { "Creature" }, new string[] { }, 2,
-                false, false, "{1}{B}");
+                false, false, "{1}{B}", "", "");
 
             var result = card.DoesCardHaveThisColor(MtGDomain.Enums.MtGColor.Black);
 
@@ -29,7 +29,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         {
             var card = new MtGCardRecordDTO("Blood Artist", "dpoj3ed3290dn", "Lose 1 life", new List<MtGRulingRecord_DTO>(),
                 new(), "https://www.image.com", "fjeru5489fdj", new string[] { "Creature" }, new string[] { }, 2,
-                false, false, "{1}{W}");
+                false, false, "{1}{W}", "", "");
 
             var result = card.DoesCardHaveThisColor(MtGDomain.Enums.MtGColor.White);
 
@@ -41,7 +41,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         {
             var card = new MtGCardRecordDTO("Blood Artist", "dpoj3ed3290dn", "Lose 1 life", new List<MtGRulingRecord_DTO>(),
                 new(), "https://www.image.com", "fjeru5489fdj", new string[] { "Creature" }, new string[] { }, 2,
-                false, false, "{1}{U}");
+                false, false, "{1}{U}", "", "");
 
             var result = card.DoesCardHaveThisColor(MtGDomain.Enums.MtGColor.Blue);
 
@@ -53,7 +53,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         {
             var card = new MtGCardRecordDTO("Blood Artist", "dpoj3ed3290dn", "Lose 1 life", new List<MtGRulingRecord_DTO>(),
                 new(), "https://www.image.com", "fjeru5489fdj", new string[] { "Creature" }, new string[] { }, 2,
-                false, false, "{1}{R}");
+                false, false, "{1}{R}", "", "");
 
             var result = card.DoesCardHaveThisColor(MtGDomain.Enums.MtGColor.Red);
 
@@ -65,7 +65,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         {
             var card = new MtGCardRecordDTO("Blood Artist", "dpoj3ed3290dn", "Lose 1 life", new List<MtGRulingRecord_DTO>(),
                 new(), "https://www.image.com", "fjeru5489fdj", new string[] { "Creature" }, new string[] { }, 2,
-                false, false, "{1}{G}");
+                false, false, "{1}{G}", "", "");
 
             var result = card.DoesCardHaveThisColor(MtGDomain.Enums.MtGColor.Green);
 
@@ -77,7 +77,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         {
             var card = new MtGCardRecordDTO("Blood Artist", "dpoj3ed3290dn", "Lose 1 life", new List<MtGRulingRecord_DTO>(),
                 new(), "https://www.image.com", "fjeru5489fdj", new string[] { "Creature" }, new string[] { }, 2,
-                false, false, "{1}{R}{B}");
+                false, false, "{1}{R}{B}", "", "");
 
             var result = card.DoesCardHaveThisColor(MtGDomain.Enums.MtGColor.Black);
 
@@ -89,7 +89,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         {
             var card = new MtGCardRecordDTO("Blood Artist", "dpoj3ed3290dn", "Lose 1 life", new List<MtGRulingRecord_DTO>(),
                 new(), "https://www.image.com", "fjeru5489fdj", new string[] { "Creature" }, new string[] { }, 2,
-                false, false, "{1}{B}");
+                false, false, "{1}{B}", "", "");
 
             var result = card.DoesCardHaveThisColor(MtGColor.Green);
 

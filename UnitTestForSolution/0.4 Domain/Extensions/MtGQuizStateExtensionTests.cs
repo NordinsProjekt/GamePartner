@@ -17,7 +17,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         {
             var state = new MtGQuizState();
             var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", null, null, 0, false, false, "{1}{B}");
+                "https://www.img.com", "FR54", null, null, 0, false, false, "{1}{B}", "", "");
 
             state.QuizCard = testCard;
             state.Model.Color.Red = true;
@@ -32,7 +32,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         {
             var state = new MtGQuizState();
             var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", null, null, 0, false, false, "{1}{B}");
+                "https://www.img.com", "FR54", null, null, 0, false, false, "{1}{B}", "", "");
 
             state.QuizCard = testCard;
             state.Model.Color.Black = true;
@@ -47,7 +47,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         {
             var state = new MtGQuizState();
             var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", null, null, 0, false, false, "{1}{B}{W}");
+                "https://www.img.com", "FR54", null, null, 0, false, false, "{1}{B}{W}", "", "");
 
             state.QuizCard = testCard;
             state.Model.Color.Black = true;
@@ -62,7 +62,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         {
             var state = new MtGQuizState();
             var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", null, null, 0, false, false, "{1}{B}{W}");
+                "https://www.img.com", "FR54", null, null, 0, false, false, "{1}{B}{W}", "", "");
 
             state.QuizCard = testCard;
             state.Model.Color.Black = true;
@@ -78,7 +78,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         {
             var state = new MtGQuizState();
             var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null, 
-                "https://www.img.com", "FR54", null, null, 3, false, false, "{1}{B}");
+                "https://www.img.com", "FR54", null, null, 3, false, false, "{1}{B}", "", "");
 
             state.QuizCard = testCard;
             var result = state.GetCmcQuizResult(3);
@@ -91,7 +91,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         {
             var state = new MtGQuizState();
             var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", null, null, 3, false, false, "{1}{B}");
+                "https://www.img.com", "FR54", null, null, 3, false, false, "{1}{B}", "", "");
 
             state.QuizCard = testCard;
             var result = state.GetCmcQuizResult(2);
@@ -104,7 +104,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         {
             var state = new MtGQuizState();
             var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", new string[] {"Creature"}, null, 3, false, false, "{1}{B}");
+                "https://www.img.com", "FR54", new string[] {"Creature"}, null, 3, false, false, "{1}{B}", "", "");
 
             state.QuizCard = testCard;
             var result = state.GetTypeQuizResult("artefact");
@@ -117,7 +117,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         {
             var state = new MtGQuizState();
             var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", new string[] { "Creature" }, null, 3, false, false, "{1}{B}");
+                "https://www.img.com", "FR54", new string[] { "Creature" }, null, 3, false, false, "{1}{B}", "", "");
 
             state.QuizCard = testCard;
             var result = state.GetTypeQuizResult("creature");
@@ -130,7 +130,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         {
             var state = new MtGQuizState();
             var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", new string[] { "Artefact" }, null, 3, false, false, "{1}{B}");
+                "https://www.img.com", "FR54", new string[] { "Artefact" }, null, 3, false, false, "{1}{B}", "", "");
 
             state.QuizCard = testCard;
             var result = state.GetTypeQuizResult("artefact");
@@ -143,7 +143,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         {
             var state = new MtGQuizState();
             var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", new string[] { "Artefact" }, null, 3, false, false, "{1}{B}");
+                "https://www.img.com", "FR54", new string[] { "Artefact" }, null, 3, false, false, "{1}{B}", "", "");
 
             state.QuizCard = testCard;
             var result = state.GetTypeQuizResult("creature");
@@ -156,7 +156,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         {
             var state = new MtGQuizState();
             var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", new string[] { "Instant" }, null, 3, false, false, "{1}{B}");
+                "https://www.img.com", "FR54", new string[] { "Instant" }, null, 3, false, false, "{1}{B}", "", "");
 
             state.QuizCard = testCard;
             var result = state.GetTypeQuizResult("instant");
@@ -169,7 +169,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         {
             var state = new MtGQuizState();
             var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", new string[] { "Instant" }, null, 3, false, false, "{1}{B}");
+                "https://www.img.com", "FR54", new string[] { "Instant" }, null, 3, false, false, "{1}{B}", "", "");
 
             state.QuizCard = testCard;
             var result = state.GetTypeQuizResult("creature");
@@ -182,7 +182,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         {
             var state = new MtGQuizState();
             var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", new string[] { "Sorcery" }, null, 3, false, false, "{1}{B}");
+                "https://www.img.com", "FR54", new string[] { "Sorcery" }, null, 3, false, false, "{1}{B}", "", "");
 
             state.QuizCard = testCard;
             var result = state.GetTypeQuizResult("sorcery");
@@ -195,7 +195,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         {
             var state = new MtGQuizState();
             var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", new string[] { "sorcery" }, null, 3, false, false, "{1}{B}");
+                "https://www.img.com", "FR54", new string[] { "sorcery" }, null, 3, false, false, "{1}{B}", "", "");
 
             state.QuizCard = testCard;
             var result = state.GetTypeQuizResult("creature");
@@ -208,7 +208,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         {
             var state = new MtGQuizState();
             var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", new string[] { "Enchantment" }, null, 3, false, false, "{1}{B}");
+                "https://www.img.com", "FR54", new string[] { "Enchantment" }, null, 3, false, false, "{1}{B}", "", "");
 
             state.QuizCard = testCard;
             var result = state.GetTypeQuizResult("enchantment");
@@ -221,7 +221,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         {
             var state = new MtGQuizState();
             var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", new string[] { "enchantment" }, null, 3, false, false, "{1}{B}");
+                "https://www.img.com", "FR54", new string[] { "enchantment" }, null, 3, false, false, "{1}{B}", "", "");
 
             state.QuizCard = testCard;
             var result = state.GetTypeQuizResult("creature");

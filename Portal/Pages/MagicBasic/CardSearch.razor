@@ -1,16 +1,24 @@
 ﻿@layout MagicBasicLayout
 @page "/MagicBasic/CardSearch"
 @using Application.MtGCard_Service.Interface;
+@using Domain.MtGDomain.DTO;
 @using MtGDomain.DTO;
 @inject IMtGCardRepository Repo
 
 <h1>Card Search</h1>
 <p>Looking up cards</p>
 <MagicCardSearch EventCallback="SearchResult" />
+<ShowSearchResult CardList="Result" />
 
 @code {
+    public List<MtGCardRecordDTO>? Result { get; set; }
     private void SearchResult(MtGSearchResultRecord result)
     {
-        
+        if (result.SearchResult.Count > 0)
+            Result = result.SearchResult;
+        else
+            Result = null;
+
+        StateHasChanged();
     }
 }

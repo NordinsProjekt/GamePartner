@@ -12,47 +12,12 @@ namespace MtGCard_API.Extensions
     {
         public static IMtgQueryable<ICardService, CardQueryParameter> AddTypeFilter(this IMtgQueryable<ICardService, CardQueryParameter> mtgQueryable, MtGSearchFilter filter)
         {
-            if (filter.Types.Creature) 
-            {
-                mtgQueryable.Where(x => x.Types, "Creature");
-            }
+            return mtgQueryable.Where(x => x.Type, filter.Type);
+        }
 
-            if (filter.Types.Enchantment)
-            {
-                mtgQueryable.Where(x => x.Types, "Enchantment");
-            }
-
-            if (filter.Types.Instant)
-            {
-                mtgQueryable.Where(x => x.Types, "Instant");
-            }
-
-            if (filter.Types.Sorcery)
-            {
-                mtgQueryable.Where(x => x.Types, "Sorcery");
-            }
-
-            if (filter.Types.Artefact)
-            {
-                mtgQueryable.Where(x => x.Types, "Artefact");
-            }
-
-            if (filter.Types.Battle)
-            {
-                mtgQueryable.Where(x => x.Types, "Battle");
-            }
-
-            if (filter.Types.Planeswalker)
-            {
-                mtgQueryable.Where(x => x.Types, "Planeswalker");
-            }
-
-            if (filter.Types.Land)
-            {
-                mtgQueryable.Where(x => x.Types, "Land");
-            }
-
-            return mtgQueryable;
+        public static IMtgQueryable<ICardService, CardQueryParameter> AddFormatFilter(this IMtgQueryable<ICardService, CardQueryParameter> mtgQueryable, MtGSearchFilter filter)
+        {
+            return mtgQueryable.Where(x=>x.GameFormat, filter.Format);
         }
     }
 }

@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace MtGDomain.DTO
 {
-    public class MtGTypeFilter
+    public class MtGFormatFilter
     {
+        public string FormatName { get; set; }
         public string ChoosenValue { get; set; } = "";
-        public string[] Types = new string[]
+        public string[] Formats = new string[]
         {
-            "Creature","Instant","Sorcery","Enchantment","Artefact", "Planeswalker", "Battle", "Saga"
+            "Standard","Pioneer","Modern","Legacy","Vintage"
         };
     }
 }

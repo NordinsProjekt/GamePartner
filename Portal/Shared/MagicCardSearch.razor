@@ -7,7 +7,8 @@
 <h3>Search for a card</h3>
 
 <input type="text" @bind-value="Text" /> <br />
-<SearchFilter Model="@TypeFilterModel" />
+<SearchTypeFilter Model="@TypeFilterModel" /><br />
+<SearchFormatFilter Model="@FormatFilterModel" /> <br />
 <button @onclick="SearchCards">Search</button>
 
 @code {
@@ -16,10 +17,15 @@
     public string Text { get; set; }
 
     private MtGTypeFilter TypeFilterModel { get; set; } = new();
+    private MtGFormatFilter FormatFilterModel { get; set; } = new();
 
     public async void SearchCards()
     {
-        var filter = new MtGSearchFilter() { Types = TypeFilterModel };
+        var filter = new MtGSearchFilter() {
+            Type = TypeFilterModel.ChoosenValue, 
+            Format = FormatFilterModel.ChoosenValue 
+        };
+
         var result = await Repo.GetCardsByName(Text, filter);
         var toParent = new MtGSearchResultRecord(result, Text);
         await EventCallback.InvokeAsync(toParent);

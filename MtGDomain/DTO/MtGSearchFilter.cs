@@ -8,6 +8,7 @@ namespace MtGDomain.DTO
 {
     public class MtGSearchFilter
     {
-        public MtGTypeFilter Types { get; set; }
+        public string Type { get; set; } = "";
+        public string Format { get; set; } = "";
     }
 }

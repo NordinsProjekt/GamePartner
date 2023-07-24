@@ -138,6 +138,7 @@ namespace Infrastructure.MtGCard_API
             IMtgQueryable<ICardService, CardQueryParameter> mtgQueryable, MtGSearchFilter filter) 
         {
             var result = mtgQueryable.AddTypeFilter(filter);
+            result = result.AddFormatFilter(filter);
 
             return result;
         }

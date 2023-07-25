@@ -8,16 +8,30 @@
 <h1>Card Search</h1>
 <p>Looking up cards</p>
 <MagicCardSearch EventCallback="SearchResult" />
+@if (Result is null)
+{
+    <p>@Message</p>
+}
 <ShowSearchResult CardList="Result" />
+
+
 
 @code {
     public List<MtGCardRecordDTO>? Result { get; set; }
+    private string Message { get; set; }
     private void SearchResult(MtGSearchResultRecord result)
     {
         if (result.SearchResult.Count > 0)
+        {
             Result = result.SearchResult;
+            Message = $"Found {result.SearchResult.Count} cards";
+        }
+
         else
+        {
             Result = null;
+            Message = "Didnt find any matches";
+        }
 
         StateHasChanged();
     }

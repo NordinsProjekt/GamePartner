@@ -1,0 +1,20 @@
+﻿@using MtGDomain.DTO;
+@using static Portal.Shared.MagicCardSearch;
+
+<p>Strict: Will only show cards with these colors</p>
+<label for="blue">Blue</label>
+<input @bind="@Model.Blue" type="checkbox" id="blue" /> |
+<label for="white">White</label>
+<input @bind="@Model.White" type="checkbox" id="white" /> |
+<label for="red">Red</label>
+<input @bind="@Model.Red" type="checkbox" id="red" /> |
+<label for="black">Black</label>
+<input @bind="@Model.Black" type="checkbox" id="black" /> |
+<label for="green">Green</label>
+<input @bind="@Model.Green" type="checkbox" id="green" />
+
+@code {
+
+    [Parameter]
+    public MtGColorFilter Model { get; set; }
+}

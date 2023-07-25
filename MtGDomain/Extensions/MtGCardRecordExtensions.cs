@@ -1,6 +1,7 @@
 ﻿using Domain.MtGDomain.DTO;
 using MtGDomain.Constants;
 using MtGDomain.Enums;
+using MtGDomain.Hashmaps;
 
 namespace MtGDomain.Extensions
 {
@@ -8,21 +9,20 @@ namespace MtGDomain.Extensions
     {
         public static bool DoesCardHaveThisColor(this MtGCardRecordDTO card, MtGColor color)
         {
-            switch(color)
-            {
-                case MtGColor.Black:
-                    return card.ManaCost.Contains(MtGColorAsChar.Black);
-                case MtGColor.White:
-                    return card.ManaCost.Contains(MtGColorAsChar.White);
-                case MtGColor.Red:
-                    return card.ManaCost.Contains(MtGColorAsChar.Red);
-                case MtGColor.Green:
-                    return card.ManaCost.Contains(MtGColorAsChar.Green);
-                case MtGColor.Blue:
-                    return card.ManaCost.Contains(MtGColorAsChar.Blue);
+            var colorText = MtGColorMap.Values.GetValueOrDefault(color);
+            if (colorText is not null && card.ManaCost.Contains(colorText))
+                return true;
+            return false;
+        }
 
-                default: return false;
+        public static bool DoesCardHaveThisColor(this MtGCardRecordDTO card, List<MtGColor> color)
+        {
+            foreach (var item in color)
+            {
+                if (!card.DoesCardHaveThisColor(item))
+                    return false;
             }
+            return true;
         }
     }
 }

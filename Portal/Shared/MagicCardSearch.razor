@@ -9,6 +9,8 @@
 <input type="text" @bind-value="Text" /> <br />
 <SearchTypeFilter Model="@TypeFilterModel" /><br />
 <SearchFormatFilter Model="@FormatFilterModel" /> <br />
+<SearchCmcFilter Model="@CmcFilterModel" /> <br />
+<SearchColorFilter Model="@ColorFilterModel" /> <br />
 <button @onclick="SearchCards">Search</button>
 
 @code {
@@ -18,12 +20,16 @@
 
     private MtGTypeFilter TypeFilterModel { get; set; } = new();
     private MtGFormatFilter FormatFilterModel { get; set; } = new();
+    private MtGCmcFilter CmcFilterModel { get; set; } = new();
+    private MtGColorFilter ColorFilterModel { get; set; } = new();
 
     public async void SearchCards()
     {
         var filter = new MtGSearchFilter() {
             Type = TypeFilterModel.ChoosenValue, 
-            Format = FormatFilterModel.ChoosenValue 
+            Format = FormatFilterModel.ChoosenValue ,
+            CmcFilter = CmcFilterModel,
+            ColorFilter = ColorFilterModel
         };
 
         var result = await Repo.GetCardsByName(Text, filter);

@@ -19,5 +19,10 @@ namespace MtGCard_API.Extensions
         {
             return mtgQueryable.Where(x=>x.GameFormat, filter.Format);
         }
+
+        public static IMtgQueryable<ICardService, CardQueryParameter> AddCmcFilter(this IMtgQueryable<ICardService, CardQueryParameter> mtgQueryable, MtGSearchFilter filter)
+        {
+            return mtgQueryable.Where(x => x.Cmc, filter.CmcFilter.Cmc.ToString());
+        }
     }
 }

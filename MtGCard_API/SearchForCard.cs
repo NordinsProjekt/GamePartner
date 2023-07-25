@@ -5,6 +5,8 @@ using MtgApiManager.Lib.Model;
 using MtgApiManager.Lib.Service;
 using MtGCard_API.Extensions;
 using MtGDomain.DTO;
+using MtGDomain.Extensions;
+using System.Collections.Generic;
 
 namespace Infrastructure.MtGCard_API
 {
@@ -36,8 +38,30 @@ namespace Infrastructure.MtGCard_API
             ICardService service = mtgServiceProvider.GetCardService();
             try
             {
-                var temp = AddFilters(service, filter);
-                return ConvertICardToDTO(await temp.Where(x=>x.Name,name).AllAsync());
+                List<MtGCardRecordDTO> list = new List<MtGCardRecordDTO>();
+                var temp = AddLevelOneFilters(service, filter);
+
+                var result = await service.Where(x=>x.Name, name)
+                    .Where(x => x.Page, 1)
+                    .Where(x => x.PageSize, 100)
+                    .AllAsync();
+                int pageCount = result.PagingInfo.TotalPages;
+                if (pageCount > 9) 
+                {
+                    return ConvertICardToDTO(result);
+                }
+
+                list.AddRange(ConvertICardToDTO(result));
+
+                for (int i = 2; i <= pageCount; i++)
+                {
+                    var newCards = await service.Where(x => x.Name, name)
+                    .Where(x => x.Page, i)
+                    .Where(x => x.PageSize, 100)
+                    .AllAsync();
+                    list.AddRange(ConvertICardToDTO(newCards));
+                }
+                return list.FilterList(filter);
             }
             catch (Exception)
             {
@@ -134,13 +158,20 @@ namespace Infrastructure.MtGCard_API
             }
         }
 
-        private IMtgQueryable<ICardService, CardQueryParameter> AddFilters(
-            IMtgQueryable<ICardService, CardQueryParameter> mtgQueryable, MtGSearchFilter filter) 
+        private IMtgQueryable<ICardService, CardQueryParameter> AddLevelOneFilters(
+            IMtgQueryable<ICardService, CardQueryParameter> mtgQueryable, MtGSearchFilter filter)
         {
             var result = mtgQueryable.AddTypeFilter(filter);
             result = result.AddFormatFilter(filter);
+            if (filter.CmcFilter is not null && 
+                filter.CmcFilter.Cmc >= 0 && 
+                filter.CmcFilter.ChoosenSymbol.Equals("=")) 
+            {
+                result = result.AddCmcFilter(filter);
+            }
 
             return result;
         }
+        
     }
 }

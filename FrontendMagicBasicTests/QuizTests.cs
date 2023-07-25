@@ -197,8 +197,10 @@ namespace FrontendMagicBasicTests
             quiz.Find("#inputCmc").Change(100);
             await quiz.Find("#CmcCheck").ClickAsync(new MouseEventArgs());
             int score = quiz.FindComponent<ScoreBoard>().Instance.Score;
+            int score2 = quiz.Instance.State.Score;
 
             Assert.Equal(0, score);
+
             quiz.Dispose();
         }
 

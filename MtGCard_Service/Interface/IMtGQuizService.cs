@@ -1,7 +1,7 @@
 ﻿using Domain.MtGDomain.DTO;
 using MtGCard_Service.Classes;
 using MtGCard_Service.DTO;
-using MtGDomain.Enum;
+using MtGDomain.Enums;
 using MtGDomain.States;
 using System;
 using System.Collections.Generic;

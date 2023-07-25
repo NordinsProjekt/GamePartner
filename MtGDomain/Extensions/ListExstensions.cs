@@ -1,9 +1,5 @@
 ﻿using Domain.MtGDomain.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MtGDomain.DTO;
 
 namespace MtGDomain.Extensions
 {
@@ -34,6 +30,28 @@ namespace MtGDomain.Extensions
                     newList.Add(item);
             }
             return newList;
+        }
+
+        public static List<MtGCardRecordDTO> FilterList(this List<MtGCardRecordDTO> list, MtGSearchFilter filter)
+        {
+            list = list.Where(x => x.DoesCardHaveThisColor(filter.ColorFilter.GetListOfColors())).ToList();
+
+            if (filter.CmcFilter is null)
+                return list;
+
+            if (filter.CmcFilter.Cmc >= 0 && filter.CmcFilter.ChoosenSymbol.Equals("="))
+                return list;
+
+            switch (filter.CmcFilter.ChoosenSymbol)
+            {
+                case ">":
+                    list = list.Where(x => x.Cmc > filter.CmcFilter.Cmc).ToList();
+                    break;
+                case "<":
+                    list = list.Where(x => x.Cmc < filter.CmcFilter.Cmc).ToList();
+                    break;
+            }
+            return list;
         }
 
         private static bool MatchType(this MtGCardRecordDTO record, string[] types)

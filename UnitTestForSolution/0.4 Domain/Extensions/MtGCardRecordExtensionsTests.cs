@@ -95,5 +95,31 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
 
             Assert.False(result);
         }
+
+        [Fact]
+        public void Test_DoesCardHaveThisColorWithColorList_SendInBlackCard_ShouldReturnFalse()
+        {
+            var card = new MtGCardRecordDTO("Blood Artist", "dpoj3ed3290dn", "Lose 1 life", new List<MtGRulingRecord_DTO>(),
+                new(), "https://www.image.com", "fjeru5489fdj", new string[] { "Creature" }, new string[] { }, 2,
+                false, false, "{1}{B}", "", "");
+            var colorList = new List<MtGColor>() { MtGColor.Red, MtGColor.Green };
+
+            var result = card.DoesCardHaveThisColor(colorList);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void Test_DoesCardHaveThisColorWithColorList_SendInBlackRedCard_ShouldReturnTrue()
+        {
+            var card = new MtGCardRecordDTO("Blood Artist", "dpoj3ed3290dn", "Lose 1 life", new List<MtGRulingRecord_DTO>(),
+                new(), "https://www.image.com", "fjeru5489fdj", new string[] { "Creature" }, new string[] { }, 2,
+                false, false, "{1}{B}{R}", "", "");
+            var colorList = new List<MtGColor>() { MtGColor.Red, MtGColor.Black };
+
+            var result = card.DoesCardHaveThisColor(colorList);
+
+            Assert.True(result);
+        }
     }
 }

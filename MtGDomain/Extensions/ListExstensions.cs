@@ -36,19 +36,22 @@ namespace MtGDomain.Extensions
         {
             list = list.Where(x => x.DoesCardHaveThisColor(filter.ColorFilter.GetListOfColors())).ToList();
 
-            if (filter.CmcFilter is not null && filter.CmcFilter.Cmc >=0 && !filter.CmcFilter.ChoosenSymbol.Equals("="))
-                return list.ToList();
+            if (filter.CmcFilter is null)
+                return list;
 
-            switch(filter.CmcFilter.ChoosenSymbol)
+            if (filter.CmcFilter.Cmc >= 0 && filter.CmcFilter.ChoosenSymbol.Equals("="))
+                return list;
+
+            switch (filter.CmcFilter.ChoosenSymbol)
             {
                 case ">":
-                    list.Where(x => x.Cmc > filter.CmcFilter.Cmc);
+                    list = list.Where(x => x.Cmc > filter.CmcFilter.Cmc).ToList();
                     break;
                 case "<":
-                    list.Where(x => x.Cmc < filter.CmcFilter.Cmc);
+                    list = list.Where(x => x.Cmc < filter.CmcFilter.Cmc).ToList();
                     break;
             }
-            return list.ToList();
+            return list;
         }
 
         private static bool MatchType(this MtGCardRecordDTO record, string[] types)

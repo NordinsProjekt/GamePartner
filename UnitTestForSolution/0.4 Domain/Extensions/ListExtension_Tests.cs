@@ -1,4 +1,5 @@
 ﻿using Domain.MtGDomain.DTO;
+using MtGDomain.DTO;
 using MtGDomain.Extensions;
 
 namespace UnitTestForSolution._0._4_Domain.Extensions
@@ -44,6 +45,36 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
             Assert.Equal(2, newList.Count);
             Assert.NotStrictEqual(cardList, newList);
             Assert.NotEqual(cardList.GetHashCode(), newList.GetHashCode());
+        }
+
+        [Fact]
+        public void FilterList_SendInListWithFilter_BlackColor_ShouldReturnListWithCountTwo()
+        {
+            var cardList = GetCards();
+            var filter = new MtGSearchFilter() { ColorFilter = new() { Black = true } };
+            var result = cardList.FilterList(filter);
+
+            Assert.Equal(2, result.Count);
+        }
+
+        [Fact]
+        public void FilterList_SendInListWithFilter_CMCLessThan3_ShouldReturnListWithCountFour()
+        {
+            var cardList = GetCards();
+            var filter = new MtGSearchFilter() { CmcFilter = new() { Cmc = 3, ChoosenSymbol = "<" }, ColorFilter = new() };
+            var result = cardList.FilterList(filter);
+
+            Assert.Equal(4, result.Count);
+        }
+
+        [Fact]
+        public void FilterList_SendInListWithFilter_CMCMoreThan3_ShouldReturnListWithCountZero()
+        {
+            var cardList = GetCards();
+            var filter = new MtGSearchFilter() { CmcFilter = new() { Cmc = 3, ChoosenSymbol = ">" }, ColorFilter = new() };
+            var result = cardList.FilterList(filter);
+
+            Assert.Equal(0, result.Count);
         }
     }
 }

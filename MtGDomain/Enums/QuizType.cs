@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MtGDomain.Enum
+namespace MtGDomain.Enums
 {
     public enum QuizType
     {

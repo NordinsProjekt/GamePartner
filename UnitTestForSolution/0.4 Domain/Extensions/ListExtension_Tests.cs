@@ -75,7 +75,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
             var filter = new MtGSearchFilter() { CmcFilter = new() { Cmc = 3, ChoosenSymbol = ">" }, ColorFilter = new() };
             var result = cardList.FilterList(filter);
 
-            Assert.Equal(0, result.Count);
+            Assert.Empty(result);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace MtGCard_API
             {
                 list.Add(new MtGCardRecordDTO(item.Name, item.Id, item.Text, item.Rulings, item.Abilities,
                     item.ImageUrl, item.MultiverseId, item.Types, item.SuperTypes, item.Cmc,
-                    item.IsColorLess, item.IsMultiColor, item.ManaCost, item.SetName, item.Set));
+                    item.IsColorLess, item.IsMultiColor, item.ManaCost, item.SetName, item.Set, item.Number));
             }
             return list;
         }
@@ -43,7 +43,7 @@ namespace MtGCard_API
                 {
                     list.Add(new MtGCardRecordDTO(item.Name, item.Id, item.Text, item.Rulings, item.Abilities,
                         item.ImageUrl, item.MultiverseId, item.Types, item.SuperTypes, item.Cmc,
-                        item.IsColorLess, item.IsMultiColor, item.ManaCost, item.SetName, item.Set));
+                        item.IsColorLess, item.IsMultiColor, item.ManaCost, item.SetName, item.Set, item.Number));
                 }
                 MtGCardSet cardSet = new MtGCardSet(list, set.SetName, set.SetCode);
                 sets.Add(cardSet);

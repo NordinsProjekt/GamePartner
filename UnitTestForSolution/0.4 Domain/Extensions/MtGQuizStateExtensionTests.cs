@@ -1,5 +1,6 @@
 ﻿using Domain.MtGDomain.DTO;
 using MtGDomain.Extensions;
+using MtGDomain.Models;
 using MtGDomain.States;
 using System;
 using System.Collections.Generic;
@@ -16,8 +17,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         public void CheckAnswerColor_SetBlackCard_GuessRed_ShouldReturnFalseResult()
         {
             var state = new MtGQuizState();
-            var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", null, null, 0, false, false, "{1}{B}", "", "");
+            var testCard = new MtGCardObject() { ManaCost = "{B}" }.GetDTO();
 
             state.QuizCard = testCard;
             state.Model.Color.Red = true;
@@ -31,8 +31,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         public void CheckAnswerColor_SetBlackCard_GuessBlack_ShouldReturnTrueResult()
         {
             var state = new MtGQuizState();
-            var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", null, null, 0, false, false, "{1}{B}", "", "");
+            var testCard = new MtGCardObject() { ManaCost = "{B}" }.GetDTO();
 
             state.QuizCard = testCard;
             state.Model.Color.Black = true;
@@ -46,8 +45,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         public void CheckAnswerColor_SetBlackWhiteCard_GuessBlack_ShouldReturnFalseResult()
         {
             var state = new MtGQuizState();
-            var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", null, null, 0, false, false, "{1}{B}{W}", "", "");
+            var testCard = new MtGCardObject() { ManaCost = "{B}{W}" }.GetDTO();
 
             state.QuizCard = testCard;
             state.Model.Color.Black = true;
@@ -61,8 +59,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         public void CheckAnswerColor_SetBlackWhiteCard_GuessBlackWhite_ShouldReturnTrueResult()
         {
             var state = new MtGQuizState();
-            var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", null, null, 0, false, false, "{1}{B}{W}", "", "");
+            var testCard = new MtGCardObject() { ManaCost = "{B}{W}" }.GetDTO();
 
             state.QuizCard = testCard;
             state.Model.Color.Black = true;
@@ -77,8 +74,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         public void CheckCmcQuiz_SetCardWithCMc3_Guess3_ShouldReturnTrue()
         {
             var state = new MtGQuizState();
-            var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null, 
-                "https://www.img.com", "FR54", null, null, 3, false, false, "{1}{B}", "", "");
+            var testCard = new MtGCardObject() { Cmc = 3 }.GetDTO();
 
             state.QuizCard = testCard;
             var result = state.GetCmcQuizResult(3);
@@ -90,8 +86,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         public void CheckCmcQuiz_SetCardWithCMc3_Guess2_ShouldReturnFalse()
         {
             var state = new MtGQuizState();
-            var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", null, null, 3, false, false, "{1}{B}", "", "");
+            var testCard = new MtGCardObject() { Cmc = 3}.GetDTO();
 
             state.QuizCard = testCard;
             var result = state.GetCmcQuizResult(2);
@@ -103,8 +98,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         public void CheckTypeQuiz_SetCardAsCreature_GuessArtefact_ShouldReturnFalse()
         {
             var state = new MtGQuizState();
-            var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", new string[] {"Creature"}, null, 3, false, false, "{1}{B}", "", "");
+            var testCard = new MtGCardObject() { Types = new string[] { "Creature" } }.GetDTO();
 
             state.QuizCard = testCard;
             var result = state.GetTypeQuizResult("artefact");
@@ -116,8 +110,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         public void CheckTypeQuiz_SetCardAsCreature_GuessCreature_ShouldReturnTrue()
         {
             var state = new MtGQuizState();
-            var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", new string[] { "Creature" }, null, 3, false, false, "{1}{B}", "", "");
+            var testCard = new MtGCardObject() { Types = new string[] { "Creature" } }.GetDTO();
 
             state.QuizCard = testCard;
             var result = state.GetTypeQuizResult("creature");
@@ -129,8 +122,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         public void CheckTypeQuiz_SetCardAsArtefact_GuessArtefact_ShouldReturnTrue()
         {
             var state = new MtGQuizState();
-            var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", new string[] { "Artefact" }, null, 3, false, false, "{1}{B}", "", "");
+            var testCard = new MtGCardObject() { Types = new string[] { "Artefact" } }.GetDTO();
 
             state.QuizCard = testCard;
             var result = state.GetTypeQuizResult("artefact");
@@ -142,8 +134,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         public void CheckTypeQuiz_SetCardAsArtefact_GuessCreature_ShouldReturnFalse()
         {
             var state = new MtGQuizState();
-            var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", new string[] { "Artefact" }, null, 3, false, false, "{1}{B}", "", "");
+            var testCard = new MtGCardObject() { Types = new string[] { "Artefact" } }.GetDTO();
 
             state.QuizCard = testCard;
             var result = state.GetTypeQuizResult("creature");
@@ -155,8 +146,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         public void CheckTypeQuiz_SetCardAsInstant_GuessInstant_ShouldReturnTrue()
         {
             var state = new MtGQuizState();
-            var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", new string[] { "Instant" }, null, 3, false, false, "{1}{B}", "", "");
+            var testCard = new MtGCardObject() { Types = new string[] { "Instant" } }.GetDTO();
 
             state.QuizCard = testCard;
             var result = state.GetTypeQuizResult("instant");
@@ -168,8 +158,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         public void CheckTypeQuiz_SetCardAsInstant_GuessCreature_ShouldReturnFalse()
         {
             var state = new MtGQuizState();
-            var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", new string[] { "Instant" }, null, 3, false, false, "{1}{B}", "", "");
+            var testCard = new MtGCardObject() { Types = new string[] { "Instant" } }.GetDTO();
 
             state.QuizCard = testCard;
             var result = state.GetTypeQuizResult("creature");
@@ -181,8 +170,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         public void CheckTypeQuiz_SetCardAsSorcery_GuessSorcery_ShouldReturnTrue()
         {
             var state = new MtGQuizState();
-            var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", new string[] { "Sorcery" }, null, 3, false, false, "{1}{B}", "", "");
+            var testCard = new MtGCardObject() { Types = new string[] { "Sorcery" } }.GetDTO();
 
             state.QuizCard = testCard;
             var result = state.GetTypeQuizResult("sorcery");
@@ -194,8 +182,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         public void CheckTypeQuiz_SetCardAsSorcery_GuessCreature_ShouldReturnFalse()
         {
             var state = new MtGQuizState();
-            var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", new string[] { "sorcery" }, null, 3, false, false, "{1}{B}", "", "");
+            var testCard = new MtGCardObject() { Types = new string[] { "Sorcery" } }.GetDTO();
 
             state.QuizCard = testCard;
             var result = state.GetTypeQuizResult("creature");
@@ -207,8 +194,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         public void CheckTypeQuiz_SetCardAsEnchantment_GuessEnchantment_ShouldReturnTrue()
         {
             var state = new MtGQuizState();
-            var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", new string[] { "Enchantment" }, null, 3, false, false, "{1}{B}", "", "");
+            var testCard = new MtGCardObject() { Types = new string[] { "Enchantment" } }.GetDTO();
 
             state.QuizCard = testCard;
             var result = state.GetTypeQuizResult("enchantment");
@@ -220,8 +206,7 @@ namespace UnitTestForSolution._0._4_Domain.Extensions
         public void CheckTypeQuiz_SetCardAsEnchantment_GuessEnchantment_ShouldReturnFalse()
         {
             var state = new MtGQuizState();
-            var testCard = new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null,
-                "https://www.img.com", "FR54", new string[] { "enchantment" }, null, 3, false, false, "{1}{B}", "", "");
+            var testCard = new MtGCardObject() { Types = new string[] { "Enchantment" } }.GetDTO();
 
             state.QuizCard = testCard;
             var result = state.GetTypeQuizResult("creature");

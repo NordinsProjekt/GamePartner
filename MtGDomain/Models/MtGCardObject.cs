@@ -13,22 +13,22 @@ namespace MtGDomain.Models
 {
     public class MtGCardObject : BaseValidate, IGetDto<MtGCardRecordDTO>
     {
-        public string Name { get; set; }
-        public string Id { get; set; }
+        public string Name { get; set; } = "";
+        public string Id { get; set; } = "";
         private string text;
-        public List<MtGRulingRecord_DTO> Rulings { get; set; }
+        public List<MtGRulingRecord_DTO> Rulings { get; set; } = new List<MtGRulingRecord_DTO>();
         private List<string>? abilities = new();
-        public string ImageUrl { get; set; }
-        public string MultiverseId { get; set; }
-        public string[] Types { get; set; }
-        public string[] SuperTypes { get; set; }
-        public int Cmc { get; set; }
-        public string SetName { get; set; }
-        public string Set { get; set; }
-
-        public bool IsColorLess { get; set; }
-        public bool IsMultiColor { get; set; }
-        public string ManaCost { get; set; }
+        public string ImageUrl { get; set; } = "";
+        public string MultiverseId { get; set; } = "";
+        public string[] Types { get; set; } = new string[] { };
+        public string[] SuperTypes { get; set; } = new string[] { };
+        public int Cmc { get; set; } = -1;
+        public string SetName { get; set; } = "";
+        public string Set { get; set; } = "";
+        public string Number { get; set; } = "";
+        public bool IsColorLess { get; set; } = false;
+        public bool IsMultiColor { get; set; } = false;
+        public string ManaCost { get; set; } = "";
         public MtGCardObject() { }
 
         public string Text
@@ -57,7 +57,7 @@ namespace MtGDomain.Models
             if (IsModelValid())
             {
                 MtGCardRecordDTO dto = new MtGCardRecordDTO(Name, Id, Text, Rulings, abilities, ImageUrl, MultiverseId, Types,
-                    SuperTypes,Cmc, IsColorLess, IsMultiColor, ManaCost, SetName, Set);
+                    SuperTypes,Cmc, IsColorLess, IsMultiColor, ManaCost, SetName, Set, Number);
                 return dto;
             }
             return default(MtGCardRecordDTO);

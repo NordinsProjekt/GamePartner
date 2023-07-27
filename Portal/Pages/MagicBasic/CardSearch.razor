@@ -12,11 +12,11 @@
 {
     <p>@Message</p>
 }
-<ShowSearchResult CardList="Result" />
-
-
+<ShowSearchResult onShowCard="onClickedCard" CardList="Result" />
 
 @code {
+    [Parameter]
+    public EventCallback<MtGCardRecordDTO> ClickedCard { get; set; }
     public List<MtGCardRecordDTO>? Result { get; set; }
     private string Message { get; set; }
     private void SearchResult(MtGSearchResultRecord result)
@@ -34,5 +34,12 @@
         }
 
         StateHasChanged();
+    }
+
+    private async Task onClickedCard(string cardId)
+    {
+        var card = Result.Where(x => x.Id.Equals(cardId)).FirstOrDefault();
+        if (card is not null)
+            await ClickedCard.InvokeAsync(card);
     }
 }

@@ -1,8 +1,30 @@
 ﻿@layout MagicBasicLayout
 @page "/MagicBasic/DeckBuilder"
+@using Domain.MtGDomain.DTO
+@using Portal.Pages.MagicBasic.Components
+@using Infrastructure.MtGCard_API
+
 <h1>DeckBuilder</h1>
-<CardSearch />
+<AddCardToDeck onAddThisManyCopies="AddCard" Card="CurrentCard" />
+<CardSearch ClickedCard="CardCallback" />
 
 @code {
+    public List<MtGCardRecordDTO> DeckList { get; set; } = new();
+    private MtGCardRecordDTO? CurrentCard { get; set; }
+    private void CardCallback(MtGCardRecordDTO card)
+    {
+        CurrentCard = card;
+        StateHasChanged();
+    }
 
+    private void AddCard(int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            if (CurrentCard is not null)
+                DeckList.Add(MappingFunctions.CloneMtGRecord(CurrentCard));
+        }
+        CurrentCard = null;
+        StateHasChanged();
+    }
 }

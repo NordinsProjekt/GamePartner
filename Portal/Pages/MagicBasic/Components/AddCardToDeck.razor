@@ -1,0 +1,27 @@
+﻿@using Domain.MtGDomain.DTO;
+
+@if(Card is not null)
+{
+    <h2>@(Card.Name)</h2>
+    <img src="@(Card.ImageUrl)" />
+    <div>
+        <p>@(Card.Text)</p>
+        @*Borde finnas legal info här*@
+    </div>
+    <input type="number" @bind="Amount" size="4" />
+    <input type="button" @onclick="CallbackAmount" value="Add to deck" />
+}
+@code {
+    [Parameter]
+    public MtGCardRecordDTO? Card { get; set; }
+
+    [Parameter]
+    public EventCallback<int> onAddThisManyCopies { get; set; }
+
+    private int Amount { get; set; } = 1;
+
+    private async Task CallbackAmount()
+    {
+        await onAddThisManyCopies.InvokeAsync(Amount);
+    }
+}

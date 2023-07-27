@@ -17,5 +17,7 @@ namespace Infrastructure.MtGCard_API
             => card.Adapt<MtGCardRecordDTO>();
         public static MtGCardObject MapICardToMtGCardObject(ICard card)
             => card.Adapt<MtGCardObject>();
+        public static MtGCardRecordDTO CloneMtGRecord(MtGCardRecordDTO record)
+            => record.Adapt<MtGCardRecordDTO>();
     }
 }

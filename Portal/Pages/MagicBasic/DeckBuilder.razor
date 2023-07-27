@@ -1,29 +1,56 @@
 ﻿@layout MagicBasicLayout
 @page "/MagicBasic/DeckBuilder"
 @using Domain.MtGDomain.DTO
+@using MtGDomain.DTO;
 @using Portal.Pages.MagicBasic.Components
 @using Infrastructure.MtGCard_API
+@using Portal.Extensions
+@inject IJSRuntime JSRuntime
 
 <h1>DeckBuilder</h1>
+@if(DeckList.Count > 0)
+{
+    <div>
+        <table>
+            <tr><th>Amount</th><th>CardName</th><th>Cmc</th><th>Type</th></tr>
+            @foreach (var deckItem in DeckList)
+            {
+                <tr>
+                    <td>@deckItem.Amount</td>
+                    <td>@deckItem.Card.Name</td>
+                    <td>@deckItem.Card.Cmc</td>
+                    <td>
+                        @for (int i = 0; i < deckItem.Card.Types.Length; i++)
+                        {
+                            @deckItem.Card.Types[i].ToString();
+                        }
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+}
+
 <AddCardToDeck onAddThisManyCopies="AddCard" Card="CurrentCard" />
 <CardSearch ClickedCard="CardCallback" />
 
 @code {
-    public List<MtGCardRecordDTO> DeckList { get; set; } = new();
+    public List<MtGDeckCard> DeckList { get; set; } = new();
     private MtGCardRecordDTO? CurrentCard { get; set; }
-    private void CardCallback(MtGCardRecordDTO card)
+    private async Task CardCallback(MtGCardRecordDTO card)
     {
+        await JSRuntime.InvokeVoidAsync("OnScrollEvent");
         CurrentCard = card;
         StateHasChanged();
     }
 
     private void AddCard(int amount)
     {
-        for (int i = 0; i < amount; i++)
-        {
-            if (CurrentCard is not null)
-                DeckList.Add(MappingFunctions.CloneMtGRecord(CurrentCard));
-        }
+        if (CurrentCard is null || amount <= 0)
+            return;
+
+        DeckList.AddCardToDeck(CurrentCard, amount);
         CurrentCard = null;
         StateHasChanged();
     }

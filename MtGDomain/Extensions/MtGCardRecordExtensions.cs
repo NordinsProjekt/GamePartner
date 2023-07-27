@@ -10,7 +10,7 @@ namespace MtGDomain.Extensions
         public static bool DoesCardHaveThisColor(this MtGCardRecordDTO card, MtGColor color)
         {
             var colorText = MtGColorMap.Values.GetValueOrDefault(color);
-            if (colorText is not null && card.ManaCost.Contains(colorText))
+            if (colorText is not null && card.ManaCost is not null && card.ManaCost.Contains(colorText))
                 return true;
             return false;
         }

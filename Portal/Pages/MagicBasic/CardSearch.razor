@@ -4,9 +4,9 @@
 @using Domain.MtGDomain.DTO;
 @using MtGDomain.DTO;
 @inject IMtGCardRepository Repo
+@inject IJSRuntime JSRuntime
 
 <h1>Card Search</h1>
-<p>Looking up cards</p>
 <MagicCardSearch EventCallback="SearchResult" />
 @if (Result is null)
 {

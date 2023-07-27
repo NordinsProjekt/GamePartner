@@ -1,11 +1,7 @@
 ﻿using Domain.MtGDomain.DTO;
 using MtGCard_API;
 using MtGCard_Service.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MtGDomain.Models;
 
 namespace UnitTestForSolution._0._2_Infrastructure
 {
@@ -16,7 +12,7 @@ namespace UnitTestForSolution._0._2_Infrastructure
         public void CheckIfClickedCardCounterWorks_AddACardThreeTimes_ShouldReturnCountThree()
         {
             var buffer = new SearchBuffer();
-            var card = new MtGCardRecordDTO("testcard", "1", "hello", null, null, null, null, null, null,0, false, false, "{1}{B}", "", "","");
+            var card = new MtGCardObject().GetDTO();
             buffer.AddClickedCard(card);
             buffer.AddClickedCard(card);
             buffer.AddClickedCard(card);

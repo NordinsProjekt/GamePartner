@@ -1,16 +1,25 @@
 ﻿@using Application.MtGCard_Service.DTO
 @using Domain.MtGDomain.DTO;
-@if (CardList is not null && CardList?.Count > 0 && show)
+@if (CardList is not null && CardList?.Count > 0 && Show)
 {
     <div id="SearchResult" class="d-flex flex-wrap flex-row bd-highlight mb-3">
         @foreach (var item in CardList.OrderBy(x => x.Name))
     {
         if (item.ImageUrl is null || item.ImageUrl == "") { continue; }
             <div class="p-2 bd-highlight" onclick="@(() => ShowCard(@item.Id))">
-            <h3>@item.Name</h3>
-            <i>@item.SetName (@item.Set)</i><br />
-            <img class="SmallImg" src="@item.ImageUrl" />
-        </div>
+                <h3>@item.Name</h3>
+                <i>@item.SetName (@item.Set)</i><br />
+                <img class="SmallImg" src="@item.ImageUrl" />
+                @if(ShowLegality)
+                {
+                    <p>
+                        @foreach (var mtGLegality in @item.Legalities)
+                        {
+                            @mtGLegality.Format <br />
+                        }
+                    </p>
+                }
+            </div>
     }
     </div>
 }
@@ -19,8 +28,11 @@
     [Parameter]
     public List<MtGCardRecordDTO>? CardList { get; set; }
     [Parameter]
-    public EventCallback<string> onShowCard { get; set; }
+    public EventCallback<string> OnShowCard { get; set; }
     [Parameter]
-    public bool show { get; set; } = true;
-    private async Task ShowCard(string id) => await onShowCard.InvokeAsync(id);
+    public bool Show { get; set; } = true;
+    [Parameter]
+    public bool ShowLegality { get; set; } = false;
+
+    private async Task ShowCard(string id) => await OnShowCard.InvokeAsync(id);
 }

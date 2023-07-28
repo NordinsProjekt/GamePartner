@@ -1,4 +1,5 @@
 ﻿using Domain.MtGDomain.DTO;
+using Infrastructure.MtGCard_API;
 using MtGCard_Service.Interface;
 using MtGDomain.DTO;
 using System;
@@ -26,9 +27,7 @@ namespace MtGCard_API
 
             foreach (var item in set.List)
             {
-                list.Add(new MtGCardRecordDTO(item.Name, item.Id, item.Text, item.Rulings, item.Abilities,
-                    item.ImageUrl, item.MultiverseId, item.Types, item.SuperTypes, item.Cmc,
-                    item.IsColorLess, item.IsMultiColor, item.ManaCost, item.SetName, item.Set, item.Number));
+                list.Add(MappingFunctions.CloneMtGRecord(item));
             }
             return list;
         }
@@ -41,9 +40,7 @@ namespace MtGCard_API
                 List<MtGCardRecordDTO> list = new List<MtGCardRecordDTO>();
                 foreach (var item in set.List)
                 {
-                    list.Add(new MtGCardRecordDTO(item.Name, item.Id, item.Text, item.Rulings, item.Abilities,
-                        item.ImageUrl, item.MultiverseId, item.Types, item.SuperTypes, item.Cmc,
-                        item.IsColorLess, item.IsMultiColor, item.ManaCost, item.SetName, item.Set, item.Number));
+                    list.Add(MappingFunctions.CloneMtGRecord(item));
                 }
                 MtGCardSet cardSet = new MtGCardSet(list, set.SetName, set.SetCode);
                 sets.Add(cardSet);

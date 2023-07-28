@@ -2,6 +2,7 @@
 @page "/MagicBasic/DeckBuilder"
 @using Domain.MtGDomain.DTO
 @using MtGDomain.DTO;
+@using MtGDomain.Enums;
 @using Portal.Pages.MagicBasic.Components
 @using Infrastructure.MtGCard_API
 @using Portal.Extensions
@@ -11,12 +12,17 @@
 @if(DeckList.Count > 0)
 {
     <div>
+        <b>Main</b>
         <table>
             <tr><th>Amount</th><th>CardName</th><th>Cmc</th><th>Type</th><th>Action</th></tr>
-            Sum = 0;
-            @foreach (var deckItem in DeckList)
+            @{
+                SideSum = 0;
+                MainSum = 0;
+            }
+
+            @foreach (var deckItem in DeckList.Where(x=>x.Location == CardLocation.Main).OrderBy(x=>x.Card.Cmc).ToList())
             {
-                Sum += deckItem.Amount;
+                MainSum += deckItem.Amount;
                 <tr>
                     <td>@deckItem.Amount</td>
                     <td>@deckItem.Card.Name</td>
@@ -27,20 +33,43 @@
                             @deckItem.Card.Types[i].ToString();
                         }
                     </td>
-                    <td><input type="button" @onclick="(() => RemoveCard(deckItem.Card.Id))" value="X" /></td>
+                    <td><input type="button" @onclick="(() => RemoveCardFromMain(deckItem.Card.Name))" value="X" /></td>
                 </tr>
             }
         </table>
-        <p>Total: @Sum</p>
+        <b>Sideboard</b>
+        <table>
+            <tr><th>Amount</th><th>CardName</th><th>Cmc</th><th>Type</th><th>Action</th></tr>
+            @foreach (var item in DeckList.Where(x => x.Location == CardLocation.Sideboard).OrderBy(x => x.Card.Cmc).ToList())
+            {
+                SideSum += item.Amount;
+                <tr>
+                    <td>@item.Amount</td>
+                    <td>@item.Card.Name</td>
+                    <td>@item.Card.Cmc</td>
+                    <td>
+                        @for (int i = 0; i < item.Card.Types.Length; i++)
+                        {
+                            @item.Card.Types[i].ToString()
+                            ;
+                        }
+                    </td>
+                    <td><input type="button" @onclick="(() => RemoveCardFromSideboard(item.Card.Name))" value="X" /></td>
+                </tr>
+            }
+        </table>
+        <p>Total Main: @MainSum<br />
+        Total Side: @SideSum</p>
     </div>
 }
 
-<AddCardToDeck onAddThisManyCopies="AddCard" Card="CurrentCard" />
+<AddCardToDeck onAddThisToMain="AddCardToMain" onAddThisToSideboard="AddCardToSideboard" Card="CurrentCard" />
 <CardSearch ClickedCard="CardCallback" />
 
 @code {
     public List<MtGDeckCard> DeckList { get; set; } = new();
-    private int Sum { get; set; } = 0;
+    private int MainSum { get; set; } = 0;
+    private int SideSum { get; set; } = 0;
     private MtGCardRecordDTO? CurrentCard { get; set; }
     private async Task CardCallback(MtGCardRecordDTO card)
     {
@@ -49,19 +78,37 @@
         StateHasChanged();
     }
 
-    private void AddCard(int amount)
+    private void AddCardToMain(int amount)
     {
         if (CurrentCard is null || amount <= 0)
             return;
 
-        DeckList.AddCardToDeck(CurrentCard, amount);
+        DeckList.AddCardToDeck(CurrentCard, amount, CardLocation.Main);
         CurrentCard = null;
         StateHasChanged();
     }
 
-    private void RemoveCard(string id)
+    private void RemoveCardFromMain(string name)
     {
-        var card = DeckList.FirstOrDefault(x => x.Card.Id.Equals(id));
+        var card = DeckList.FirstOrDefault(x => x.Card.Name.Equals(name));
+        if (card is null)
+            return;
+        DeckList.Remove(card);
+    }
+
+    private void AddCardToSideboard(int amount)
+    {
+        if (CurrentCard is null || amount <= 0)
+            return;
+
+        DeckList.AddCardToDeck(CurrentCard, amount, CardLocation.Sideboard);
+        CurrentCard = null;
+        StateHasChanged();
+    }
+
+    private void RemoveCardFromSideboard(string name)
+    {
+        var card = DeckList.FirstOrDefault(x => x.Card.Name.Equals(name));
         if (card is null)
             return;
         DeckList.Remove(card);

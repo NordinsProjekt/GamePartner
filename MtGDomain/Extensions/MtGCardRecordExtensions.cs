@@ -28,6 +28,8 @@ namespace MtGDomain.Extensions
 
         public static bool FindSuperType(this MtGCardRecordDTO card, string supertype)
         {
+            if (card.SuperTypes is null)
+                return false;
             return card.SuperTypes.Contains(supertype);
         }
     }

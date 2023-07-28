@@ -13,8 +13,10 @@
     <div>
         <table>
             <tr><th>Amount</th><th>CardName</th><th>Cmc</th><th>Type</th><th>Action</th></tr>
+            Sum = 0;
             @foreach (var deckItem in DeckList)
             {
+                Sum += deckItem.Amount;
                 <tr>
                     <td>@deckItem.Amount</td>
                     <td>@deckItem.Card.Name</td>
@@ -29,6 +31,7 @@
                 </tr>
             }
         </table>
+        <p>Total: @Sum</p>
     </div>
 }
 
@@ -37,6 +40,7 @@
 
 @code {
     public List<MtGDeckCard> DeckList { get; set; } = new();
+    private int Sum { get; set; } = 0;
     private MtGCardRecordDTO? CurrentCard { get; set; }
     private async Task CardCallback(MtGCardRecordDTO card)
     {

@@ -1,5 +1,6 @@
 ﻿using Domain.MtGDomain.DTO;
 using MtGDomain.Constants;
+using MtGDomain.DTO;
 using MtGDomain.Enums;
 using MtGDomain.Hashmaps;
 
@@ -23,6 +24,11 @@ namespace MtGDomain.Extensions
                     return false;
             }
             return true;
+        }
+
+        public static bool FindSuperType(this MtGCardRecordDTO card, string supertype)
+        {
+            return card.SuperTypes.Contains(supertype);
         }
     }
 }

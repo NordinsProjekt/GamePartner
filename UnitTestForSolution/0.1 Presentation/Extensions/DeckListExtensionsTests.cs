@@ -154,5 +154,25 @@ namespace UnitTestForSolution._0._1_Presentation.Extensions
             Assert.Equal(1, list.Count);
             Assert.Equal(3, result.Amount);
         }
+
+        [Fact]
+        public void CheckLegality_SendInListWithCards_GetListOfLegalFormats_ShouldReturnList()
+        {
+            List<MtGDeckCard> list = new List<MtGDeckCard>()
+            {
+                new MtGDeckCard()
+                { Amount = 3, Card =  new MtGCardObject() { Name = "TestCard1", Legalities =  new List<MtGLegality>()
+                { new MtGLegality("Standard",""),new MtGLegality("Modern","")}}
+                .GetDTO()},
+
+                { new MtGDeckCard()
+                { Amount = 3, Card =  new MtGCardObject() { Name = "TestCard2", Legalities =  new List<MtGLegality>()
+                { new MtGLegality("Standard",""),new MtGLegality("Modern",""),new MtGLegality("Vintage","")}}
+                .GetDTO()}} };
+
+            var result = list.CheckLegality();
+
+            Assert.Equal(2, result.Count);
+        }
     }
 }

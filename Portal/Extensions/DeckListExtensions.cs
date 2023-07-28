@@ -32,6 +32,7 @@ namespace Portal.Extensions
             {
                 {"Standard", 0 },{"Pioneer", 0 }, {"Modern", 0 }, {"Legacy", 0}, {"Vintage", 0}
             };
+            
             int total = list.Count;
             foreach (var card in list)
             {

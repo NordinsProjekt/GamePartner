@@ -25,6 +25,33 @@ namespace Portal.Extensions
             return list;
         }
 
+        public static List<string> CheckLegality(this List<MtGDeckCard> list)
+        {
+            List<string> legalList = new List<string>();
+            Dictionary<string, int> keyValues = new Dictionary<string, int>()
+            {
+                {"Standard", 0 },{"Pioneer", 0 }, {"Modern", 0 }, {"Legacy", 0}, {"Vintage", 0}
+            };
+            int total = list.Count;
+            foreach (var card in list)
+            {
+                foreach (var key in keyValues.Keys)
+                {
+                    var temp = card.Card.Legalities.Where(x => x.Format.Equals(key)).Any();
+                    if (temp)
+                        keyValues[key] += 1;
+                }
+            }
+
+            foreach (var key in keyValues.Keys)
+            {
+                if (keyValues[key] == total)
+                    legalList.Add(key);
+            }
+
+            return legalList;
+        }
+
         private static MtGDeckCard GenerateNewMtGDeckCard(MtGCardRecordDTO currentCard, int amount, CardLocation location)
         {
             int newAmount = amount;

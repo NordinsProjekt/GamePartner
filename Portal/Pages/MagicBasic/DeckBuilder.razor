@@ -12,6 +12,13 @@
 @if(DeckList.Count > 0)
 {
     <div>
+        <div class="legal">
+            <h2>Legal in</h2>
+            @foreach (var legalKey in DeckList.CheckLegality())
+            {
+                <b>@legalKey.ToString() </b>
+            }
+        </div>
         <b>Main</b>
         <table>
             <tr><th>Amount</th><th>CardName</th><th>Cmc</th><th>Type</th><th>Action</th></tr>

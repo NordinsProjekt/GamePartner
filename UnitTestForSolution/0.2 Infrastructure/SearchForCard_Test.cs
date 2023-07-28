@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Application.MtGCard_Service.Interface;
+﻿using Application.MtGCard_Service.Interface;
 using Domain.MtGDomain.DTO;
-using Infrastructure.MtGCard_API;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel.Engine.ClientProtocol;
 using MtGCard_API;
+using MtGDomain.Models;
 using NSubstitute;
 
 namespace UnitTestForSolution._0._2_Infrastructure
@@ -42,7 +36,7 @@ namespace UnitTestForSolution._0._2_Infrastructure
         {
             var api = Substitute.For<IMtGCardRepository>();
             api.GetCardsByName(default).ReturnsForAnyArgs(new List<MtGCardRecordDTO>()
-            { new MtGCardRecordDTO("Glissa", "234", "Deathtouch",null,new(),null,null,null,null,0,false,false,"{1}{B}", "","","") });
+            { new MtGCardObject() { Name = "Glissa"}.GetDTO() });
             var result = api.GetCardsByName("Gli").Result;
             Assert.True(result.Count == 1);
         }

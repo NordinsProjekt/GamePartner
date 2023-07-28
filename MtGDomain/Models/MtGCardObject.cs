@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MtGDomain.Enums;
 using MtGDomain.Models.Extensions;
+using MtGDomain.DTO;
 
 namespace MtGDomain.Models
 {
@@ -29,6 +30,7 @@ namespace MtGDomain.Models
         public bool IsColorLess { get; set; } = false;
         public bool IsMultiColor { get; set; } = false;
         public string ManaCost { get; set; } = "";
+        public List<MtGLegality> Legalities { get; set; } = new();
         public MtGCardObject() { }
 
         public string Text
@@ -57,7 +59,7 @@ namespace MtGDomain.Models
             if (IsModelValid())
             {
                 MtGCardRecordDTO dto = new MtGCardRecordDTO(Name, Id, Text, Rulings, abilities, ImageUrl, MultiverseId, Types,
-                    SuperTypes,Cmc, IsColorLess, IsMultiColor, ManaCost, SetName, Set, Number);
+                    SuperTypes,Cmc, IsColorLess, IsMultiColor, ManaCost, SetName, Set, Number, Legalities);
                 return dto;
             }
             return default(MtGCardRecordDTO);

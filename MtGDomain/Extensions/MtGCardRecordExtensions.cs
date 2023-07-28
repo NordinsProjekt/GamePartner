@@ -1,5 +1,6 @@
 ﻿using Domain.MtGDomain.DTO;
 using MtGDomain.Constants;
+using MtGDomain.DTO;
 using MtGDomain.Enums;
 using MtGDomain.Hashmaps;
 
@@ -10,7 +11,7 @@ namespace MtGDomain.Extensions
         public static bool DoesCardHaveThisColor(this MtGCardRecordDTO card, MtGColor color)
         {
             var colorText = MtGColorMap.Values.GetValueOrDefault(color);
-            if (colorText is not null && card.ManaCost.Contains(colorText))
+            if (colorText is not null && card.ManaCost is not null && card.ManaCost.Contains(colorText))
                 return true;
             return false;
         }
@@ -23,6 +24,13 @@ namespace MtGDomain.Extensions
                     return false;
             }
             return true;
+        }
+
+        public static bool FindSuperType(this MtGCardRecordDTO card, string supertype)
+        {
+            if (card.SuperTypes is null)
+                return false;
+            return card.SuperTypes.Contains(supertype);
         }
     }
 }

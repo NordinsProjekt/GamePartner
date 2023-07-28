@@ -4,19 +4,19 @@
 @using Domain.MtGDomain.DTO;
 @using MtGDomain.DTO;
 @inject IMtGCardRepository Repo
+@inject IJSRuntime JSRuntime
 
 <h1>Card Search</h1>
-<p>Looking up cards</p>
 <MagicCardSearch EventCallback="SearchResult" />
 @if (Result is null)
 {
     <p>@Message</p>
 }
-<ShowSearchResult CardList="Result" />
-
-
+<ShowSearchResult ShowLegality="true"  OnShowCard="onClickedCard" CardList="Result" />
 
 @code {
+    [Parameter]
+    public EventCallback<MtGCardRecordDTO> ClickedCard { get; set; }
     public List<MtGCardRecordDTO>? Result { get; set; }
     private string Message { get; set; }
     private void SearchResult(MtGSearchResultRecord result)
@@ -34,5 +34,12 @@
         }
 
         StateHasChanged();
+    }
+
+    private async Task onClickedCard(string cardId)
+    {
+        var card = Result.Where(x => x.Id.Equals(cardId)).FirstOrDefault();
+        if (card is not null)
+            await ClickedCard.InvokeAsync(card);
     }
 }

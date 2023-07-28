@@ -1,6 +1,7 @@
 ﻿using Domain.MtGDomain.DTO;
 using FluentAssertions;
 using MtGCard_Service.Classes;
+using MtGDomain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace UnitTestForSolution._0._3_Application.Classes
         [Fact]
         public void TryToSetCommanderCard_WithAnAcceptedCard_ShouldReturnTheCard()
         {
-            MtGCardRecordDTO card = new("Testcard", "1", "Testcard", new(), new(), "www.", "11", new string[] { "Creature" }, new string[] { "Legendary" }, 0, false, false, "{1}{B}", "", "", "");
+            MtGCardRecordDTO card = new MtGCardObject() { Types = new string[] { "Creature" }, SuperTypes = new string[] { "Legendary" } }.GetDTO();
             MtGCommander com = new();
             com.SetCommanderCard(card);
             Assert.Equal(card, com.GetCommanderCard());

@@ -109,5 +109,62 @@ namespace UnitTestForSolution._0._1_Presentation.Extensions
             Assert.Equal(1, list.Count);
             Assert.Equal(24, result.Amount);
         }
+
+        [Fact]
+        public void AddCardToDeck_AddingCardToEmptyDeckList_ShouldEqualTo1()
+        {
+            Guid id = Guid.NewGuid();
+            List<MtGDeckCard> list = new List<MtGDeckCard>();
+
+            var card = new MtGCardObject()
+            {
+                Id = id.ToString(),
+                Name = "TestCard1",
+            }.GetDTO();
+
+            list.AddCardToDeck(card, 1);
+            var result = list.First(x => x.Card.Id.Equals(id.ToString()));
+
+            Assert.Equal(1, list.Count);
+            Assert.Equal(1, result.Amount);
+        }
+
+        [Fact]
+        public void AddCardToDeck_AddingCardToEmptyDeckList_ShouldEqualTo2()
+        {
+            Guid id = Guid.NewGuid();
+            List<MtGDeckCard> list = new List<MtGDeckCard>();
+
+            var card = new MtGCardObject()
+            {
+                Id = id.ToString(),
+                Name = "TestCard1",
+            }.GetDTO();
+
+            list.AddCardToDeck(card, 2);
+            var result = list.First(x => x.Card.Id.Equals(id.ToString()));
+
+            Assert.Equal(1, list.Count);
+            Assert.Equal(2, result.Amount);
+        }
+
+        [Fact]
+        public void AddCardToDeck_AddingCardToEmptyDeckList_ShouldEqualTo3()
+        {
+            Guid id = Guid.NewGuid();
+            List<MtGDeckCard> list = new List<MtGDeckCard>();
+
+            var card = new MtGCardObject()
+            {
+                Id = id.ToString(),
+                Name = "TestCard1",
+            }.GetDTO();
+
+            list.AddCardToDeck(card, 3);
+            var result = list.First(x => x.Card.Id.Equals(id.ToString()));
+
+            Assert.Equal(1, list.Count);
+            Assert.Equal(3, result.Amount);
+        }
     }
 }

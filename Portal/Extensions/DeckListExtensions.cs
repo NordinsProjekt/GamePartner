@@ -9,41 +9,65 @@ namespace Portal.Extensions
     {
         public static List<MtGDeckCard> AddCardToDeck(this List<MtGDeckCard> list, MtGCardRecordDTO currentCard, int amount)
         {
-            //Fix later
             var deckCard = list.FirstOrDefault(x => x.Card.Id.Equals(currentCard.Id));
-            int newAmount = amount;
-
-            if (!currentCard.FindSuperType("Basic"))
-            {
-                if (amount > 4) { newAmount = 4; }
-            }
 
             if (deckCard is null)
             {
-                list.Add(new MtGDeckCard()
-                {
-                    Amount = newAmount,
-                    Card = MappingFunctions.CloneMtGRecord(currentCard)
-                });
+                list.Add(GenerateNewMtGDeckCard(currentCard, amount));
                 return list;
             }
 
-            if (!currentCard.FindSuperType("Basic"))
-            {
-                newAmount += deckCard.Amount;
-                if (newAmount > 4) { newAmount = 4; }
-            }
-            else 
-            {
-                newAmount += deckCard.Amount; 
-            }
-
-            var newEntry = new MtGDeckCard()
-            { Amount = newAmount, Card = MappingFunctions.CloneMtGRecord(currentCard) };
+            var newDeckCard = EditNewMtGDeckCard(deckCard,amount);
             list.Remove(deckCard);
-            list.Add(newEntry);
+            list.Add(newDeckCard);
 
             return list;
         }
+
+        private static MtGDeckCard GenerateNewMtGDeckCard(MtGCardRecordDTO currentCard, int amount)
+        {
+            int newAmount = amount;
+
+            if (amount > 4)
+                newAmount = 4;
+
+            if (amount < 1)
+                newAmount = 1;
+
+            if (currentCard.FindSuperType("Basic"))
+                newAmount = amount;
+
+            return new MtGDeckCard()
+            {
+                Amount = newAmount,
+                Card = MappingFunctions.CloneMtGRecord(currentCard)
+            };
+        }
+
+        private static MtGDeckCard EditNewMtGDeckCard(MtGDeckCard currentDeckCard, int amount)
+        {
+            int newAmount = currentDeckCard.Amount + amount;
+            if (currentDeckCard.Card.FindSuperType("Basic"))
+            {
+                return new MtGDeckCard()
+                {
+                    Amount = newAmount,
+                    Card = MappingFunctions.CloneMtGRecord(currentDeckCard.Card)
+                };
+            }
+
+            if (newAmount > 4)
+                newAmount = 4;
+
+            if (newAmount < 1)
+                newAmount = 1;
+
+            return new MtGDeckCard()
+            {
+                Amount = newAmount,
+                Card = MappingFunctions.CloneMtGRecord(currentDeckCard.Card)
+            };
+        }
+        
     }
 }

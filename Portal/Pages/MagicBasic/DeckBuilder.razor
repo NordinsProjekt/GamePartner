@@ -12,7 +12,7 @@
 {
     <div>
         <table>
-            <tr><th>Amount</th><th>CardName</th><th>Cmc</th><th>Type</th></tr>
+            <tr><th>Amount</th><th>CardName</th><th>Cmc</th><th>Type</th><th>Action</th></tr>
             @foreach (var deckItem in DeckList)
             {
                 <tr>
@@ -25,6 +25,7 @@
                             @deckItem.Card.Types[i].ToString();
                         }
                     </td>
+                    <td><input type="button" @onclick="(() => RemoveCard(deckItem.Card.Id))" value="X" /></td>
                 </tr>
             }
         </table>
@@ -52,5 +53,13 @@
         DeckList.AddCardToDeck(CurrentCard, amount);
         CurrentCard = null;
         StateHasChanged();
+    }
+
+    private void RemoveCard(string id)
+    {
+        var card = DeckList.FirstOrDefault(x => x.Card.Id.Equals(id));
+        if (card is null)
+            return;
+        DeckList.Remove(card);
     }
 }

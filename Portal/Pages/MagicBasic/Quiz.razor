@@ -1,5 +1,6 @@
 ﻿@layout MagicBasicLayout
 @page "/MagicBasic/Quiz"
+@using MtGDomain.Hashmaps;
 @using MtGDomain.States;
 @using Application.MtGCard_Service.Interface;
 @using MtGCard_Service.Classes;
@@ -13,7 +14,7 @@
 @using MtGDomain.Extensions;
 @inject IMtGQuizService Service
 
-<h1>Quiz - The Dark Edition</h1>
+<h1>Quiz @State.Heading</h1>
 <ScoreBoard Score="@State.Score" />
 
 @if (State.GameStart is false)
@@ -29,6 +30,12 @@
     else
     {
         <EditForm Model="@State.Model">
+            <select @bind="@State.Model.QuizSet">
+                @foreach(var set in MtGSets.Values.Keys)
+                {
+                    <option value="@set">@set</option>
+                }
+            </select>
             <InputSelect @bind-Value="State.Model.Quiz">
                 <option>CMC</option>
                 <option>Type</option>
@@ -99,7 +106,8 @@ else
     private async void StartQuiz()
     {
         State.Loading = true;
-        await Service.StartQuiz("DRK");
+        if (! State.Model.QuizSet.Equals(""))
+            await Service.StartQuiz(MtGSets.Values[State.Model.QuizSet]);
         State.Loading = false;
         StateHasChanged();
     }

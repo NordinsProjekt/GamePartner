@@ -15,5 +15,6 @@ namespace MtGDomain.States
         public int Max { get; set; } = 0;
         public bool Loading { get; set; } = false;
         public int Score { get; set; } = 0;
+        public string Heading { get; set; } = "";
     }
 }

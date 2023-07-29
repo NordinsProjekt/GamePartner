@@ -12,5 +12,6 @@ namespace MtGDomain.Models
         public MtGCardColor Color { get; set; } = new MtGCardColor();
         public QuizType Quiz { get; set; }
         public int CmcValue { get; set; }
+        public string QuizSet { get; set; } = "";
     }
 }

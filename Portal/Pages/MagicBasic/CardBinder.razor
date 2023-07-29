@@ -1,0 +1,55 @@
+@layout MagicBasicLayout
+@page "/MagicBasic/CardBinder"
+@using Application.MtGCard_Service.Interface;
+@using Domain.MtGDomain.DTO;
+@using MtGDomain.Hashmaps;
+@inject IMtGCardRepository Repo
+
+<h1>Cardbinder</h1>
+<h2>@ActiveSetname</h2>
+<div class="d-flex bd-highlight" id="AllCardFromSelectedSet">
+    <div class="p-2 flex-fill bd-highlight">
+        @if(Loading)
+        {
+            <p>Hämtar korten, var vänlig vänta.</p>
+        }
+        @if(List is not null)
+        {
+            <table>
+                <tr><th>Number</th><th>Name</th><th>Manacost</th></tr>
+                @foreach (var card in List.OrderBy(x => x.Name).ToList())
+                {
+                    <tr>
+                        <td>@card.Number</td>
+                        <td>@card.Name</td>
+                        <td>@card.ManaCost</td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+    <div class="d-flex flex-column bd-highlight mb-3" id="MtGSetsContainer">
+        @if(!Loading)
+        {
+            @foreach (var item in MtGSets.Values.Keys)
+            {
+                <b @onclick='(()=>GetCards(MtGSets.Values[item]))'>@item</b>
+            }
+        }
+    </div>
+</div>
+
+@code {
+    public List<MtGCardRecordDTO> List { get; set; }
+    public string ActiveSetname { get; set; } = "";
+    private bool Loading { get; set; }
+    private async Task GetCards(string set)
+    {
+        Loading = true;
+        StateHasChanged();
+        List = await Repo.GetAllCardsFromASet(set);
+        ActiveSetname = MtGSets.Values.Where(x => x.Value.Equals(set)).First().Key;
+        Loading = false;
+        StateHasChanged();
+    }
+}

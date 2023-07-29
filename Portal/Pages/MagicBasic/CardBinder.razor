@@ -1,0 +1,39 @@
+﻿@layout MagicBasicLayout
+@page "/MagicBasic/CardBinder"
+@using Application.MtGCard_Service.Interface;
+@using Domain.MtGDomain.DTO;
+@inject IMtGCardRepository Repo
+
+<h1>Cardbinder</h1>
+<div class="d-flex bd-highlight">
+    <div class="p-2 flex-fill bd-highlight">
+        @if(List is not null)
+        {
+            <table>
+                <tr><th></th><th></th><th></th></tr>
+                @foreach (var card in List.OrderBy(x => x.Name).ToList())
+                {
+                    <tr>
+                        <td>@card.Number</td>
+                        <td>@card.Name</td>
+                        <td>@card.ManaCost</td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+    <div class="d-flex flex-column bd-highlight mb-3">
+        <b @onclick='(()=>GetCards("ISD"))'>Innistrad</b>
+        <b @onclick='(()=>GetCards("DKA"))'>Dark Ascension</b>
+        <b @onclick='(()=>GetCards("AVR"))'>Avacyn Restored</b>
+    </div>
+</div>
+
+@code {
+    public List<MtGCardRecordDTO> List { get; set; }
+    private async Task GetCards(string set)
+    {
+        List = await Repo.GetAllCardsFromASet(set);
+        StateHasChanged();
+    }
+}

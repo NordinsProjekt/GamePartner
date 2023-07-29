@@ -1,0 +1,147 @@
+﻿using Application.MtGCard_Service.Interface;
+using Domain.MtGDomain.DTO;
+using MtGCard_Service.Interface;
+using MtGDomain.DTO;
+using MtGDomain.Extensions;
+using MtGDomain.Hashmaps;
+using MtGDomain.States;
+
+namespace MtGCard_Service
+{
+    public class MtGQuizService : IMtGQuizService
+    {
+        private readonly ICardSetBuffer buffer;
+        private readonly IMtGCardRepository cardRepo;
+        private MtGQuizState state = new();
+
+        public MtGQuizService(ICardSetBuffer buffer, IMtGCardRepository cardRepo)
+        {
+            this.buffer = buffer;
+            this.cardRepo = cardRepo;
+        }
+
+        public async Task<List<(string Name, string Code)>> GetSupportedMtGSets()
+        {
+            List<(string Name, string Code)> newList = new();
+            foreach (var item in MtGSets.Values.Keys)
+            {
+                newList.Add((item, MtGSets.Values[item]));
+            }
+            
+            return newList;
+        }
+
+        public async Task<bool> StartQuiz(string setCode)
+        {
+            //await PopulateBuffer();
+            await AddSetToBuffer(setCode);
+            state.Score = 0;
+            state.Loading = true;
+            state.Heading = state.Model.QuizSet +" Edition";
+            var cards = await GetCards(MtGSets.Values[state.Model.QuizSet]);
+            state.List = cards.Shuffle().Take(20).ToList();
+            state.Max = state.List.Count();
+            state.Index = 0;
+            state.Loading = false;
+            SetQuizCard();
+            return true;
+        }
+        private async Task<List<MtGCardRecordDTO>> GetCards(string setCode)
+        {
+            List<MtGCardRecordDTO>? cardsFromBuffer = buffer.GetSet(setCode);
+            return cardsFromBuffer;
+        }
+
+        private async Task AddSetToBuffer(string setCode)
+        {
+            if (!buffer.DoesSetExist(setCode))
+            {
+                var cardsFromAPI = await cardRepo.GetAllCardsFromASet(setCode);
+                var cleanedList = cardsFromAPI.RemoveMtGType(new string[] { "land", "planeswalker", "battle" });
+                buffer.AddSet(new MtGCardSet(cleanedList, MtGSets.Values.First(x=>x.Value.Equals(setCode)).Key, setCode));
+            }
+        }
+        private async Task PopulateBuffer()
+        {
+            foreach (var key in MtGSets.Values.Keys)
+            {
+                if (!buffer.DoesSetExist(MtGSets.Values[key]))
+                {
+                    var cardsFromAPI = await cardRepo.GetAllCardsFromASet(MtGSets.Values[key]);
+                    var cleanedList = cardsFromAPI.RemoveMtGType(new string[] { "land", "planeswalker", "battle" });
+                    buffer.AddSet(new MtGCardSet(cleanedList, key, MtGSets.Values[key]));
+                }
+            }
+        }
+        public void CheckAnswerColor()
+        {
+            state.Result = state.GetColorQuizResult();
+            if (state.Result.Correct)
+            {
+                state.Score++;
+                state.Index++;
+                SetQuizCard();
+                return;
+            }
+            state.Index++;
+            SetQuizCard();
+            return;
+        }
+
+        public void CheckAnswerCmC()
+        {
+            state.Result = state.GetCmcQuizResult(state.Model.CmcValue);
+            if (state.Result.Correct)
+            {
+                state.Score++;
+                state.Index++;
+                SetQuizCard();
+                return;
+            }
+            state.Index++;
+            SetQuizCard();
+        }
+
+        public void CheckAnswer(string text)
+        {
+            state.Result = state.GetTypeQuizResult(text);
+            if (state.Result.Correct)
+            {
+                state.Score++;
+                state.Index++;
+                SetQuizCard();
+                return;
+            }
+            state.Index++;
+            SetQuizCard();
+        }
+
+        private void SetQuizCard()
+        {
+            if (state.Index >= state.Max)
+            {
+                EndQuiz();
+                return;
+            }
+            state.Model.Color.SetAllToFalse();
+            state.QuizCard = state.List[state.Index];
+            state.Loading = false;
+            state.GameStart = true;
+        }
+
+        public void EndQuiz()
+        {
+            state.Model = new();
+            state.List = new();
+            state.QuizCard = null;
+            state.GameStart = false;
+            state.Loading = false;
+            return;
+        }
+
+        public MtGQuizState GetQuizState()
+        {
+            return state;
+        }
+    }
+}

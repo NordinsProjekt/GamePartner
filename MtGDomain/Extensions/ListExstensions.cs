@@ -26,6 +26,10 @@ namespace MtGDomain.Extensions
             {
                 if (item.ImageUrl is "" || item.ImageUrl is null)
                     continue;
+
+                if (item.ManaCost is null)
+                    continue;
+
                 if (! item.MatchType(types))
                     newList.Add(item);
             }

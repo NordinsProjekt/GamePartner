@@ -135,8 +135,8 @@ namespace MtGCard_Service
             state.List = new();
             state.QuizCard = null;
             state.GameStart = false;
+            state.Result = null;
             state.Loading = false;
-            return;
         }
 
         public MtGQuizState GetQuizState()

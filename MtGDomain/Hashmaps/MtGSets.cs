@@ -5,9 +5,14 @@ namespace MtGDomain.Hashmaps
     {
         public static readonly Dictionary<string, string > Values = new Dictionary<string, string>
         {
-            { "Innistrad", "ISD" },
-            { "Dark Ascension", "DKA" },
+            { "Dominaria United", "DMU" },
+            { "Innistrad: Midnight Hunt", "MID" },
+            { "Eldritch Moon", "EMN" },
+            { "Magic Origins", "ORI" },
             { "Avacyn Restored", "AVR" },
+            { "Dark Ascension", "DKA" },
+            { "Innistrad", "ISD" },
+            { "New Phyrexian", "NPH" },
             { "The Dark", "DRK" }
         };
     }

@@ -17,7 +17,7 @@
         {
             <table>
                 <tr><th>Number</th><th>Name</th><th>Manacost</th></tr>
-                @foreach (var card in List.OrderBy(x => x.Name).ToList())
+                @foreach (var card in List.OrderBy(x => int.Parse(x.Number)).ToList())
                 {
                     <tr>
                         <td>@card.Number</td>

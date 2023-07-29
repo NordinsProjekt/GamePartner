@@ -56,7 +56,7 @@ else
                     <h2>Vilken typ har detta kortet? @(State.Index + 1) / @State.List.Count</h2>
                     <p>Cardname: @State.QuizCard.Name</p>
                     <button id="Enchantment" @onclick='(() => CheckAnswer("enchantment"))'>Enchantment</button>
-                    <button id="Artefact" @onclick='(() => CheckAnswer("artefact"))'>Artifact</button>
+                    <button id="Artefact" @onclick='(() => CheckAnswer("artifact"))'>Artifact</button>
                     <button id="Creature" @onclick='(() => CheckAnswer("creature"))'>Creature</button>
                     <button id="Instant" @onclick='(() => CheckAnswer("instant"))'>Instant</button>
                     <button id="Sorcery" @onclick='(() => CheckAnswer("sorcery"))'>Sorcery</button>

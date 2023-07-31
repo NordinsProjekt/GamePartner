@@ -160,7 +160,7 @@ namespace FrontendMagicBasicTests
             var button = quiz.Find("#startquiz");
 
             await button.ClickAsync(new MouseEventArgs());
-            var correctButton = quiz.Find("#Artefact");
+            var correctButton = quiz.Find("#Artifact");
             await correctButton.ClickAsync(new MouseEventArgs());
             int score = quiz.FindComponent<ScoreBoard>().Instance.Score;
 

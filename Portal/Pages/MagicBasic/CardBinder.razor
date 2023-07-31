@@ -3,10 +3,13 @@
 @using Application.MtGCard_Service.Interface;
 @using Domain.MtGDomain.DTO;
 @using MtGDomain.Hashmaps;
+@using Portal.Pages.MagicBasic.Components
 @inject IMtGCardRepository Repo
+@inject IJSRuntime JSRuntime
 
 <h1>Cardbinder</h1>
 <h2>@ActiveSetname</h2>
+<MtGInfoCard card="ActiveCard" />
 <div class="d-flex bd-highlight" id="AllCardFromSelectedSet">
     <div class="p-2 flex-fill bd-highlight">
         @if(Loading)
@@ -17,11 +20,11 @@
         {
             <table>
                 <tr><th>Number</th><th>Name</th><th>Manacost</th></tr>
-                @foreach (var card in List.OrderBy(x => int.Parse(x.Number)).ToList())
+                @foreach (var card in List)
                 {
                     <tr>
                         <td>@card.Number</td>
-                        <td>@card.Name</td>
+                        <td class="ClickCard" @onclick="(() => SetActiveCard(card.Number))">@card.Name</td>
                         <td>@card.ManaCost</td>
                     </tr>
                 }
@@ -40,16 +43,26 @@
 </div>
 
 @code {
-    public List<MtGCardRecordDTO> List { get; set; }
+    public MtGCardRecordDTO? ActiveCard { get; set; }
+    public List<MtGCardRecordDTO>? List { get; set; }
     public string ActiveSetname { get; set; } = "";
     private bool Loading { get; set; }
+
     private async Task GetCards(string set)
     {
         Loading = true;
+        List = null;
         StateHasChanged();
         List = await Repo.GetAllCardsFromASet(set);
         ActiveSetname = MtGSets.Values.Where(x => x.Value.Equals(set)).First().Key;
         Loading = false;
+        StateHasChanged();
+    }
+
+    private async Task SetActiveCard(string number)
+    {
+        ActiveCard = List.Where(x => x.Number.Equals(number)).First();
+        await JSRuntime.InvokeVoidAsync("OnScrollEvent");
         StateHasChanged();
     }
 }

@@ -1,4 +1,4 @@
-﻿@using Domain.MtGDomain.DTO;
+@using Domain.MtGDomain.DTO;
 
 @if (card != null)
 {
@@ -9,7 +9,8 @@
             <b>Legal in:</b><br />
             @foreach (var item in card.Legalities)
             {
-                @item.Format <br />
+                 string formatString = item.Format + ": ";
+                <b>@formatString</b>@item.LegalityName <br />
             }
         </p>
     </div>

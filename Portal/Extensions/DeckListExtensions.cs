@@ -1,4 +1,4 @@
-﻿using Domain.MtGDomain.DTO;
+using Domain.MtGDomain.DTO;
 using Infrastructure.MtGCard_API;
 using MtGDomain.DTO;
 using MtGDomain.Enums;
@@ -38,9 +38,11 @@ namespace Portal.Extensions
             {
                 foreach (var key in keyValues.Keys)
                 {
-                    var temp = card.Card.Legalities.Where(x => x.Format.Equals(key)).Any();
-                    if (temp)
+                    var temp = card.Card.Legalities.Where(x => x.Format.Equals(key)).FirstOrDefault();
+                    if (temp is not null && temp.LegalityName.Equals("Legal"))
+                    {
                         keyValues[key] += 1;
+                    }    
                 }
             }
 

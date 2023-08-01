@@ -33,13 +33,12 @@ namespace MtGCard_Service
 
         public async Task<bool> StartQuiz(string setCode)
         {
-            //await PopulateBuffer();
             await AddSetToBuffer(setCode);
             state.Score = 0;
             state.Loading = true;
             state.Heading = state.Model.QuizSet +" Edition";
             var cards = await GetCards(MtGSets.Values[state.Model.QuizSet]);
-            state.List = cards.Shuffle().Take(20).ToList();
+            state.List = cards.RemoveMtGType(new string[] { "land", "planeswalker", "battle" }).Shuffle().Take(20).ToList();
             state.Max = state.List.Count();
             state.Index = 0;
             state.Loading = false;
@@ -57,22 +56,10 @@ namespace MtGCard_Service
             if (!buffer.DoesSetExist(setCode))
             {
                 var cardsFromAPI = await cardRepo.GetAllCardsFromASet(setCode);
-                var cleanedList = cardsFromAPI.RemoveMtGType(new string[] { "land", "planeswalker", "battle" });
-                buffer.AddSet(new MtGCardSet(cleanedList, MtGSets.Values.First(x=>x.Value.Equals(setCode)).Key, setCode));
+                buffer.AddSet(new MtGCardSet(cardsFromAPI, MtGSets.Values.First(x=>x.Value.Equals(setCode)).Key, setCode));
             }
         }
-        private async Task PopulateBuffer()
-        {
-            foreach (var key in MtGSets.Values.Keys)
-            {
-                if (!buffer.DoesSetExist(MtGSets.Values[key]))
-                {
-                    var cardsFromAPI = await cardRepo.GetAllCardsFromASet(MtGSets.Values[key]);
-                    var cleanedList = cardsFromAPI.RemoveMtGType(new string[] { "land", "planeswalker", "battle" });
-                    buffer.AddSet(new MtGCardSet(cleanedList, key, MtGSets.Values[key]));
-                }
-            }
-        }
+
         public void CheckAnswerColor()
         {
             state.Result = state.GetColorQuizResult();

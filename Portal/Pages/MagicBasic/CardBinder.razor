@@ -2,9 +2,12 @@
 @page "/MagicBasic/CardBinder"
 @using Application.MtGCard_Service.Interface;
 @using Domain.MtGDomain.DTO;
+@using MtGCard_Service.Interface;
+@using MtGDomain.DTO;
 @using MtGDomain.Hashmaps;
 @using Portal.Pages.MagicBasic.Components
 @inject IMtGCardRepository Repo
+@inject ICardSetBuffer Buffer
 @inject IJSRuntime JSRuntime
 
 <h1>Cardbinder</h1>
@@ -36,7 +39,7 @@
         {
             @foreach (var item in MtGSets.Values.Keys)
             {
-                <b @onclick='(()=>GetCards(MtGSets.Values[item]))'>@item</b>
+                <b class="ClickCard" @onclick='(()=>GetCards(MtGSets.Values[item]))'>@item</b>
             }
         }
     </div>
@@ -53,7 +56,17 @@
         Loading = true;
         List = null;
         StateHasChanged();
-        List = await Repo.GetAllCardsFromASet(set);
+        if (Buffer.DoesSetExist(set))
+        {
+            List = Buffer.GetSet(set);
+        }
+        else
+        {
+            List = await Repo.GetAllCardsFromASet(set);
+            var mtgSet = new MtGCardSet(List,MtGSets.Values.Where(x => x.Value.Equals(set)).First().Key, set);
+            Buffer.AddSet(mtgSet);
+
+        }
         ActiveSetname = MtGSets.Values.Where(x => x.Value.Equals(set)).First().Key;
         Loading = false;
         StateHasChanged();

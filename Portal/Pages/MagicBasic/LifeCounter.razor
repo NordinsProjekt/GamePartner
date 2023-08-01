@@ -3,22 +3,22 @@
 
 <h1>LifeCounter</h1>
 
-<div class="flex-column">
-    <div id="rotate">
-        <div @onclick="PlayerOneAdd" class="p-2 w-100 bd-highlight" style="background-color:darkorange; height:125px">
+<div style="height: 85vh">
+    <div id="rotate" style="height:50%">
+        <div @onclick="PlayerOneAdd" class="p-2 w-100 bd-highlight" style="background-color:darkorange; height: 50%; ">
             <h2 class="text-center">Player 1</h2>
         </div>
 
-        <div @onclick="PlayerOneSub" class="p-2 w-100 bd-highlight" style="background-color:darkorange; height:125px">
+        <div @onclick="PlayerOneSub" class="p-2 w-100 bd-highlight" style="background-color:darkorange; height: 50%;">
             <h2 class="text-center">@Players[0]</h2>
         </div>
     </div>
-    <div>
-        <div @onclick="PlayerTwoAdd" class="p-2 w-100 bd-highlight" style="background-color:cornflowerblue; height:125px">
+    <div style="height:50%">
+        <div @onclick="PlayerTwoAdd" class="p-2 w-100 bd-highlight" style="background-color:cornflowerblue; height: 50%;">
             <h2 class="text-center">Player 2</h2>
         </div>
 
-        <div @onclick="PlayerTwoSub" class="p-2 w-100 bd-highlight" style="background-color:cornflowerblue; height:125px">
+        <div @onclick="PlayerTwoSub" class="p-2 w-100 bd-highlight" style="background-color:cornflowerblue; height: 50%;">
             <h2 class="text-center">@Players[1]</h2>
         </div>
     </div>

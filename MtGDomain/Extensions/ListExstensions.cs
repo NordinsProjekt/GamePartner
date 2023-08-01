@@ -13,6 +13,7 @@ namespace MtGDomain.Extensions
             for (int i = max-1; i > 0; i--)
             {
                 var temp = unsortedList[rnd.Next(i)];
+                unsortedList.Remove(temp);
                 newList.Add(temp);
             }
             return newList;

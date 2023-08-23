@@ -30,13 +30,13 @@
     else
     {
         <EditForm Model="@State.Model">
-            <select @bind="@State.Model.QuizSet">
+            <select id="QuizSetSelector" @bind="@State.Model.QuizSet">
                 @foreach(var set in MtGSets.Values.Keys)
                 {
                     <option value="@set">@set</option>
                 }
             </select>
-            <InputSelect @bind-Value="State.Model.Quiz">
+            <InputSelect id="QuizTypeSelector" @bind-Value="State.Model.Quiz">
                 <option>CMC</option>
                 <option>Type</option>
                 <option>Color</option>
@@ -46,7 +46,7 @@
     }
 }
 else
-
+{
     if (State.QuizCard is not null)
     {
         @switch (State.Model.Quiz)
@@ -67,7 +67,7 @@ else
                     <h2>Hur mycket CMC har detta kortet? @(State.Index + 1) / @State.List.Count</h2>
                     <p>Cardname: @State.QuizCard.Name</p>
                     <EditForm Model="@State.Model">
-                        <InputNumber @bind-Value="@State.Model.CmcValue" @ref="inputCmc" />
+                        <InputNumber id="inputCmc" @bind-Value="@State.Model.CmcValue" @ref="inputCmc" />
                             <button id="CmcCheck" @onclick="CheckAnswerCmC">Send</button>
                     </EditForm>
                 </div>
@@ -93,6 +93,7 @@ else
         }
         <ShowResult Result="State.Result" />
     }
+}
 
 @code {
     public string[] selector = new string[] { "Cardtype", "Card CMC", "Card Color" };

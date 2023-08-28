@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormattingTextTests", "Form
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrontendMagicBasicTests", "FrontendMagicBasicTests\FrontendMagicBasicTests.csproj", "{E633A557-4189-4FED-82D8-AA3CB934DD3B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{5044B765-D2F4-4955-9759-B91878A938A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{E633A557-4189-4FED-82D8-AA3CB934DD3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E633A557-4189-4FED-82D8-AA3CB934DD3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E633A557-4189-4FED-82D8-AA3CB934DD3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5044B765-D2F4-4955-9759-B91878A938A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5044B765-D2F4-4955-9759-B91878A938A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5044B765-D2F4-4955-9759-B91878A938A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5044B765-D2F4-4955-9759-B91878A938A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +93,7 @@ Global
 		{DF94CE3F-98B8-49F5-AB5A-47F1ADCF13D7} = {12992855-F9FB-4F07-BFCD-BD25CFB299BD}
 		{B511B463-A0B0-43FE-9DF1-4307BC8F3BEC} = {CAA8935A-F195-47E2-AFBB-F5DA3C411C68}
 		{E633A557-4189-4FED-82D8-AA3CB934DD3B} = {CAA8935A-F195-47E2-AFBB-F5DA3C411C68}
+		{5044B765-D2F4-4955-9759-B91878A938A6} = {CAA8935A-F195-47E2-AFBB-F5DA3C411C68}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BBDAA65E-C9C1-4A78-8768-F12836634D47}

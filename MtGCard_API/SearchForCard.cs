@@ -1,4 +1,4 @@
-﻿using Application.MtGCard_Service.Interface;
+﻿using ApplicationLayer.MtGCard_Service.Interface;
 using Domain.MtGDomain.DTO;
 using MtgApiManager.Lib.Core;
 using MtgApiManager.Lib.Model;
@@ -152,7 +152,7 @@ namespace Infrastructure.MtGCard_API
                 }
                 return list;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return new List<MtGCardRecordDTO>();
             }

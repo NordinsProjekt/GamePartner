@@ -1,0 +1,31 @@
+﻿@layout MagicLayout
+@page "/Magic/Commander/V2"
+@using MtGCard_Service;
+@using Domain.MtGDomain.DTO
+@inject MtGCommanderService CommanderService
+@inject MtGCardBufferService _buffer
+@inject IJSRuntime JS
+<h1>Commander V2</h1>
+<input type="text" @bind="SearchText" />
+<button @onclick="SearchForCard">Search for a card</button>
+<button @onclick="Top10">Show Top 10 Cards</button>
+@if(ShowProgress)
+{
+    <div class="col-md-4 p-3">
+        <center><img src="images/searching.gif" /></center>
+    </div>
+}
+else
+{
+    <InfoCard onSaveCard="AddCardToPlayer"
+          card="CommanderService.GetClickedCard()"
+          PlayerList="CommanderService.GetPlayerList()" />
+
+@*    <h2 @onclick="Top10">Top 10 Cards</h2>
+    <ShowSearchResult onShowCard="ShowCard"
+                  show="ShowClickedCardResult"
+                  List="CommanderService.GetTop10ClickedCards()" />*@
+
+    <h2 @onclick="SwitchCardPager">Search Result</h2>
+    <CardPager Jump="5" onClickedCard="@ShowCard" cardList="@CommanderService.GetSearchResult()" Show="@ShowCardPager" />
+}

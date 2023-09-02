@@ -1,0 +1,81 @@
+@layout MagicBasicLayout
+@page "/MagicBasic/CardBinder"
+@using ApplicationLayer.MtGCard_Service.Interface;
+@using Domain.MtGDomain.DTO;
+@using MtGCard_Service.Interface;
+@using MtGDomain.DTO;
+@using MtGDomain.Hashmaps;
+@using HybridMauiClient.Pages.MagicBasic.Components
+@inject IMtGCardRepository Repo
+@inject ICardSetBuffer Buffer
+@inject IJSRuntime JSRuntime
+
+<h1>Cardbinder</h1>
+<h2>@ActiveSetname</h2>
+<MtGInfoCard card="ActiveCard" />
+<div class="d-flex bd-highlight" id="AllCardFromSelectedSet">
+    <div class="p-2 flex-fill bd-highlight">
+        @if(Loading)
+        {
+            <p>Hämtar korten, var vänlig vänta.</p>
+        }
+        @if(List is not null)
+        {
+            <table>
+                <tr><th>Number</th><th>Name</th><th>Manacost</th></tr>
+                @foreach (var card in List)
+                {
+                    <tr>
+                        <td>@card.Number</td>
+                        <td class="ClickCard" @onclick="(() => SetActiveCard(card.Number))">@card.Name</td>
+                        <td>@card.ManaCost</td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+    <div class="d-flex flex-column bd-highlight mb-3" id="MtGSetsContainer">
+        @if(!Loading)
+        {
+            @foreach (var item in MtGSets.Values.Keys)
+            {
+                <b class="ClickCard" @onclick='(()=>GetCards(MtGSets.Values[item]))'>@item</b>
+            }
+        }
+    </div>
+</div>
+
+@code {
+    public MtGCardRecordDTO? ActiveCard { get; set; }
+    public List<MtGCardRecordDTO>? List { get; set; }
+    public string ActiveSetname { get; set; } = "";
+    private bool Loading { get; set; }
+
+    private async Task GetCards(string set)
+    {
+        Loading = true;
+        List = null;
+        StateHasChanged();
+        if (Buffer.DoesSetExist(set))
+        {
+            List = Buffer.GetSet(set);
+        }
+        else
+        {
+            List = await Repo.GetAllCardsFromASet(set);
+            var mtgSet = new MtGCardSet(List,MtGSets.Values.Where(x => x.Value.Equals(set)).First().Key, set);
+            Buffer.AddSet(mtgSet);
+
+        }
+        ActiveSetname = MtGSets.Values.Where(x => x.Value.Equals(set)).First().Key;
+        Loading = false;
+        StateHasChanged();
+    }
+
+    private async Task SetActiveCard(string number)
+    {
+        ActiveCard = List.Where(x => x.Number.Equals(number)).First();
+        await JSRuntime.InvokeVoidAsync("OnScrollEvent");
+        StateHasChanged();
+    }
+}

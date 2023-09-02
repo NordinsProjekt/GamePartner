@@ -1,0 +1,24 @@
+﻿@using MtGCard_Service.DTO
+<div>
+            <select @bind="@playerId">
+                @foreach (var player in PlayerList)
+                {
+                    <option value="@player.PlayerId">@player.PlayerName</option>
+                }
+            </select>
+            <button @onclick="SaveCard">Lägg till listan</button>
+</div>
+@code {
+    [Parameter]
+    public List<MtGPlayerRecord_DTO>? PlayerList { get; set; }
+    [Parameter]
+    public EventCallback<int> onSaveCard { get; set; }
+    public int playerId { get; set; }
+
+    public async Task SaveCard()
+    {
+        if (playerId >= 0)
+            await onSaveCard.InvokeAsync(playerId);
+        StateHasChanged();
+    }
+}

@@ -1,0 +1,35 @@
+@using Domain.MtGDomain.DTO;
+
+@if (card != null)
+{
+    <h2>@(card.Name)</h2>
+    <div class="d-flex justify-content-start gap-2" id="PicLegalInfo">
+        <img src="@(card.ImageUrl)" />
+        <p>
+            <b>Legal in:</b><br />
+            @foreach (var item in card.Legalities)
+            {
+                 string formatString = item.Format + ": ";
+                <b>@formatString</b>@item.LegalityName <br />
+            }
+        </p>
+    </div>
+
+    <div>
+        <p>@(card.Text)</p>
+        @if (card.Rulings != null)
+        {
+            @foreach (var rule in card.Rulings.OrderBy(x => x.Date))
+            {
+                        <p><b>@($"{rule.Date}")</b> @($"{rule.Text}")</p>
+            }
+                <br />
+                <br />
+        }
+    </div>
+}
+
+@code {
+    [Parameter]
+    public MtGCardRecordDTO? card { get; set; }
+}

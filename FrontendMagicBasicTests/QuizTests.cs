@@ -3,7 +3,7 @@ using Portal.Pages.MagicBasic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
-using Application.MtGCard_Service.Interface;
+using ApplicationLayer.MtGCard_Service.Interface;
 using MtGCard_API;
 using Bunit;
 using Microsoft.AspNetCore.Components.Web;

@@ -1,0 +1,73 @@
+﻿@using MtGCard_Service.Classes;
+@using MtGCard_Service.DTO
+@if (Show)
+{
+    <div class="d-flex flex-wrap flex-column bd-highlight mb-3" id="SavedCards">
+        @foreach (var player in PlayerList)
+        {
+            <h3>@player.GetPlayerName</h3>
+            <CommanderCardWindow commander="player.GetCommander()" PlayerIndex="player.GetPlayerId" onDelete="RemoveCommander"
+                onAddDeath="AddDeathToCommander" onRemoveDeath="RemoveDeathToCommander" />
+            <div class="d-flex flex-wrap flex-row bd-highlight mb-3">
+                @foreach (var card in player.CardList)
+                {
+                    <div class="p-2 bd-highlight flex-row">
+                        <h3>@card.Name</h3>
+                        <img src="@card.ImageUrl"/><br />
+                        <button @onclick="@(() => DeleteCard(card.Id,player.GetPlayerId))">Remove</button>
+                        <button @onclick="(() => UseAsCommander(card.Id,player.GetPlayerId))">Use as Commander</button>
+                        <div class="flex-column">
+                            @foreach (var ability in card.Abilities)
+                            {
+                                <div class="CreatureAbilityClass" style="font-size: 15px;">@ability.ToString()</div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+            <br />
+        }
+    </div>
+}
+
+@code {
+    [Parameter]
+    public List<MtGPlayer> PlayerList { get; set; } = new();
+    [Parameter]
+    public EventCallback<MtGDeleteCard_DTO> onDeleteCard { get; set; }
+    [Parameter]
+    public bool Show { get; set; } = true;
+
+    public async Task DeleteCard(string cardId,int playerIndex) =>
+            await onDeleteCard.InvokeAsync(new MtGDeleteCard_DTO(cardId,playerIndex));
+
+    public void UseAsCommander(string cardId, int playerIndex)
+    {
+        var player = PlayerList.FirstOrDefault(x => x.GetPlayerId == playerIndex);
+        if (player == null)
+            return;
+        var card = player.CardList.Where(x => x.Id == cardId).FirstOrDefault();
+        if (card == null)
+            return;
+        player.SetCommanderCard(card);
+        player.RemoveCardFromList(cardId);
+    }
+
+    public async Task RemoveCommander(int playerIndex)
+    {
+        var player = PlayerList.Where(x => x.GetPlayerId == playerIndex).FirstOrDefault();
+        player.GetCommander().RemoveCommanderCard();
+        player.GetCommander().ResetDiedCounter();
+    }
+    public async Task AddDeathToCommander(int playerIndex)
+    {
+        var player = PlayerList.Where(x => x.GetPlayerId == playerIndex).FirstOrDefault();
+        player.GetCommander().CommanderDied();
+    }
+
+    public async Task RemoveDeathToCommander(int playerIndex)
+    {
+        var player = PlayerList.Where(x => x.GetPlayerId == playerIndex).FirstOrDefault();
+        player.GetCommander().CommanderDiedHeal();
+    }
+}

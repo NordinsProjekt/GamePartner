@@ -1,4 +1,4 @@
-﻿using Application.MtGCard_Service.DTO;
+﻿using ApplicationLayer.MtGCard_Service.DTO;
 using Domain.MtGDomain.DTO;
 using MtGDomain.Models;
 using System;

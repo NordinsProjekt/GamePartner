@@ -1,7 +1,7 @@
-﻿using Application.MtGCard_Service.DTO;
-using Application.MtGCard_Service;
+﻿using ApplicationLayer.MtGCard_Service.DTO;
+using ApplicationLayer.MtGCard_Service;
 using Microsoft.AspNetCore.Components;
-using Application.MtGCard_Service.Interface;
+using ApplicationLayer.MtGCard_Service.Interface;
 using Microsoft.JSInterop;
 using System.Runtime.InteropServices;
 using MtGCard_Service.DTO;

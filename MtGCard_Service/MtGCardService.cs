@@ -1,8 +1,8 @@
-﻿using Application.MtGCard_Service.DTO;
-using Application.MtGCard_Service.Interface;
+﻿using ApplicationLayer.MtGCard_Service.DTO;
+using ApplicationLayer.MtGCard_Service.Interface;
 using Domain.MtGDomain.DTO;
 
-namespace Application.MtGCard_Service
+namespace ApplicationLayer.MtGCard_Service
 {
     public class MtGCardService
     {

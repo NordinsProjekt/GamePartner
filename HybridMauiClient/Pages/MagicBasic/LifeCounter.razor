@@ -1,0 +1,49 @@
+﻿@layout MagicBasicLayout
+@page "/MagicBasic/LifeCounter"
+
+<h1>LifeCounter</h1>
+
+<div style="height: 85vh">
+    <div id="rotate" style="height:50%">
+        <div @onclick="PlayerOneAdd" class="p-2 w-100 bd-highlight" style="background-color:lightgreen; height: 50%; ">
+            <h2 class="text-center">Player 1</h2>
+        </div>
+
+        <div @onclick="PlayerOneSub" class="p-2 w-100 bd-highlight" style="background-color:lightgreen; height: 50%;">
+            <h2 class="text-center">@Players[0]</h2>
+        </div>
+    </div>
+    <div style="height:50%">
+        <div @onclick="PlayerTwoAdd" class="p-2 w-100 bd-highlight" style="background-color:cornflowerblue; height: 50%;">
+            <h2 class="text-center">Player 2</h2>
+        </div>
+
+        <div @onclick="PlayerTwoSub" class="p-2 w-100 bd-highlight" style="background-color:cornflowerblue; height: 50%;">
+            <h2 class="text-center">@Players[1]</h2>
+        </div>
+    </div>
+</div>
+
+@code {
+    public int[] Players { get; set; } = new int[] {20,20};
+
+    private void PlayerOneAdd()
+    {
+        Players[0] += 1;
+    }
+
+    private void PlayerOneSub()
+    {
+        Players[0] -= 1;
+    }
+
+    private void PlayerTwoAdd()
+    {
+        Players[1] += 1;
+    }
+
+    private void PlayerTwoSub()
+    {
+        Players[1] -= 1;
+    }
+}

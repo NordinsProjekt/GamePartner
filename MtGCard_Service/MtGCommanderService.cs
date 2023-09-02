@@ -1,5 +1,5 @@
 ﻿
-using Application.MtGCard_Service.Interface;
+using ApplicationLayer.MtGCard_Service.Interface;
 using Domain.MtGDomain.DTO;
 using MtGCard_Service.Classes;
 using MtGCard_Service.Classes.Extensions;

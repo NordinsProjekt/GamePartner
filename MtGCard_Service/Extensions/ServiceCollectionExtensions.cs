@@ -1,4 +1,4 @@
-﻿using Application.MtGCard_Service.Interface;
+﻿using ApplicationLayer.MtGCard_Service.Interface;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MtGCard_Service.Extensions

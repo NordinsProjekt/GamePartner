@@ -4,10 +4,7 @@
 {
     <h2>@(card.Name)</h2>
     <div class="d-flex justify-content-start gap-2" id="PicLegalInfo">
-        @{
-            string url = card.ImageUrl.Replace("http", "https");
-        }
-        <img src="@(url)" />
+        <img src="@(card.ImageUrl)" />
         <p>
             <b>Legal in:</b><br />
             @foreach (var item in card.Legalities)

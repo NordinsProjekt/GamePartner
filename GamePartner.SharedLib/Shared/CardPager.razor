@@ -1,0 +1,46 @@
+﻿@using ApplicationLayer.MtGCard_Service.DTO
+@using Domain.MtGDomain.DTO;
+@using MtGCard_Service
+@if (cardList.Count > 0 && Show == true)
+{
+    <div>
+        <div class="d-flex flex-row flex-wrap">
+            @foreach (var card in GetCards())
+            {
+                    <div class="p-2 bd-highlight" @onclick="(() => ClickedCard(card.Id))">
+                        <h3>@card.Name</h3>
+                        <img src="@card.ImageUrl" />
+                    </div>
+            }
+        </div>
+        <div class="d-flex flex-row">
+            @{
+                int j = 1;
+            }
+            @for (int i = 0; i <= cardList.Count / Jump; i += 1)
+        {
+            int x = i*Jump;
+            <div style="padding: 5px;" @onclick="(() => UpdatePager(x))"><p><u>@j</u></p></div>
+            j++;
+        }
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public List<MtGCardRecordDTO> cardList { get; set; }
+    [Parameter]
+    public int Jump { get; set; } = 5;
+    [Parameter]
+    public string? SearchText { get; set; }
+    [Parameter]
+    public EventCallback<string> onClickedCard { get; set; }
+    [Parameter]
+    public bool Show { get; set; } = true;
+    private int index { get; set; } = 5;
+    public void UpdatePager(int num) => index = num+Jump;
+    private async Task ClickedCard(string id) => await onClickedCard.InvokeAsync(id);
+    private List<MtGCardRecordDTO> GetCards() =>
+        cardList.OrderBy(x => x.Name).Skip(index - Jump).Take(Jump).ToList();
+}

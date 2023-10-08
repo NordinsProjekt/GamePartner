@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "Integra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HybridMauiClient", "HybridMauiClient\HybridMauiClient.csproj", "{7C8F8B4C-BB4B-4A2D-9A9C-E754F0C813C1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamePartner.SharedLib", "GamePartner.SharedLib\GamePartner.SharedLib.csproj", "{F9458539-D841-4F1C-8737-39849F830AA7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{7C8F8B4C-BB4B-4A2D-9A9C-E754F0C813C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C8F8B4C-BB4B-4A2D-9A9C-E754F0C813C1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7C8F8B4C-BB4B-4A2D-9A9C-E754F0C813C1}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{F9458539-D841-4F1C-8737-39849F830AA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9458539-D841-4F1C-8737-39849F830AA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9458539-D841-4F1C-8737-39849F830AA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9458539-D841-4F1C-8737-39849F830AA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -103,6 +109,7 @@ Global
 		{E633A557-4189-4FED-82D8-AA3CB934DD3B} = {CAA8935A-F195-47E2-AFBB-F5DA3C411C68}
 		{5044B765-D2F4-4955-9759-B91878A938A6} = {CAA8935A-F195-47E2-AFBB-F5DA3C411C68}
 		{7C8F8B4C-BB4B-4A2D-9A9C-E754F0C813C1} = {2641E105-40FD-466E-B31D-F1D970E60B29}
+		{F9458539-D841-4F1C-8737-39849F830AA7} = {2641E105-40FD-466E-B31D-F1D970E60B29}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BBDAA65E-C9C1-4A78-8768-F12836634D47}

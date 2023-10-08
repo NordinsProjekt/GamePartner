@@ -1,0 +1,17 @@
+﻿@using MtGDomain.DTO;
+@using static GamePartner.SharedLib.Shared.MagicCardSearch;
+
+<label for="TypeId">Type: </label>
+<select @bind="Model.ChoosenValue" id="TypeId">
+    <option value="">--Please choose an option--</option>
+    @for (int i = 0; i < Model.Types.Length; i++)
+    {
+        <option value="@Model.Types[i]">@Model.Types[i]</option>
+    }
+</select>
+
+@code {
+
+    [Parameter]
+    public MtGTypeFilter Model { get; set; }
+}

@@ -152,7 +152,7 @@ namespace Infrastructure.MtGCard_API
                 }
                 return list;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new List<MtGCardRecordDTO>();
             }

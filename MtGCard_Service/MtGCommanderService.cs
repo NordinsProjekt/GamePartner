@@ -164,6 +164,7 @@ namespace MtGCard_Service
             //Lägg in en buffer här som kollar om kortet redan finns.
             if (string.IsNullOrWhiteSpace(cardName))
                 return;
+
             if (_bufferContext != null)
             {
                 if (SearchForCardInBuffer(cardName))
@@ -179,17 +180,21 @@ namespace MtGCard_Service
             searchResult = list.Where(img => img.ImageUrl != "")
                 .Where(img => img.ImageUrl != null)
                 .GroupBy(x => x.Name).Select(f => f.First()).ToList();
-            if (_bufferContext !=null)
+
+            if (_bufferContext != null)
                 _bufferContext.AddToSearchBuffer(cardName, searchResult);
         }
         private bool SearchForCardInBuffer(string cardName)
         {
+            if (_bufferContext is null) return false;
+
             var searchBuffer = _bufferContext.SearchCard(cardName);
             if (searchBuffer.Count() > 0)
             {
                 searchResult = searchBuffer;
                 return true;
             }
+
             return false;
         }
 
@@ -222,6 +227,8 @@ namespace MtGCard_Service
 
         public List<MtGCardRecordDTO> GetTop10ClickedCards()
         {
+            if (_bufferContext is null) throw new NullReferenceException("BufferContext is null");
+
             var result = _bufferContext.GetClickedCardList();
             if (result.Count() > 10)
                 return result.OrderByDescending(x=>x.NumOfTimesClicked).Select(c=>c.Card).Take(10).ToList();

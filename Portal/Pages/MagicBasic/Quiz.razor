@@ -48,7 +48,7 @@
 }
 else
 {
-    if (State.QuizCard is not null)
+    if (State is not null && State.QuizCard is not null)
     {
         @switch (State.Model.Quiz)
         {
@@ -63,6 +63,7 @@ else
                     <button id="Sorcery" @onclick='(() => CheckAnswer("sorcery"))'>Sorcery</button>
                 </div>
                 break;
+
             case QuizType.CMC:
                 <div id="QuizWindowCMC">
                     <h2>Hur mycket CMC har detta kortet? @(State.Index + 1) / @State?.List?.Count</h2>
@@ -73,6 +74,7 @@ else
                     </EditForm>
                 </div>
                 break;
+
             case QuizType.Color:
                 <div id="QuizWindowColor">
                     <h2>Vilken/Vilka färger har kortet? @(State.Index + 1) / @State.List.Count</h2>
@@ -88,6 +90,7 @@ else
                     
                 </div>
                 break;
+
             default:
                 Service.EndQuiz();
                 break;

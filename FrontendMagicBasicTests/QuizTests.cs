@@ -61,7 +61,7 @@ namespace FrontendMagicBasicTests
         }
 
         [Fact]
-        public async Task StartQuiz_CheckIfButtonIsMissing_ShouldNotContainButton()
+        public void StartQuiz_CheckIfButtonIsMissing_ShouldNotContainButton()
         {
             DisposeComponents();
             var quiz = RenderComponent<Quiz>();

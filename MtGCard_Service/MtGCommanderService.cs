@@ -232,7 +232,11 @@ namespace MtGCard_Service
         {
             CheckPlayerIndex(playerId);
             CheckSelectedCard(cardId);
-            players[playerId].SetCommanderCard(clickedCard);
+
+            if (clickedCard != null)
+            {
+                players[playerId].SetCommanderCard(clickedCard);
+            }
         }
 
         public bool CheckPlayerIndex(int playerIndex)

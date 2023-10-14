@@ -23,11 +23,14 @@ namespace MtGDomain.Base
             {
                 var namn = propertyInfo.Name;
                 var rule = Rules.Where(x=>x.PropertyName== namn).FirstOrDefault();
+
                 if (rule == null)
                     continue;
+
                 foreach (var req in rule.List)
                 {
                     bool Valid = req.Validate(propertyInfo.GetValue(obj, null));
+
                     if (Valid == false)
                     {
                         Log($"Property: {namn} failed validation, rule " + req.GetType().Name);

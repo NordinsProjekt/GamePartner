@@ -1,14 +1,4 @@
-﻿using Portal.Pages.MagicBasic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Bunit;
-using System.Threading.Tasks;
-using Portal.Pages.MagicBasic;
-using Portal.Pages.Magic;
-using FluentValidation;
-
+﻿
 namespace FrontendMagicBasicTests.LifeCounter
 {
     [Trait("Presentation", "Magic - LifeCounter")]

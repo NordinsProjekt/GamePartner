@@ -14,6 +14,7 @@
     public bool Show { get; set; } = true;
     public string SearchText { get; set; }
     public InfoCard _ref;
+
     public async Task SearchForCard()
     {
         await _commanderService.SearchForCard(SearchText);
@@ -24,9 +25,9 @@
         _commanderService.SetClickedCard(cardId);
     } 
 
-    public async Task AddCommanderCardToPlayer(int playerId)
+    public void AddCommanderCardToPlayer(int playerId)
     {
-        if (_ref != null)
+        if (_ref != null && _ref.card != null)
         {
             _commanderService.SetCommanderForPlayer(playerId, _ref.card.Id);
             Show = false;

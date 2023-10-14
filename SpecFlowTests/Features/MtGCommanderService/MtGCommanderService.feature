@@ -2,7 +2,6 @@
 
 
 Scenario: Attack for damage
-	Given Apply 2 damage
-	And to a player
-	When lifetotal is 20
-	Then Lifetotal should be 18
+	Given A Player has 20 life
+	When Player takes 5 damage
+	Then Lifetotal should be 15

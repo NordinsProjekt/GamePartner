@@ -24,7 +24,7 @@ namespace MtGCard_Service.Classes
         public int LifeTotal
         {
             get { return life.PlayerLife; }
-            private set { }
+            set { life.PlayerLife = value; }
         }
 
         public int GetPlayerPoisonCount
@@ -52,7 +52,7 @@ namespace MtGCard_Service.Classes
         public void HealCommanderDamage(int playerCommanderIndex,int commanderDamage)
             => life.PlayerHealsCommanderDamage(playerCommanderIndex,commanderDamage);
         public void AddCardToList(MtGCardRecordDTO card) => cardList.Add(card);
-        public void SetCommanderCard(MtGCardRecordDTO card) =>commander.SetCommanderCard(card);
+        public void SetCommanderCard(MtGCardRecordDTO card) => commander.SetCommanderCard(card);
         public MtGCardRecordDTO GetCommanderCard() => commander.GetCommanderCard();
         public List<MtGCardRecordDTO> CardList => cardList.ToList();
         public void RemoveCardFromList(string cardId)

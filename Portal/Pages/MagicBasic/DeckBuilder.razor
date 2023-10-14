@@ -78,6 +78,7 @@
     private int MainSum { get; set; } = 0;
     private int SideSum { get; set; } = 0;
     private MtGCardRecordDTO? CurrentCard { get; set; }
+
     private async Task CardCallback(MtGCardRecordDTO card)
     {
         await JSRuntime.InvokeVoidAsync("OnScrollEvent");

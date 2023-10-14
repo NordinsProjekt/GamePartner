@@ -148,7 +148,7 @@ namespace MtGCard_Service
                 _bufferContext.AddClickedCard(card);
         }
 
-        public MtGCardRecordDTO GetClickedCard() => clickedCard;
+        public MtGCardRecordDTO? GetClickedCard() => clickedCard;
 
         public void ClearClickedCard() => clickedCard = null;
 

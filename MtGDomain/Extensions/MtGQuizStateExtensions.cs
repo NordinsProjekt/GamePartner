@@ -9,7 +9,7 @@ namespace MtGDomain.Extensions
     {
         public static ResultRecord GetColorQuizResult(this MtGQuizState state)
         {
-            if (state.QuizCard.IsColorLess)
+            if (state.QuizCard is not null && state.QuizCard.IsColorLess)
             {
                 if (state.Model.Color.Black || state.Model.Color.Green || state.Model.Color.Red || state.Model.Color.Blue || state.Model.Color.White)
                     return new ResultRecord(false, state.QuizCard.ImageUrl);
@@ -48,7 +48,7 @@ namespace MtGDomain.Extensions
 
         public static ResultRecord GetCmcQuizResult(this MtGQuizState state, int cmc)
         {
-            if (state.QuizCard.Cmc == cmc)
+            if (state.QuizCard is not null && state.QuizCard.Cmc == cmc)
                 return new ResultRecord(true, state.QuizCard.ImageUrl);
 
             return new ResultRecord(false, state.QuizCard.ImageUrl);

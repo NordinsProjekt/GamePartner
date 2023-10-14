@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace MtGDomain.DTO
 {
-    public sealed record ResultRecord(bool Correct, string ImageUrl);
+    public sealed record ResultRecord(bool Correct, string? ImageUrl);
 }

@@ -12,12 +12,15 @@
 
 @code {
     public bool Show { get; set; } = true;
-    public string SearchText { get; set; }
+    public string? SearchText { get; set; }
     public InfoCard _ref;
 
     public async Task SearchForCard()
     {
-        await _commanderService.SearchForCard(SearchText);
+        if (!string.IsNullOrEmpty(SearchText))
+        {
+            await _commanderService.SearchForCard(SearchText);
+        }
     }
 
     public void ShowCard(string cardId)

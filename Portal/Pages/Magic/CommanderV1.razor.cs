@@ -26,7 +26,7 @@ namespace Portal.Pages.Magic
         protected override void OnInitialized()
         {
             for (int i = 0; i < 4; i++)
-                playerList.Add(MtGPlayerService.MakeNewPlayer(i, "Player " + (i + 1), 40, 0, null));
+                playerList.Add(MtGPlayerService.MakeNewPlayer(i, "Player " + (i + 1), 40, 0, new()));
         }
         public async void Search()
         {

@@ -16,7 +16,7 @@
 @inject IMtGQuizService Service
 
 <h1>Quiz @State?.Heading</h1>
-<ScoreBoard Score="@State?.Score" />
+<ScoreBoard Score="@State.Score" />
 
 @if (State?.GameStart is false)
 {
@@ -101,7 +101,7 @@ else
 
 @code {
     public string[] selector = new string[] { "Cardtype", "Card CMC", "Card Color" };
-    public MtGQuizState? State { get; set; }
+    public MtGQuizState State { get; set; } = new();
     public InputNumber<int>? inputCmc;
 
     protected override void OnInitialized()

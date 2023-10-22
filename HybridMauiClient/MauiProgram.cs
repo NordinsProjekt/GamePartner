@@ -7,6 +7,8 @@ using MtGCard_Service.Interface;
 using MtGCard_Service;
 using GenerateGuid.Extensions;
 using MtGCard_Service.Extensions;
+using HybridMauiClient.Auth;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace HybridMauiClient
 {
@@ -23,6 +25,8 @@ namespace HybridMauiClient
                 });
 
             builder.Services.AddMauiBlazorWebView();
+            builder.Services.AddAuthorizationCore();
+            builder.Services.AddScoped<AuthenticationStateProvider, ExternalAuthStateProvider>();
             builder.Services.AddTransient<IMtgServiceProvider, MtgServiceProvider>();
             builder.Services.AddTransient<IMtGCardRepository, SearchForCard>();
             builder.Services.AddTransient<IMtGQuizService, MtGQuizService>();

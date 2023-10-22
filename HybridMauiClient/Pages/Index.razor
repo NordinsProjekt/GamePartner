@@ -9,8 +9,6 @@
 @code {
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
-        // var test = (ExternalAuthStateProvider)AuthenticationStateProvider;
-        // var result = await test.LoginWithExternalProviderAsync();
         await ((ExternalAuthStateProvider)AuthenticationStateProvider)
             .LogInAsync();
 

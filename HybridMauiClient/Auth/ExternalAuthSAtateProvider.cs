@@ -15,7 +15,6 @@ namespace HybridMauiClient.Auth
             authenticationClient = PublicClientApplicationBuilder.Create("81793abd-11bb-4f80-96b4-c8042d70fd7e")
             //.WithB2CAuthority(Constants.AuthoritySignIn) // uncomment to support B2C
             .WithRedirectUri($"msal81793abd-11bb-4f80-96b4-c8042d70fd7e://auth")
-            //.WithRedirectUri($"https://0.0.0.0/")
             .Build();
         }
         public Task LogInAsync()
@@ -28,7 +27,10 @@ namespace HybridMauiClient.Auth
             async Task<AuthenticationState> LogInAsyncCore()
             {
                 var user = await LoginWithExternalProviderAsync();
-                currentUser = user;
+                if (user != null)
+                {
+                    currentUser = user;
+                }
 
                 return new AuthenticationState(currentUser);
             }
@@ -57,8 +59,14 @@ namespace HybridMauiClient.Auth
                 return null;
             }
             var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity());
+            if (result is null)
+            {
+                return authenticatedUser;   
+            }
 
-            return authenticatedUser;
+            var identity = new ClaimsIdentity("Custom");
+            authenticatedUser = new ClaimsPrincipal(identity);
+            return authenticatedUser ;
         }
 
         public void Logout()

@@ -26,7 +26,7 @@ namespace UnitTestForSolution._0._2_Infrastructure
         public void TryingOutSubstitute_CallingGetCardsByName_ShouldReturnAListOfCards()
         {
             var api = Substitute.For<IMtGCardRepository>();
-            api.GetCardsByName(default).ReturnsForAnyArgs(new List<MtGCardRecordDTO>());
+            api.GetCardsByName("").ReturnsForAnyArgs(new List<MtGCardRecordDTO>());
             var result = api.GetCardsByName("").Result;
             Assert.True(result.Count == 0);
         }
@@ -35,7 +35,7 @@ namespace UnitTestForSolution._0._2_Infrastructure
         public void TryingOutSubstitute_CallingGetCardsByName_ShouldReturnAListOfCardsWithCount1()
         {
             var api = Substitute.For<IMtGCardRepository>();
-            api.GetCardsByName(default).ReturnsForAnyArgs(new List<MtGCardRecordDTO>()
+            api.GetCardsByName("").ReturnsForAnyArgs(new List<MtGCardRecordDTO>()
             { new MtGCardObject() { Name = "Glissa"}.GetDTO() });
             var result = api.GetCardsByName("Gli").Result;
             Assert.True(result.Count == 1);

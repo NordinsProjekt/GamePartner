@@ -7,7 +7,7 @@ namespace MtGDomain.DTO
     {
         public int Amount { get; set; }
         public CardLocation Location { get; set; }
-        public MtGCardRecordDTO Card { get; set; }
+        public MtGCardRecordDTO? Card { get; set; }
 
         public bool IsBasicLand()
         {

@@ -27,6 +27,7 @@ namespace MtGCard_Service.Classes
         public int PlayerLife
         {
             get { return playerLife; }
+            set { playerLife = value; }
         }
         public int PlayerPoisonCount
         {

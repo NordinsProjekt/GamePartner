@@ -15,6 +15,6 @@ namespace ApplicationLayer.MtGCard_Service.Interface
         public void AddToSearchBuffer(string searchText, List<MtGCardRecordDTO> list);
         public void AddClickedCard(MtGCardRecordDTO card);
         public List<ClickedCardClass> GetClickedCardList();
-        public MtGCardRecordDTO GetCardById(string id);
+        public MtGCardRecordDTO? GetCardById(string id);
     }
 }

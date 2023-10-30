@@ -35,12 +35,13 @@ namespace MtGCard_API
         }
         public List<ClickedCardClass> GetClickedCardList() { return clickedList; }
 
-        public MtGCardRecordDTO GetCardById(string id)
+        public MtGCardRecordDTO? GetCardById(string id)
         {
             var c = clickedList.Where(c=>c.Card.Id == id).FirstOrDefault();
             if (c != null)
                 return c.Card;
-            return default(MtGCardRecordDTO);
+
+            return null;
         }
     }
 }

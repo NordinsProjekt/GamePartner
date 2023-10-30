@@ -15,7 +15,7 @@ namespace UnitTestForSolution._0._1_Presentation.Extensions
 
             list.AddCardToDeck(card, 1, MtGDomain.Enums.CardLocation.Main);
 
-            Assert.Equal(1, list.Count);
+            Assert.True(list.Count == 1);
         }
 
         [Fact]
@@ -31,7 +31,7 @@ namespace UnitTestForSolution._0._1_Presentation.Extensions
             list.AddCardToDeck(card, 1, MtGDomain.Enums.CardLocation.Main);
             var result = list.First(x=>x.Card.Name.Equals("TestCard1"));
 
-            Assert.Equal(1, list.Count);
+            Assert.True(list.Count == 1);
             Assert.Equal(2, result.Amount);
         }
 
@@ -47,7 +47,7 @@ namespace UnitTestForSolution._0._1_Presentation.Extensions
             list.AddCardToDeck(card, 3, MtGDomain.Enums.CardLocation.Main);
             var result = list.First(x => x.Card.Name.Equals("TestCard1"));
 
-            Assert.Equal(1, list.Count);
+            Assert.True(list.Count == 1);
             Assert.Equal(4, result.Amount);
         }
 
@@ -65,7 +65,7 @@ namespace UnitTestForSolution._0._1_Presentation.Extensions
             list.AddCardToDeck(card, 1, MtGDomain.Enums.CardLocation.Main);
             var result = list.First(x => x.Card.Name.Equals("TestCard1"));
 
-            Assert.Equal(1, list.Count);
+            Assert.True(list.Count == 1);
             Assert.Equal(4, result.Amount);
         }
 
@@ -82,7 +82,7 @@ namespace UnitTestForSolution._0._1_Presentation.Extensions
             list.AddCardToDeck(card, 22, MtGDomain.Enums.CardLocation.Main);
             var result = list.First(x => x.Card.Name.Equals("TestCard1"));
 
-            Assert.Equal(1, list.Count);
+            Assert.True(list.Count == 1);
             Assert.Equal(24, result.Amount);
         }
 
@@ -100,7 +100,7 @@ namespace UnitTestForSolution._0._1_Presentation.Extensions
             list.AddCardToDeck(card, 24, MtGDomain.Enums.CardLocation.Main);
             var result = list.First(x => x.Card.Name.Equals("TestCard1"));
 
-            Assert.Equal(1, list.Count);
+            Assert.True(list.Count == 1);
             Assert.Equal(24, result.Amount);
         }
 
@@ -117,7 +117,7 @@ namespace UnitTestForSolution._0._1_Presentation.Extensions
             list.AddCardToDeck(card, 1, MtGDomain.Enums.CardLocation.Main);
             var result = list.First(x => x.Card.Name.Equals("TestCard1"));
 
-            Assert.Equal(1, list.Count);
+            Assert.True(list.Count == 1);
             Assert.Equal(1, result.Amount);
         }
 
@@ -134,7 +134,7 @@ namespace UnitTestForSolution._0._1_Presentation.Extensions
             list.AddCardToDeck(card, 2, MtGDomain.Enums.CardLocation.Main);
             var result = list.First(x => x.Card.Name.Equals("TestCard1"));
 
-            Assert.Equal(1, list.Count);
+            Assert.True(list.Count == 1);
             Assert.Equal(2, result.Amount);
         }
 
@@ -151,7 +151,7 @@ namespace UnitTestForSolution._0._1_Presentation.Extensions
             list.AddCardToDeck(card, 3, MtGDomain.Enums.CardLocation.Main);
             var result = list.First(x => x.Card.Name.Equals("TestCard1"));
 
-            Assert.Equal(1, list.Count);
+            Assert.True(list.Count == 1);
             Assert.Equal(3, result.Amount);
         }
 

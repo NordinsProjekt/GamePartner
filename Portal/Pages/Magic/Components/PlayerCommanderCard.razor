@@ -1,10 +1,11 @@
 ﻿@inject MtGCard_Service.MtGCommanderService _commanderService
 @inject MtGCard_Service.MtGCardBufferService _buffer
+
 @if (Show)
 {
     <input type="text" @bind="SearchText" />
     <button @onclick="SearchForCard">Search for a card</button>
-    <InfoCard @ref ="_ref" onSaveCard="AddCommanderCardToPlayer"
+    <InfoCard @ref ="InfoCardRef" onSaveCard="AddCommanderCardToPlayer"
               card="_commanderService.GetClickedCard()"
               PlayerList="_commanderService.GetPlayerList()" />
     <CardPager Jump="5" onClickedCard="ShowCard" _rep="_buffer" SearchText="@SearchText" />
@@ -12,11 +13,15 @@
 
 @code {
     public bool Show { get; set; } = true;
-    public string SearchText { get; set; }
-    public InfoCard _ref;
+    public string? SearchText { get; set; }
+    public InfoCard? InfoCardRef { get; set; }
+
     public async Task SearchForCard()
     {
-        await _commanderService.SearchForCard(SearchText);
+        if (!string.IsNullOrEmpty(SearchText))
+        {
+            await _commanderService.SearchForCard(SearchText);
+        }
     }
 
     public void ShowCard(string cardId)
@@ -24,11 +29,11 @@
         _commanderService.SetClickedCard(cardId);
     } 
 
-    public async Task AddCommanderCardToPlayer(int playerId)
+    public void AddCommanderCardToPlayer(int playerId)
     {
-        if (_ref != null)
+        if (InfoCardRef != null && InfoCardRef.card != null)
         {
-            _commanderService.SetCommanderForPlayer(playerId, _ref.card.Id);
+            _commanderService.SetCommanderForPlayer(playerId, InfoCardRef.card.Id);
             Show = false;
         }
     }

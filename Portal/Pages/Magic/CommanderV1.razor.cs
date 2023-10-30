@@ -3,7 +3,6 @@ using ApplicationLayer.MtGCard_Service;
 using Microsoft.AspNetCore.Components;
 using ApplicationLayer.MtGCard_Service.Interface;
 using Microsoft.JSInterop;
-using System.Runtime.InteropServices;
 using MtGCard_Service.DTO;
 using MtGCard_Service;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -13,13 +12,13 @@ namespace Portal.Pages.Magic
 {
     public partial class CommanderV1
     {
-        [Inject]
-        IMtGCardRepository Rep { get; set; }
-        [Inject]
-        IJSRuntime JsRuntime { get; set; }
+        [Inject] IMtGCardRepository? Rep { get; set; }
+        [Inject] IJSRuntime? JsRuntime { get; set; }
+
         List<MtGCardRecordDTO> searchResult = new List<MtGCardRecordDTO>();
         MtGCardRecordDTO? clickedCard;
         public List<MtGPlayerLife_DTO> playerList = new List<MtGPlayerLife_DTO>();
+
         [BindRequired]
         public int playerId { get; set; }
         string? SearchText { get; set; }
@@ -27,10 +26,12 @@ namespace Portal.Pages.Magic
         protected override void OnInitialized()
         {
             for (int i = 0; i < 4; i++)
-                playerList.Add(MtGPlayerService.MakeNewPlayer(i, "Player " + (i + 1), 40, 0, null));
+                playerList.Add(MtGPlayerService.MakeNewPlayer(i, "Player " + (i + 1), 40, 0, new()));
         }
         public async void Search()
         {
+            if (Rep is null) throw new ArgumentNullException(nameof(Rep));
+
             MtGCardService mtg = new MtGCardService(Rep);
             if (SearchText !="")
             {
@@ -43,7 +44,7 @@ namespace Portal.Pages.Magic
         public async void ShowCard(string id)
         {
             clickedCard = searchResult.Where(x => x.Id == id).FirstOrDefault();
-            await JsRuntime.InvokeVoidAsync("OnScrollEvent");
+            await JsRuntime!.InvokeVoidAsync("OnScrollEvent");
             StateHasChanged();
         }
 

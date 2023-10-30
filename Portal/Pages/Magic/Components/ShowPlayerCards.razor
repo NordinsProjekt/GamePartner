@@ -31,12 +31,9 @@
 }
 
 @code {
-    [Parameter]
-    public List<MtGPlayer> PlayerList { get; set; } = new();
-    [Parameter]
-    public EventCallback<MtGDeleteCard_DTO> onDeleteCard { get; set; }
-    [Parameter]
-    public bool Show { get; set; } = true;
+    [Parameter] public List<MtGPlayer> PlayerList { get; set; } = new();
+    [Parameter] public EventCallback<MtGDeleteCard_DTO> onDeleteCard { get; set; }
+    [Parameter] public bool Show { get; set; } = true;
 
     public async Task DeleteCard(string cardId,int playerIndex) =>
             await onDeleteCard.InvokeAsync(new MtGDeleteCard_DTO(cardId,playerIndex));
@@ -44,30 +41,37 @@
     public void UseAsCommander(string cardId, int playerIndex)
     {
         var player = PlayerList.FirstOrDefault(x => x.GetPlayerId == playerIndex);
-        if (player == null)
-            return;
+        if (player == null) return;
+
         var card = player.CardList.Where(x => x.Id == cardId).FirstOrDefault();
-        if (card == null)
-            return;
+        if (card == null) return;
+
         player.SetCommanderCard(card);
         player.RemoveCardFromList(cardId);
     }
 
-    public async Task RemoveCommander(int playerIndex)
+    public void RemoveCommander(int playerIndex)
     {
         var player = PlayerList.Where(x => x.GetPlayerId == playerIndex).FirstOrDefault();
+        if (player is null) return;
+
         player.GetCommander().RemoveCommanderCard();
         player.GetCommander().ResetDiedCounter();
     }
-    public async Task AddDeathToCommander(int playerIndex)
+
+    public void AddDeathToCommander(int playerIndex)
     {
         var player = PlayerList.Where(x => x.GetPlayerId == playerIndex).FirstOrDefault();
+        if (player is null) return;
+
         player.GetCommander().CommanderDied();
     }
 
-    public async Task RemoveDeathToCommander(int playerIndex)
+    public void RemoveDeathToCommander(int playerIndex)
     {
         var player = PlayerList.Where(x => x.GetPlayerId == playerIndex).FirstOrDefault();
+        if (player is null) return;
+
         player.GetCommander().CommanderDiedHeal();
     }
 }

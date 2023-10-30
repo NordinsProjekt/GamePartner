@@ -44,7 +44,7 @@ namespace FrontendMagicBasicTests
         }
 
         [Fact]
-        public async Task StartQuiz_CheckIfButtonIsntThereAnymore_ShouldThrowElementNotFound()
+        public void StartQuiz_CheckIfButtonIsntThereAnymore_ShouldThrowElementNotFound()
         {
             DisposeComponents();
             var quiz = RenderComponent<Quiz>(); 
@@ -61,7 +61,7 @@ namespace FrontendMagicBasicTests
         }
 
         [Fact]
-        public async Task StartQuiz_CheckIfButtonIsMissing_ShouldNotContainButton()
+        public void StartQuiz_CheckIfButtonIsMissing_ShouldNotContainButton()
         {
             DisposeComponents();
             var quiz = RenderComponent<Quiz>();

@@ -48,7 +48,7 @@ namespace MtGCard_Service
         private async Task<List<MtGCardRecordDTO>> GetCards(string setCode)
         {
             List<MtGCardRecordDTO>? cardsFromBuffer = buffer.GetSet(setCode);
-            return cardsFromBuffer;
+            return await Task.FromResult(cardsFromBuffer);
         }
 
         private async Task AddSetToBuffer(string setCode)

@@ -16,7 +16,8 @@ namespace UnitTestForSolution._0._3_Application
     public class MtGCommanderService_Test
     {
         private MtGCardRecordDTO GetTestCard()
-            => new MtGCardRecordDTO("TestCard", "1", "This is a testcard", null, null, "https://www.img.com", "FR54", null, null, 0, false, false, "{1}{B}", "", "","", null);
+            => new MtGCardRecordDTO("TestCard", "1", "This is a testcard", new(), new(), "https://www.img.com", "FR54", new string[0], new string[0], 0, false, false, "{1}{B}", "", "","", new());
+
         [Fact]
         public void AddingACardToPlayerCardList_Player2WillGetTheCard_TheListShouldHaveCount1()
         {

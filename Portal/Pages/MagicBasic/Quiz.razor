@@ -1,5 +1,6 @@
 ﻿@layout MagicBasicLayout
 @page "/MagicBasic/Quiz"
+
 @using MtGDomain.Hashmaps;
 @using MtGDomain.States;
 @using ApplicationLayer.MtGCard_Service.Interface;
@@ -7,17 +8,17 @@
 @using MtGCard_Service.DTO;
 @using MtGCard_Service.Interface;
 @using MtGDomain.DTO;
-@using MtGDomain.States;
 @using Portal.Pages.MagicBasic.Components;
 @using Domain.MtGDomain.DTO
 @using MtGDomain.Enums
 @using MtGDomain.Extensions;
+
 @inject IMtGQuizService Service
 
-<h1>Quiz @State.Heading</h1>
+<h1>Quiz @State?.Heading</h1>
 <ScoreBoard Score="@State.Score" />
 
-@if (State.GameStart is false)
+@if (State?.GameStart is false)
 {
     <p>
         Se namnet på kortet och välj om det kommer från ett creature card,
@@ -47,14 +48,14 @@
 }
 else
 {
-    if (State.QuizCard is not null)
+    if (State is not null && State.QuizCard is not null)
     {
         @switch (State.Model.Quiz)
         {
             case QuizType.Type:
                 <div id="QuizWindowType">
-                    <h2>Vilken typ har detta kortet? @(State.Index + 1) / @State.List.Count</h2>
-                    <p>Cardname: @State.QuizCard.Name</p>
+                    <h2>Vilken typ har detta kortet? @(State.Index + 1) / @State?.List?.Count</h2>
+                    <p>Cardname: @State?.QuizCard.Name</p>
                     <button id="Enchantment" @onclick='(() => CheckAnswer("enchantment"))'>Enchantment</button>
                     <button id="Artefact" @onclick='(() => CheckAnswer("artifact"))'>Artifact</button>
                     <button id="Creature" @onclick='(() => CheckAnswer("creature"))'>Creature</button>
@@ -62,16 +63,18 @@ else
                     <button id="Sorcery" @onclick='(() => CheckAnswer("sorcery"))'>Sorcery</button>
                 </div>
                 break;
+
             case QuizType.CMC:
                 <div id="QuizWindowCMC">
-                    <h2>Hur mycket CMC har detta kortet? @(State.Index + 1) / @State.List.Count</h2>
-                    <p>Cardname: @State.QuizCard.Name</p>
-                    <EditForm Model="@State.Model">
+                    <h2>Hur mycket CMC har detta kortet? @(State.Index + 1) / @State?.List?.Count</h2>
+                    <p>Cardname: @State?.QuizCard?.Name</p>
+                    <EditForm Model="@State?.Model">
                         <InputNumber id="inputCmc" @bind-Value="@State.Model.CmcValue" @ref="inputCmc" />
                             <button id="CmcCheck" @onclick="CheckAnswerCmC">Send</button>
                     </EditForm>
                 </div>
                 break;
+
             case QuizType.Color:
                 <div id="QuizWindowColor">
                     <h2>Vilken/Vilka färger har kortet? @(State.Index + 1) / @State.List.Count</h2>
@@ -87,18 +90,19 @@ else
                     
                 </div>
                 break;
+
             default:
                 Service.EndQuiz();
                 break;
         }
-        <ShowResult Result="State.Result" />
+        <ShowResult Result="State!.Result" />
     }
 }
 
 @code {
     public string[] selector = new string[] { "Cardtype", "Card CMC", "Card Color" };
-    public MtGQuizState State { get; set; }
-    public InputNumber<int> inputCmc;
+    public MtGQuizState State { get; set; } = new();
+    public InputNumber<int>? inputCmc;
 
     protected override void OnInitialized()
     {

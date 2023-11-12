@@ -1,14 +1,18 @@
+using MagicRepositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+//var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-if (connectionString == null)
-{
-    throw new ApplicationException("DefaultConnection is not set");
-}
+//if (connectionString == null)
+//{
+//    throw new ApplicationException("DefaultConnection is not set");
+//}
+
+builder.Services.AddTransient<PortalContext>();
 // Add services to the container.
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
   .AddMicrosoftIdentityWebApi(builder.Configuration);
@@ -36,4 +40,9 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<PortalContext>();
+    await dbContext.Database.MigrateAsync();
+}
 app.Run();

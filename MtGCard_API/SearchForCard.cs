@@ -1,9 +1,9 @@
-﻿using ApplicationLayer.MtGCard_Service.Interface;
-using Domain.MtGDomain.DTO;
+﻿using Domain.MtGDomain.DTO;
 using MtgApiManager.Lib.Core;
 using MtgApiManager.Lib.Model;
 using MtgApiManager.Lib.Service;
 using MtGCard_API.Extensions;
+using MtGCard_Service.Interface;
 using MtGDomain.DTO;
 using MtGDomain.Extensions;
 using System.Collections.Generic;

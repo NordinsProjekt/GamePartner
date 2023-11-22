@@ -1,5 +1,4 @@
-﻿using ApplicationLayer.MtGCard_Service.Interface;
-using Infrastructure.MtGCard_API;
+﻿using Infrastructure.MtGCard_API;
 using Microsoft.Extensions.Logging;
 using MtgApiManager.Lib.Service;
 using MtGCard_API;

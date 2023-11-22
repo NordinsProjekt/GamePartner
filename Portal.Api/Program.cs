@@ -1,26 +1,32 @@
+using Infrastructure.MtGCard_API;
 using MagicRepositories;
+using MagicRepositories.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
-using System;
+using MtGCard_Service.Interface;
+using MtGCard_Service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-//var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-//if (connectionString == null)
-//{
-//    throw new ApplicationException("DefaultConnection is not set");
-//}
 
 builder.Services.AddTransient<PortalContext>();
+builder.Services.AddTransient <IMagicCardRepository,MagicCardRepository>();
+builder.Services.AddTransient<IMtGCardRepository, SearchForCard>();
+builder.Services.AddTransient<IMagicSetRepository, MagicSetRepository>();
+builder.Services.AddTransient<ICardTypeRepository, CardTypeRepository>();
+builder.Services.AddTransient<ISuperCardTypeRepository, SuperCardTypeRepository>();
+builder.Services.AddTransient<IMagicAbilityRepository, MagicAbilityRepository>();
+builder.Services.AddTransient<IMagicLegalityRepository, MagicLegalityRepository>();
+
+// Register your service as transient
+builder.Services.AddTransient<MagicCardService>();
 // Add services to the container.
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
   .AddMicrosoftIdentityWebApi(builder.Configuration);
 builder.Services.AddAuthorization();
-//builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

@@ -1,5 +1,4 @@
 using Infrastructure.MtGCard_API;
-using ApplicationLayer.MtGCard_Service.Interface;
 using MtGCard_API;
 using GenerateGuid.Extensions;
 using MtGCard_Service.Extensions;

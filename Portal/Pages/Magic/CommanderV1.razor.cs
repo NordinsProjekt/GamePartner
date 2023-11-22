@@ -1,12 +1,11 @@
 ﻿using ApplicationLayer.MtGCard_Service.DTO;
-using ApplicationLayer.MtGCard_Service;
 using Microsoft.AspNetCore.Components;
-using ApplicationLayer.MtGCard_Service.Interface;
 using Microsoft.JSInterop;
 using MtGCard_Service.DTO;
 using MtGCard_Service;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Domain.MtGDomain.DTO;
+using MtGCard_Service.Interface;
 
 namespace Portal.Pages.Magic
 {

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationLayer.MtGCard_Service.Interface
+namespace MtGCard_Service.Interface
 {
     public interface IMtGSearchBuffer
     {

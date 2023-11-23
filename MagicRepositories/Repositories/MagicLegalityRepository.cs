@@ -19,11 +19,11 @@ public class MagicLegalityRepository : IMagicLegalityRepository
 
     public MagicLegality FindOrCreateLegality(string format, string legalityName)
     {
-        var legality = _context.MagicLegalities.FirstOrDefault(l => l.Format == format && l.LegalityName == legalityName);
+        var legality = _context.MagicLegality.FirstOrDefault(l => l.Format == format && l.LegalityName == legalityName);
         if (legality == null)
         {
             legality = new MagicLegality { Id = Guid.NewGuid(), Format = format, LegalityName = legalityName };
-            _context.MagicLegalities.Add(legality);
+            _context.MagicLegality.Add(legality);
             _context.SaveChanges();  // Synchronous save, consider async in a real-world application
         }
         return legality;

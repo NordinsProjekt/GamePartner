@@ -22,7 +22,15 @@ namespace MagicRepositories.Repositories
         public async Task AddAsync(MagicCard card)
         {
             _context.MagicCards.Add(card);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
         }
 
         // Read

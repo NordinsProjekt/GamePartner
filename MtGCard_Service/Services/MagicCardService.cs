@@ -49,34 +49,41 @@ namespace MtGCard_Service.Services
 
         private async Task<MagicCard> ConvertToMagicCard(MtGCardRecordDTO cardDto)
         {
+            // First, check if the DTO itself is null
+            if (cardDto == null)
+            {
+                return null; // Or handle this case as per your application's requirements
+            }
+
             var magicCard = new MagicCard
             {
                 Id = Guid.NewGuid(),
-                Name = cardDto.Name,
-                CardId = cardDto.Id,
-                Text = cardDto.Text,
-                ImageUrl = cardDto.ImageUrl,
-                MultiverseId = cardDto.MultiverseId,
+                Name = cardDto.Name ?? string.Empty,
+                CardId = cardDto.Id ?? string.Empty,
+                Text = cardDto.Text ?? string.Empty,
+                ImageUrl = cardDto.ImageUrl ?? string.Empty,
+                MultiverseId = cardDto.MultiverseId ?? string.Empty,
                 Cmc = cardDto.Cmc,
                 IsColorLess = cardDto.IsColorLess,
                 IsMultiColor = cardDto.IsMultiColor,
-                ManaCost = cardDto.ManaCost,
-                CollectingNumber = cardDto.Number,
-                MagicSet = await _setRepository.FindOrCreateSet(cardDto.SetName, cardDto.Set),
-                Rulings = cardDto.Rulings.Select(r => new MagicRuling
+                ManaCost = cardDto.ManaCost ?? string.Empty,
+                CollectingNumber = cardDto.Number ?? string.Empty,
+                MagicSet = cardDto.Set != null ? await _setRepository.FindOrCreateSet(cardDto.SetName, cardDto.Set) : null,
+                Rulings = cardDto.Rulings != null ? cardDto.Rulings.Select(r => new MagicRuling
                 {
                     Id = Guid.NewGuid(),
                     Date = DateTime.Parse(r.Date),
-                    Text = r.Text
-                }).ToList(),
-                Abilities = cardDto.Abilities.Select(a => _abilityRepository.FindOrCreateAbility(a)).ToList(),
-                CardTypes = cardDto.Types.Select(t => _typeRepository.FindOrCreateCardType(t)).ToList(),
-                SuperCardTypes = cardDto.SuperTypes.Select(st => _superTypeRepository.FindOrCreateSuperCardType(st)).ToList(),
-                MagicLegalities = cardDto.Legalities.Select(l => _legalityRepository.FindOrCreateLegality(l.Format, l.LegalityName)).ToList()
+                    Text = r.Text ?? string.Empty
+                }).ToList() : new List<MagicRuling>(),
+                Abilities = cardDto.Abilities != null ? cardDto.Abilities.Select(a => _abilityRepository.FindOrCreateAbility(a)).ToList() : new List<MagicAbility>(),
+                CardTypes = cardDto.Types != null ? cardDto.Types.Select(t => _typeRepository.FindOrCreateCardType(t)).ToList() : new List<CardType>(),
+                SuperCardTypes = cardDto.SuperTypes != null ? cardDto.SuperTypes.Select(st => _superTypeRepository.FindOrCreateSuperCardType(st)).ToList() : new List<SuperCardType>(),
+                MagicLegalities = cardDto.Legalities != null ? cardDto.Legalities.Select(l => _legalityRepository.FindOrCreateLegality(l.Format, l.LegalityName)).ToList() : new List<MagicLegality>()
             };
 
             return magicCard;
         }
+
 
     }
 }

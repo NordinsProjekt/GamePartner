@@ -12,9 +12,9 @@ namespace MagicRepositories
 
         public DbSet<MagicCard> MagicCards { get; set; }
         public DbSet<MagicSet> MagicSets { get; set; }
-        public DbSet<CardType> CardTypes { get; set; }
+        public DbSet<CardType> CardType { get; set; }
         public DbSet<SuperCardType> SuperCardTypes { get; set; }
-        public DbSet<MagicAbility> Abilities { get; set; }
-        public DbSet<MagicLegality> MagicLegalities { get; set; }
+        public DbSet<MagicAbility> MagicAbility { get; set; }
+        public DbSet<MagicLegality> MagicLegality { get; set; }
     }
 }

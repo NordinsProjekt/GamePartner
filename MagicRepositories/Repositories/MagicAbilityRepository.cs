@@ -19,11 +19,11 @@ namespace MagicRepositories.Repositories
 
         public MagicAbility FindOrCreateAbility(string abilityName)
         {
-            var ability = _context.Abilities.FirstOrDefault(a => a.Name == abilityName);
+            var ability = _context.MagicAbility.FirstOrDefault(a => a.Name == abilityName);
             if (ability == null)
             {
                 ability = new MagicAbility { Id = Guid.NewGuid(), Name = abilityName };
-                _context.Abilities.Add(ability);
+                _context.MagicAbility.Add(ability);
                 _context.SaveChanges();  // Synchronous save, consider async in a real-world application
             }
             return ability;

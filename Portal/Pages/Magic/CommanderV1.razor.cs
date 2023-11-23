@@ -1,4 +1,4 @@
-﻿using ApplicationLayer.MtGCard_Service.DTO;
+﻿using MtGCard_Service.DTO;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MtGCard_Service.DTO;

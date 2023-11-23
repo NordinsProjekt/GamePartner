@@ -4,19 +4,21 @@ using MagicRepositories.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
+using MtgApiManager.Lib.Service;
 using MtGCard_Service.Interface;
 using MtGCard_Service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddTransient<PortalContext>();
-builder.Services.AddTransient <IMagicCardRepository,MagicCardRepository>();
+builder.Services.AddTransient <IMagicCardRepository, MagicCardRepository>();
 builder.Services.AddTransient<IMtGCardRepository, SearchForCard>();
 builder.Services.AddTransient<IMagicSetRepository, MagicSetRepository>();
 builder.Services.AddTransient<ICardTypeRepository, CardTypeRepository>();
 builder.Services.AddTransient<ISuperCardTypeRepository, SuperCardTypeRepository>();
 builder.Services.AddTransient<IMagicAbilityRepository, MagicAbilityRepository>();
 builder.Services.AddTransient<IMagicLegalityRepository, MagicLegalityRepository>();
+builder.Services.AddTransient<IMtgServiceProvider, MtgServiceProvider>();
 
 // Register your service as transient
 builder.Services.AddTransient<MagicCardService>();

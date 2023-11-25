@@ -4,6 +4,6 @@ namespace MtGCard_Service.Interface
 {
     public interface IMagicLegalityRepository
     {
-        MagicLegality FindOrCreateLegality(string format, string legalityName);
+        Task<MagicCardMagicLegality> FindOrCreateLegality(string format, string legalityName, Guid cardId);
     }
 }

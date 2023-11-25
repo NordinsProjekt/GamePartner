@@ -1,10 +1,6 @@
-﻿using MtGCard_Service.Interface;
+﻿using Microsoft.Extensions.DependencyInjection;
+using MtGCard_Service.Interface;
 using MtGDomain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MagicRepositories.Repositories;
 
@@ -17,17 +13,28 @@ public class CardTypeRepository : ICardTypeRepository
         _context = context;
     }
 
-    public CardType FindOrCreateCardType(string typeName)
+    public async Task<CardTypeMagicCard> FindOrCreateCardType(string typeName, Guid cardId)
     {
-        var type = _context.CardType.FirstOrDefault(ct => ct.Name == typeName);
-        if (type == null)
+        try
         {
-            type = new CardType { Id = Guid.NewGuid(), Name = typeName };
-            _context.CardType.Add(type);
-            _context.SaveChanges();  // Synchronous save, consider async in a real-world application
-        }
-        return type;
-    }
+                var type = _context.CardType.FirstOrDefault(ct => ct.Name == typeName);
 
-    // Other CRUD operations can be added here
+                if (type == null)
+                {
+                    type = new CardType
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = typeName
+                    };
+                    _context.CardType.Add(type);
+                    await _context.SaveChangesAsync();
+                }
+
+                return new() { CardTypeId = type.Id, MagicCardId = cardId };
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+    }
 }

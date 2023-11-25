@@ -1,10 +1,6 @@
-﻿using MtGCard_Service.Interface;
+﻿using Microsoft.EntityFrameworkCore;
+using MtGCard_Service.Interface;
 using MtGDomain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MagicRepositories.Repositories;
 
@@ -17,17 +13,27 @@ public class SuperCardTypeRepository : ISuperCardTypeRepository
         _context = context;
     }
 
-    public SuperCardType FindOrCreateSuperCardType(string typeName)
+    public async Task<MagicCardSuperCardType> FindOrCreateSuperCardType(string typeName, Guid cardId)
     {
-        var type = _context.SuperCardTypes.FirstOrDefault(ct => ct.Name == typeName);
-        if (type == null)
+        try
         {
-            type = new SuperCardType { Id = Guid.NewGuid(), Name = typeName };
-            _context.SuperCardTypes.Add(type);
-            _context.SaveChanges();  // Synchronous save, consider async in a real-world application
-        }
-        return type;
-    }
 
-    // Other CRUD operations can be added here
+            var type = _context.SuperCardTypes.FirstOrDefault(ct => ct.Name == typeName);
+            if (type == null)
+            {
+                type = new SuperCardType { Id = Guid.NewGuid(), Name = typeName };
+                _context.SuperCardTypes.Add(type);
+                await _context.SaveChangesAsync();
+            }
+
+            return new() { SuperCardTypeId = type.Id, MagicCardId = cardId };
+        
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
+
+    }
 }

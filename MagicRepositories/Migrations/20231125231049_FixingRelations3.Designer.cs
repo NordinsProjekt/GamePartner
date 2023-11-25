@@ -3,6 +3,7 @@ using System;
 using MagicRepositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MagicRepositories.Migrations
 {
     [DbContext(typeof(PortalContext))]
-    partial class PortalContextModelSnapshot : ModelSnapshot
+    [Migration("20231125231049_FixingRelations3")]
+    partial class FixingRelations3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -118,6 +121,9 @@ namespace MagicRepositories.Migrations
                     b.Property<bool>("IsMultiColor")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<Guid?>("MagicLegalityId")
+                        .HasColumnType("char(36)");
+
                     b.Property<Guid>("MagicSetId")
                         .HasColumnType("char(36)");
 
@@ -138,6 +144,8 @@ namespace MagicRepositories.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MagicLegalityId");
 
                     b.HasIndex("MagicSetId");
 
@@ -319,6 +327,10 @@ namespace MagicRepositories.Migrations
 
             modelBuilder.Entity("MtGDomain.Entities.MagicCard", b =>
                 {
+                    b.HasOne("MtGDomain.Entities.MagicLegality", null)
+                        .WithMany("MagicCards")
+                        .HasForeignKey("MagicLegalityId");
+
                     b.HasOne("MtGDomain.Entities.MagicSet", "MagicSet")
                         .WithMany()
                         .HasForeignKey("MagicSetId")
@@ -337,7 +349,7 @@ namespace MagicRepositories.Migrations
                         .IsRequired();
 
                     b.HasOne("MtGDomain.Entities.MagicLegality", "MagicLegality")
-                        .WithMany("MagicCards")
+                        .WithMany()
                         .HasForeignKey("MagicLegalityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

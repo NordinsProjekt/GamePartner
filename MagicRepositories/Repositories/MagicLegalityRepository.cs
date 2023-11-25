@@ -1,4 +1,5 @@
-﻿using MtGCard_Service.Interface;
+﻿using Microsoft.EntityFrameworkCore;
+using MtGCard_Service.Interface;
 using MtGDomain.Entities;
 using System;
 using System.Collections.Generic;
@@ -17,17 +18,17 @@ public class MagicLegalityRepository : IMagicLegalityRepository
         _context = context;
     }
 
-    public MagicLegality FindOrCreateLegality(string format, string legalityName)
+    public async Task<MagicCardMagicLegality> FindOrCreateLegality(string format, string legalityName, Guid cardId)
     {
-        var legality = _context.MagicLegality.FirstOrDefault(l => l.Format == format && l.LegalityName == legalityName);
+
+        var legality = await _context.MagicLegality.FirstOrDefaultAsync(l => l.Format == format && l.LegalityName == legalityName);
         if (legality == null)
         {
             legality = new MagicLegality { Id = Guid.NewGuid(), Format = format, LegalityName = legalityName };
             _context.MagicLegality.Add(legality);
-            _context.SaveChanges();  // Synchronous save, consider async in a real-world application
+            await _context.SaveChangesAsync();
         }
-        return legality;
-    }
 
-    // Other CRUD operations can be added here
+        return new() { MagicLegalityId = legality.Id, MagicCardId = cardId };
+    }
 }

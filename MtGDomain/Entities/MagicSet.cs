@@ -11,6 +11,6 @@ namespace MtGDomain.Entities
         public Guid Id { get; set; }
         public string SetName { get; set; }
         public string SetCode { get; set; }
-        ICollection<MagicCard> MagicCards { get; set; }
+        ICollection<MagicSetMagicCard> MagicCards { get; set; }
     }
 }

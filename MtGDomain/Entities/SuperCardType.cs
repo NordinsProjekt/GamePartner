@@ -10,6 +10,6 @@ namespace MtGDomain.Entities
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public ICollection<MagicCard> MagicCards { get; set; }
+        public ICollection<MagicCardSuperCardType> MagicCards { get; set; }
     }
 }

@@ -4,6 +4,6 @@ namespace MtGCard_Service.Interface
 {
     public interface IMagicAbilityRepository
     {
-        MagicAbility FindOrCreateAbility(string abilityName);
+        Task<MagicAbilityMagicCard> FindOrCreateAbility(string abilityName, Guid cardId);
     }
 }

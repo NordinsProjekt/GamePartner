@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace MtGDomain.Entities
 {
-    public class CardType
+    public class MagicAbilityMagicCard
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public ICollection<CardTypeMagicCard> MagicCards { get; set; }
+        public Guid MagicAbilityId { get; set; }
+        public Guid MagicCardId { get; set; }
     }
 }

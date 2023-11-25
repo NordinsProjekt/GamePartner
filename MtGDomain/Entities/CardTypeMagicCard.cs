@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace MtGDomain.Entities
 {
-    public class MagicRuling
+    public class CardTypeMagicCard
     {
         public Guid Id { get; set; }
-        public DateTime Date { get; set; }
-        public string Text { get; set; }
+        public Guid CardTypeId { get; set; }
+        public CardType CardType { get; set; }
 
         public Guid MagicCardId { get; set; }
         public MagicCard MagicCard { get; set; }

@@ -1,4 +1,5 @@
-﻿using MtGCard_Service.Interface;
+﻿using Microsoft.EntityFrameworkCore;
+using MtGCard_Service.Interface;
 using MtGDomain.Entities;
 
 namespace MagicRepositories.Repositories;
@@ -14,7 +15,6 @@ public class MagicSetRepository : IMagicSetRepository
 
     public async Task<Guid> FindOrCreateSet(string setName, string setCode)
     {
-
         var set = _context.MagicSets.FirstOrDefault(s => s.SetCode == setCode);
         if (set == null)
         {
@@ -24,5 +24,11 @@ public class MagicSetRepository : IMagicSetRepository
                     
         }
         return set.Id;
+    }
+
+    public async Task<bool> FindSetBySetCode(string setCode)
+    {
+        var result = await _context.MagicSets.FirstOrDefaultAsync(x=>x.SetCode.Equals(setCode));
+        return result is not null;
     }
 }

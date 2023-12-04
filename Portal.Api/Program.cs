@@ -10,7 +10,7 @@ using MtGCard_Service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddTransient<PortalContext>();
+builder.Services.AddScoped<PortalContext>();
 builder.Services.AddTransient <IMagicCardRepository, MagicCardRepository>();
 builder.Services.AddTransient<IMtGCardRepository, SearchForCard>();
 builder.Services.AddTransient<IMagicSetRepository, MagicSetRepository>();

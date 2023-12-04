@@ -10,6 +10,7 @@ namespace MtGDomain.Entities
     {
         public Guid Id { get; set; }
         public Guid MagicAbilityId { get; set; }
+        public MagicAbility MagicAbility { get; set; }
         public Guid MagicCardId { get; set; }
     }
 }

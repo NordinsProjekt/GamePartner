@@ -1,5 +1,6 @@
 ﻿using Domain.MtGDomain.DTO;
 using MtGCard_Service.Interface;
+using MtGDomain.DTO;
 using MtGDomain.Entities;
 using System;
 using System.Collections.Generic;
@@ -51,8 +52,65 @@ public class MagicCardService : IMagicCardService
             {
                 //Log
             }
-
         }
+    }
+
+    public async Task<MtGCardSet> LoadCardsFromSet(string setCode)
+    {
+        var list = new List<MtGCardRecordDTO>();
+
+        var magicSet = await _setRepository.GetSetByCode(setCode);
+        if (magicSet is null)
+            return null;
+
+        // Convert to RecordDTO
+        foreach (var item in magicSet.MagicCards)
+        {
+            if (item == null) continue; // Skip if item is null
+
+            // Handle potential null values in collections
+            var rulings = item.Rulings?.Select(x => new MtGRulingRecord_DTO(
+                Date: x.Date.ToString(),
+                Text: x.Text)).ToList() ?? new List<MtGRulingRecord_DTO>();
+
+            var abilities = item.Abilities?.Select(x => x.MagicAbility?.Name).ToList() ?? new List<string>();
+
+            var cardTypes = item.CardTypes?.Select(x => x.CardType?.Name).ToArray() ?? Array.Empty<string>();
+
+            var superCardTypes = item.SuperCardTypes?.Select(x => x.SuperCardType?.Name).ToArray() ?? Array.Empty<string>();
+
+            var legalities = item.MagicLegalities?.Select(x => new MtGLegality(
+                Format: x.MagicLegality?.Format,
+                LegalityName: x.MagicLegality?.LegalityName)).ToList() ?? new List<MtGLegality>();
+
+            // Create DTO object with named arguments for clarity
+            try
+            {
+                var recordDto = new MtGCardRecordDTO(
+                    Name: item.Name,
+                    Id: item.CardId,
+                    Text: item.Text,
+                    Rulings: rulings,
+                    Abilities: abilities,
+                    ImageUrl: item.ImageUrl,
+                    MultiverseId: item.MultiverseId,
+                    Types: cardTypes,
+                    SuperTypes: superCardTypes,
+                    Cmc: item.Cmc,
+                    IsColorLess: item.IsColorLess,
+                    IsMultiColor: item.IsMultiColor,
+                    ManaCost: item.ManaCost,
+                    SetName: item.MagicSet?.SetName,
+                    Set: item.MagicSet?.SetCode,
+                    Number: item.CollectingNumber,
+                    Legalities: legalities
+                );
+                list.Add(recordDto);
+            }
+            catch ( Exception ex ) { }
+        }
+
+        return new(list, magicSet.SetName, magicSet.SetCode); 
     }
 
     private async Task<MagicCard> ConvertToMagicCard(MtGCardRecordDTO cardDto)
@@ -115,5 +173,18 @@ public class MagicCardService : IMagicCardService
 
 
         return magicCard;
+    }
+
+    public Task GetSetBySetCode(string setCode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<List<MtGSetRecordDTO>> GetSetList()
+    {
+        var list = new List<MtGSetRecordDTO>();
+        var result = await _setRepository.GetAll();
+        result.ForEach(x=> list.Add(new(x.SetName, x.SetCode)));
+        return list;
     }
 }

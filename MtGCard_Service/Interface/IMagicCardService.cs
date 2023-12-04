@@ -9,4 +9,6 @@ namespace MtGCard_Service.Interface;
 public interface IMagicCardService
 {
     Task SaveCardsFromSet(string setCode);
+    Task GetSetBySetCode(string setCode);
+    Task GetSetList();
 }

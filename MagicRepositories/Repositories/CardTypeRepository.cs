@@ -17,20 +17,20 @@ public class CardTypeRepository : ICardTypeRepository
     {
         try
         {
-                var type = _context.CardType.FirstOrDefault(ct => ct.Name == typeName);
+            var type = _context.CardType.FirstOrDefault(ct => ct.Name == typeName);
 
-                if (type == null)
+            if (type == null)
+            {
+                type = new CardType
                 {
-                    type = new CardType
-                    {
-                        Id = Guid.NewGuid(),
-                        Name = typeName
-                    };
-                    _context.CardType.Add(type);
-                    await _context.SaveChangesAsync();
-                }
+                    Id = Guid.NewGuid(),
+                    Name = typeName
+                };
+                _context.CardType.Add(type);
+                await _context.SaveChangesAsync();
+            }
 
-                return new() { CardTypeId = type.Id, MagicCardId = cardId };
+            return new() { CardTypeId = type.Id, MagicCardId = cardId };
         }
         catch (Exception ex)
         {

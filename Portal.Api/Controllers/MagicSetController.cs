@@ -41,5 +41,30 @@ public class MagicSetController : Controller
             return StatusCode(500, "An error occurred while saving the cards.");
         }
     }
+
+    [HttpGet("get-set")]
+    public async Task<IActionResult> GetSet(string setCode)
+    {
+        if (string.IsNullOrWhiteSpace(setCode))
+        {
+            return BadRequest("Set code is required.");
+        }
+        var result = await _magicCardService.LoadCardsFromSet(setCode);
+
+        if (result == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(result);
+
+    }
+
+    [HttpGet("get-set-list")]
+    public async Task<IActionResult> GetSetList()
+    {
+        var result = _magicCardService.GetSetList();
+        return Ok(result);
+    }
 }
 

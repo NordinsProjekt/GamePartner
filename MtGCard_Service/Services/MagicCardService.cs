@@ -175,9 +175,9 @@ public class MagicCardService : IMagicCardService
         return magicCard;
     }
 
-    public Task GetSetBySetCode(string setCode)
+    public async Task<MtGCardSet> GetSetBySetCode(string setCode)
     {
-        throw new NotImplementedException();
+        return await LoadCardsFromSet(setCode);
     }
 
     public async Task<List<MtGSetRecordDTO>> GetSetList()

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using MtGCard_Service.Interface;
 using MtGCard_Service.Services;
@@ -19,6 +20,7 @@ public class MagicSetController : Controller
         this.magicSetRepository = magicSetRepository;
     }
 
+    [Authorize]
     [HttpPost("save-set")]
     public async Task<IActionResult> SaveSet(string setCode)
     {

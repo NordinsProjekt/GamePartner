@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Domain.MtGDomain.DTO;
+using MtGDomain.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +11,6 @@ namespace MtGCard_Service.Interface;
 public interface IMagicCardService
 {
     Task SaveCardsFromSet(string setCode);
-    Task GetSetBySetCode(string setCode);
-    Task GetSetList();
+    Task<MtGCardSet> GetSetBySetCode(string setCode);
+    Task<List<MtGSetRecordDTO>> GetSetList();
 }

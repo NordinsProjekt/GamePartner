@@ -20,7 +20,6 @@ public class MagicSetController : Controller
         this.magicSetRepository = magicSetRepository;
     }
 
-    [Authorize]
     [HttpPost("save-set")]
     public async Task<IActionResult> SaveSet(string setCode)
     {
@@ -39,34 +38,39 @@ public class MagicSetController : Controller
         }
         catch (Exception ex)
         {
-            // Log the exception details
             return StatusCode(500, "An error occurred while saving the cards.");
         }
     }
 
-    [HttpGet("get-set")]
-    public async Task<IActionResult> GetSet(string setCode)
-    {
-        if (string.IsNullOrWhiteSpace(setCode))
-        {
-            return BadRequest("Set code is required.");
-        }
-        var result = await _magicCardService.LoadCardsFromSet(setCode);
+    //[HttpGet("get-set")]
+    //public async Task<IActionResult> GetSet(string setCode)
+    //{
+    //    if (string.IsNullOrWhiteSpace(setCode))
+    //    {
+    //        return BadRequest("Set code is required.");
+    //    }
+    //    var result = await _magicCardService.LoadCardsFromSet(setCode);
 
-        if (result == null)
-        {
-            return NotFound();
-        }
+    //    if (result == null)
+    //    {
+    //        return NotFound();
+    //    }
 
-        return Ok(result);
+    //    return Ok(result);
 
-    }
+    //}
 
     [HttpGet("get-set-list")]
     public async Task<IActionResult> GetSetList()
     {
         var result = _magicCardService.GetSetList();
         return Ok(result);
+    }
+
+    [HttpGet("Ping")]
+    public async Task<IActionResult> Ping()
+    {
+        return Ok("Pong");
     }
 }
 

@@ -23,8 +23,7 @@ builder.Services.AddTransient<IMtgServiceProvider, MtgServiceProvider>();
 // Register your service as transient
 builder.Services.AddTransient<MagicCardService>();
 // Add services to the container.
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-  .AddMicrosoftIdentityWebApi(builder.Configuration);
+
 builder.Services.AddAuthorization();
 
 builder.Services.AddControllers();

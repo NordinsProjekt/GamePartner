@@ -59,6 +59,7 @@ public class MagicSetRepository : IMagicSetRepository
 
     public async Task<List<MagicSet>> GetAll()
     {
-        return _context.MagicSets.ToList();
+        return _context.MagicSets.Select(x => new MagicSet() { SetCode = x.SetCode, SetName = x.SetName })
+            .OrderBy(x => x.SetName).ToList();
     }
 }

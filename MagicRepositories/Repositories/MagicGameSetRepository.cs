@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MagicRepositories.Includes;
+using Microsoft.EntityFrameworkCore;
 using MtGCard_Service.Interface;
 using MtGDomain.Entities;
 
@@ -55,6 +56,30 @@ public class MagicSetRepository : IMagicSetRepository
             SetName = set.SetName,
             MagicCards = cards.ToList()
         };
+    }
+
+    public async Task<MagicSet?> GetSetQuizCardsByCode(string setCode)
+    {
+        var setWithCards = await _context.MagicSets
+            .Where(x => x.SetCode.Equals(setCode))
+            .Select(s => new
+            {
+                Set = s,
+                Cards = s.MagicCards.AsQueryable().QuizVersion().Where(mc => mc.MagicSetId == s.Id)
+            })
+            .AsNoTracking()  // Use AsNoTracking for read-only scenarios for better performance
+            .FirstOrDefaultAsync();
+
+        // Check for null early and return
+        if (setWithCards == null || setWithCards.Set == null) {
+            return null;
+        }
+
+        // Attach the filtered cards to the set
+        var set = setWithCards.Set;
+        set.MagicCards = await setWithCards.Cards.ToListAsync();
+
+        return set;
     }
 
     public async Task<List<MagicSet>> GetAll()

@@ -8,5 +8,6 @@ namespace MtGCard_Service.Interface
         Task<bool> FindSetBySetCode(string setCode);
         Task<MagicSet> GetSetByCode(string setCode);
         Task<List<MagicSet>> GetAll();
+        Task<MagicSet?> GetSetQuizCardsByCode(string setCode);
     }
 }

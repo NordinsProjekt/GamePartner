@@ -12,5 +12,4 @@ public interface IMagicCardRepository
     Task AddAsync(MagicCard card);
     Task<MagicCard> GetByIdAsync(Guid id);
     Task UpdateAsync(MagicCard card);
-    Task DeleteAsync(Guid id);
 }

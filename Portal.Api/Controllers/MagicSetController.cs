@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Domain.MtGDomain.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using MtGCard_Service.Interface;
+using MtGCard_Service.Models;
 using MtGCard_Service.Services;
 using MtGDomain.DTO;
 
@@ -20,7 +22,10 @@ public class MagicSetController : Controller
         this.magicSetRepository = magicSetRepository;
     }
 
-    [HttpPost("save-set")]
+    [HttpPost("save-set/{setCode}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> SaveSet(string setCode)
     {
         if (string.IsNullOrWhiteSpace(setCode))
@@ -42,35 +47,19 @@ public class MagicSetController : Controller
         }
     }
 
-    //[HttpGet("get-set")]
-    //public async Task<IActionResult> GetSet(string setCode)
-    //{
-    //    if (string.IsNullOrWhiteSpace(setCode))
-    //    {
-    //        return BadRequest("Set code is required.");
-    //    }
-    //    var result = await _magicCardService.LoadCardsFromSet(setCode);
-
-    //    if (result == null)
-    //    {
-    //        return NotFound();
-    //    }
-
-    //    return Ok(result);
-
-    //}
-
     [HttpGet("get-set-list")]
+    [ProducesResponseType(typeof(MagicSetResponseRecordDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetSetList()
     {
-        var result = _magicCardService.GetSetList();
-        return Ok(result);
+        var result = await _magicCardService.GetSetList();
+
+        return Ok(new MagicSetResponseRecordDto(result.Count, result));
     }
 
     [HttpGet("Ping")]
+    [ProducesResponseType(typeof(PingResponseRecordDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> Ping()
     {
-        return Ok("Pong");
+        return Ok(new PingResponseRecordDto("Pong"));
     }
 }
-

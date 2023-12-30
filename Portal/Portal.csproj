@@ -25,6 +25,7 @@
     <ProjectReference Include="..\MtGCard_API\MtGCard_API.csproj" />
     <ProjectReference Include="..\MtGCard_Service\MtGCard_Service.csproj" />
     <ProjectReference Include="..\MtGDomain\MtGDomain.csproj" />
+    <ProjectReference Include="..\RazorSharedLib\RazorSharedLib.csproj" />
   </ItemGroup>
 
 </Project>

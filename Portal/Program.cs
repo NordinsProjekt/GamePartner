@@ -6,6 +6,7 @@ using MtgApiManager.Lib.Service;
 using MtGCard_Service.Interface;
 using MtGCard_Service;
 using MtGCard_Service.Services;
+using System.Runtime.CompilerServices;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -15,7 +15,7 @@
 
 @inject IMtGQuizService Service
 
-<h1>Quiz @State?.Heading</h1>
+@* <h1>Quiz @State?.Heading</h1>
 <ScoreBoard Score="@State.Score" />
 
 @if (State?.GameStart is false)
@@ -32,7 +32,7 @@
     {
         <EditForm Model="@State.Model">
             <select id="QuizSetSelector" @bind="@State.Model.QuizSet">
-                @foreach(var set in MtGSets.Values.Keys)
+                @foreach(var set in )
                 {
                     <option value="@set">@set</option>
                 }
@@ -104,9 +104,11 @@ else
     public MtGQuizState State { get; set; } = new();
     public InputNumber<int>? inputCmc;
 
-    protected override void OnInitialized()
+
+    protected override async void OnInitialized()
     {
         State = Service.GetQuizState();
+        var sets = await Service.GetSupportedMtGSets();
     }
 
     private async void StartQuiz()
@@ -138,6 +140,6 @@ else
         Service.CheckAnswerColor();
         StateHasChanged();
     }
-    
+ *@    
 
 }

@@ -41,18 +41,22 @@ public class MagicCardService : IMagicCardService
     public async Task SaveCardsFromSet(string setCode)
     {
         var cards = await _apiMtGCards.GetAllCardsFromASet(setCode);
+        var convertedCards = new List<MagicCard>();
+
         foreach (var cardDto in cards)
         {
             try
             {
                 var magicCard = await ConvertToMagicCard(cardDto);
-                await _cardRepository.AddAsync(magicCard);
+                convertedCards.Add(magicCard);
             }
             catch (Exception ex)
             {
                 //Log
             }
         }
+
+        await _cardRepository.AddAllAsync(convertedCards);
     }
 
     public async Task<MtGCardSet> LoadCardsFromSet(string setCode)
@@ -77,7 +81,8 @@ public class MagicCardService : IMagicCardService
 
             var cardTypes = item.CardTypes?.Select(x => x.CardType?.Name).ToArray() ?? Array.Empty<string>();
 
-            var superCardTypes = item.SuperCardTypes?.Select(x => x.SuperCardType?.Name).ToArray() ?? Array.Empty<string>();
+            var superCardTypes = item.SuperCardTypes?.Select(x => x.SuperCardType?.Name).ToArray() ??
+                                 Array.Empty<string>();
 
             var legalities = item.MagicLegalities?.Select(x => new MtGLegality(
                 Format: x.MagicLegality?.Format,
@@ -107,10 +112,12 @@ public class MagicCardService : IMagicCardService
                 );
                 list.Add(recordDto);
             }
-            catch ( Exception ex ) { }
+            catch (Exception ex)
+            {
+            }
         }
 
-        return new(list, magicSet.SetName, magicSet.SetCode); 
+        return new(list, magicSet.SetName, magicSet.SetCode);
     }
 
     private async Task<MagicCard> ConvertToMagicCard(MtGCardRecordDTO cardDto)
@@ -135,17 +142,21 @@ public class MagicCardService : IMagicCardService
             ManaCost = cardDto.ManaCost ?? string.Empty,
             CollectingNumber = cardDto.Number ?? string.Empty,
             MagicSetId = await _setRepository.FindOrCreateSet(cardDto.SetName, cardDto.Set),
-            Rulings = cardDto.Rulings != null ? cardDto.Rulings.Select(r => new MagicRuling
-            {
-                Id = Guid.NewGuid(),
-                Date = DateTime.Parse(r.Date),
-                Text = r.Text ?? string.Empty
-            }).ToList() : new List<MagicRuling>(),
+            Rulings = cardDto.Rulings != null
+                ? cardDto.Rulings.Select(r => new MagicRuling
+                {
+                    Id = Guid.NewGuid(),
+                    Date = DateTime.Parse(r.Date),
+                    Text = r.Text ?? string.Empty
+                }).ToList()
+                : new List<MagicRuling>(),
             CardTypes = cardDto.Types != null
-                ? await Task.WhenAll(cardDto.Types.Select(async t => await _typeRepository.FindOrCreateCardType(t, cardId)))
+                ? await Task.WhenAll(cardDto.Types.Select(async t =>
+                    await _typeRepository.FindOrCreateCardType(t, cardId)))
                 : new List<CardTypeMagicCard>(),
             SuperCardTypes = cardDto.SuperTypes != null
-                ? await Task.WhenAll(cardDto.SuperTypes.Select(async st => await _superTypeRepository.FindOrCreateSuperCardType(st, cardId)))
+                ? await Task.WhenAll(cardDto.SuperTypes.Select(async st =>
+                    await _superTypeRepository.FindOrCreateSuperCardType(st, cardId)))
                 : new List<MagicCardSuperCardType>(),
         };
 
@@ -158,6 +169,7 @@ public class MagicCardService : IMagicCardService
                 abilities.Add(abilityResult);
             }
         }
+
         magicCard.Abilities = abilities;
 
         var legalities = new List<MagicCardMagicLegality>();
@@ -165,10 +177,12 @@ public class MagicCardService : IMagicCardService
         {
             foreach (var legality in cardDto.Legalities)
             {
-                var legalityResult = await _legalityRepository.FindOrCreateLegality(legality.Format, legality.LegalityName, cardId);
+                var legalityResult =
+                    await _legalityRepository.FindOrCreateLegality(legality.Format, legality.LegalityName, cardId);
                 legalities.Add(legalityResult);
             }
         }
+
         magicCard.MagicLegalities = legalities;
 
 
@@ -184,7 +198,8 @@ public class MagicCardService : IMagicCardService
     {
         var list = new List<MtGSetRecordDTO>();
         var result = await _setRepository.GetAll();
-        result.ForEach(x=> list.Add(new(x.SetName, x.SetCode)));
+        result.ForEach(x => list.Add(new MtGSetRecordDTO(x.SetName, x.SetCode)));
+
         return list;
     }
 }

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
-namespace MtGDomain.Enums
+namespace MtGDomain.Enums;
+
+public enum QuizType
 {
-    public enum QuizType
-    {
-        CMC,
-        Type,
-        Color
-    }
+    [Description("Cmc")] CMC,
+    [Description("Type")] Type,
+    [Description("Color")] Color
 }

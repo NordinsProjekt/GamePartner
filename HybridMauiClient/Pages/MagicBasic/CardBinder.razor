@@ -10,7 +10,7 @@
 @inject ICardSetBuffer Buffer
 @inject IJSRuntime JSRuntime
 
-<h1>Cardbinder</h1>
+@* <h1>Cardbinder</h1>
 <h2>@ActiveSetname</h2>
 <MtGInfoCard card="ActiveCard" />
 <div class="d-flex bd-highlight" id="AllCardFromSelectedSet">
@@ -78,4 +78,4 @@
         await JSRuntime.InvokeVoidAsync("OnScrollEvent");
         StateHasChanged();
     }
-}
+} *@

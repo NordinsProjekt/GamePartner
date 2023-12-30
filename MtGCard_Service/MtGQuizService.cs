@@ -2,7 +2,6 @@ using Domain.MtGDomain.DTO;
 using MtGCard_Service.Interface;
 using MtGDomain.DTO;
 using MtGDomain.Extensions;
-using MtGDomain.Hashmaps;
 using MtGDomain.States;
 
 namespace MtGCard_Service

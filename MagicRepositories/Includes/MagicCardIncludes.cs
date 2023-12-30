@@ -21,6 +21,6 @@ public static class MagicCardIncludes
 
     public static IQueryable<MagicCard> QuizVersion(this IQueryable<MagicCard> query)
     {
-        return query.Include(c => c.CardTypes);
+        return query.Include(c => c.CardTypes).ThenInclude(x=>x.CardType);
     }
 }

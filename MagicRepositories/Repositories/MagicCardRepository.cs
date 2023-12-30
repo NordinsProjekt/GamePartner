@@ -22,12 +22,19 @@ public class MagicCardRepository : IMagicCardRepository
         await _context.SaveChangesAsync();
     }
 
+    public async Task AddAllAsync(List<MagicCard> cards)
+    {
+        await _context.MagicCards.AddRangeAsync(cards);
+
+        await _context.SaveChangesAsync();
+    }
+
     // Read
     public async Task<MagicCard?> GetByIdAsync(Guid id)
     {
-            return await _context.MagicCards
-                .AllIncludes()
-                .FirstOrDefaultAsync(c => c.Id == id);
+        return await _context.MagicCards
+            .AllIncludes()
+            .FirstOrDefaultAsync(c => c.Id == id);
     }
 
     public async Task<MagicCard?> GetByIdWithQuizIncludes(Guid id)
@@ -41,6 +48,6 @@ public class MagicCardRepository : IMagicCardRepository
     public async Task UpdateAsync(MagicCard card)
     {
         _context.MagicCards.Update(card);
-            await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync();
     }
 }

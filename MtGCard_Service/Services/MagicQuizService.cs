@@ -1,11 +1,6 @@
 ﻿using MtGCard_Service.Interface;
 using MtGCard_Service.Models;
 using MtGDomain.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MtGCard_Service.Services;
 
@@ -21,8 +16,9 @@ public class MagicQuizService
     public async Task<MagicQuizDto?> GetQuizResult(int numOfCards, string setCode)
     {
         var set = await _magicSetRepository.GetSetQuizCardsByCode(setCode);
-        if (set == null) { 
-            return null; 
+        if (set == null)
+        {
+            return null;
         }
 
         if (set.MagicCards.Count == 0) return null;

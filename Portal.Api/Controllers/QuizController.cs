@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Reflection.Metadata.Ecma335;
+using Microsoft.AspNetCore.Mvc;
+using MtGCard_Service.Models;
 using MtGCard_Service.Services;
 
 namespace MtGApi.Controllers;
@@ -15,11 +17,16 @@ public class QuizController : Controller
     }
 
 
-    [HttpGet("GetQuiz")]
-    public IActionResult GetQuiz(string setCode, int numOfCards)
+    [HttpGet("GetQuiz/{numOfCards}/{setCode}")]
+    [ProducesResponseType(typeof(MagicQuizDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetQuiz(string setCode, int numOfCards)
     {
-        var serviceResult = magicQuizService.GetQuizResult(numOfCards, setCode);
-        if (serviceResult == null) { return NotFound(); }
+        var serviceResult = await magicQuizService.GetQuizResult(numOfCards, setCode);
+        if (serviceResult == null)
+        {
+            return NotFound();
+        }
 
         return Ok(serviceResult);
     }

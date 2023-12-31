@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MtGDomain.Enums;
-using RazorSharedLib.Api;
 
 namespace GameAssistantPortal.Models;
 

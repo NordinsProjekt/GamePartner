@@ -19,6 +19,7 @@ public class MagicCardService : IMagicCardService
     private readonly ISuperCardTypeRepository _superTypeRepository;
     private readonly IMagicAbilityRepository _abilityRepository;
     private readonly IMagicLegalityRepository _legalityRepository;
+    private readonly ILogRepository _logRepository;
 
     public MagicCardService(
         IMagicCardRepository cardRepository,
@@ -27,7 +28,8 @@ public class MagicCardService : IMagicCardService
         ICardTypeRepository typeRepository,
         ISuperCardTypeRepository superTypeRepository,
         IMagicAbilityRepository abilityRepository,
-        IMagicLegalityRepository legalityRepository)
+        IMagicLegalityRepository legalityRepository,
+        ILogRepository logRepository)
     {
         _cardRepository = cardRepository;
         _apiMtGCards = apiMtGCards;
@@ -36,12 +38,20 @@ public class MagicCardService : IMagicCardService
         _superTypeRepository = superTypeRepository;
         _abilityRepository = abilityRepository;
         _legalityRepository = legalityRepository;
+        _logRepository = logRepository;
     }
 
     public async Task SaveCardsFromSet(string setCode)
     {
+        await _logRepository.CreateLog("Magic", $"Getting Cards from {setCode}");
+
         var cards = await _apiMtGCards.GetAllCardsFromASet(setCode);
+
+        await _logRepository.CreateLog("Magic", $"Done gettings cards from {setCode}");
+
         var convertedCards = new List<MagicCard>();
+
+        await _logRepository.CreateLog("Magic", "Starting to convert the cards");
 
         foreach (var cardDto in cards)
         {
@@ -56,7 +66,11 @@ public class MagicCardService : IMagicCardService
             }
         }
 
+        await _logRepository.CreateLog("Magic", "Saving.....");
+
         await _cardRepository.AddAllAsync(convertedCards);
+
+        await _logRepository.CreateLog("Magic", "Saving Done!");
     }
 
     public async Task<MtGCardSet> LoadCardsFromSet(string setCode)
@@ -114,6 +128,7 @@ public class MagicCardService : IMagicCardService
             }
             catch (Exception ex)
             {
+                await _logRepository.CreateLog("Magic", ex.Message);
             }
         }
 

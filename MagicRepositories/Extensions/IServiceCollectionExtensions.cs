@@ -1,12 +1,6 @@
 ﻿using MagicRepositories.Repositories;
 using Microsoft.Extensions.DependencyInjection;
-using MtGCard_Service;
 using MtGCard_Service.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MagicRepositories.Extensions
 {
@@ -19,6 +13,7 @@ namespace MagicRepositories.Extensions
             service.AddTransient<ISuperCardTypeRepository, SuperCardTypeRepository>();
             service.AddTransient<IMagicAbilityRepository, MagicAbilityRepository>();
             service.AddTransient<IMagicLegalityRepository, MagicLegalityRepository>();
+            service.AddTransient<ILogRepository, LogRepository>();
         }
     }
 }

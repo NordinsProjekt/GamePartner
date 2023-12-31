@@ -1,11 +1,12 @@
 using Infrastructure.MtGCard_API;
-using ApplicationLayer.MtGCard_Service.Interface;
 using MtGCard_API;
 using GenerateGuid.Extensions;
 using MtGCard_Service.Extensions;
 using MtgApiManager.Lib.Service;
 using MtGCard_Service.Interface;
 using MtGCard_Service;
+using MtGCard_Service.Services;
+using System.Runtime.CompilerServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddTransient<IMtGCardRepository, SearchForCard>();
 builder.Services.AddTransient<IMtGQuizService, MtGQuizService>();
 builder.Services.AddSingleton<IMtGSearchBuffer, SearchBuffer>();
 builder.Services.AddSingleton<ICardSetBuffer, CardSetBuffer>();
+builder.Services.AddTransient<IMagicCardService, MagicCardService>();
 builder.Services.AddMtGBoardState();
 builder.Services.AddSession();
 builder.Services.AddGuidGenerator();

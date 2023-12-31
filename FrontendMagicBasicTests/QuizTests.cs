@@ -3,7 +3,6 @@ using Portal.Pages.MagicBasic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
-using ApplicationLayer.MtGCard_Service.Interface;
 using MtGCard_API;
 using Bunit;
 using Microsoft.AspNetCore.Components.Web;
@@ -19,7 +18,7 @@ namespace FrontendMagicBasicTests
     /// These tests are written entirely in C#.
     /// Learn more at https://bunit.dev/docs/getting-started/writing-tests.html#creating-basic-tests-in-cs-files
     /// </summary>
-    
+
     [Trait("Presentation", "Magic Quiz")]
     public class QuizTests : TestContext
     {

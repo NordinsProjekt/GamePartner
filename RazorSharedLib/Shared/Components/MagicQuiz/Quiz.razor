@@ -1,0 +1,153 @@
+﻿@using MtGDomain.Enums
+@using MtGDomain.Extensions
+@using MtGDomain.Models
+@using RazorSharedLib.Api
+@using MtGSetRecordDTO = RazorSharedLib.Api.MtGSetRecordDTO
+@using MtGDomain.DTO
+@using RazorSharedLib.Extensions
+
+<h3>Quiz</h3>
+@if (QuizType is not null && MagicSet is not null && Ready)
+{
+    @if (Score is not null)
+    {
+        <ScoreBoard Score="Score.Value"/>
+    }
+
+    switch (QuizType)
+    {
+        case MtGDomain.Enums.QuizType.Type:
+            <div id="QuizWindowType">
+                <h2>Vilken typ har detta kortet? @(Index + 1) / @NumOfCards</h2>
+                <p>Cardname: @CurrentCard.Name</p>
+                <button type="button" id="Enchantment" @onclick='(() => CheckAnswer("Enchantment"))'>Enchantment</button>
+                <button type="button" id="Artefact" @onclick='(() => CheckAnswer("Artifact"))'>Artifact</button>
+                <button type="button" id="Creature" @onclick='(() => CheckAnswer("Creature"))'>Creature</button>
+                <button type="button" id="Instant" @onclick='(() => CheckAnswer("Instant"))'>Instant</button>
+                <button type="button" id="Sorcery" @onclick='(() => CheckAnswer("Sorcery"))'>Sorcery</button>
+                <button type="button" id="Land" @onclick='(() => CheckAnswer("Land"))'>Land</button>
+                <button type="button" id="Battle" @onclick='(() => CheckAnswer("Battle"))'>Battle</button>
+                <button type="button" id="Planeswalker" @onclick='(() => CheckAnswer("Planeswalker"))'>Planeswalker</button>
+
+
+            </div>
+            break;
+
+        case MtGDomain.Enums.QuizType.CMC:
+            <div id="QuizWindowCMC">
+                <h2>Hur mycket CMC har detta kortet? @(Index + 1) / @NumOfCards</h2>
+                <p>Cardname: @CurrentCard.Name</p>
+                <EditForm Model="@Model">
+                    <InputNumber id="inputCmc" @bind-Value="@Model.CmcValue"/>
+                    <button type="button" id="CmcCheck" @onclick="CheckAnswerCmC">Send</button>
+                </EditForm>
+            </div>
+            break;
+
+        case MtGDomain.Enums.QuizType.Color:
+            <div id="QuizWindowColor">
+                <h2>Vilken/Vilka färger har kortet? @(Index + 1) / @NumOfCards</h2>
+                <p>Cardname: @CurrentCard.Name</p>
+                <EditForm Model="@Model">
+                    <label for="blue">Blue</label><InputCheckbox DisplayName="Blue" @bind-Value="@Model.Color.Blue" type="checkbox" id="blue"/> |
+                    <label for="white">White</label><InputCheckbox DisplayName="White" @bind-Value="@Model.Color.White" type="checkbox" id="white"/> |
+                    <label for="red">Red</label><InputCheckbox DisplayName="Red" @bind-Value="Model.Color.Red" type="checkbox" id="red"/> |
+                    <label for="black">Black</label><InputCheckbox DisplayName="Black" @bind-Value="Model.Color.Black" type="checkbox" id="black"/> |
+                    <label for="green">Green</label><InputCheckbox DisplayName="Green" @bind-Value="Model.Color.Green" type="checkbox" id="green"/>
+                    <button id="ColorCheck" @onclick="CheckAnswerColor">Send</button>
+                </EditForm>
+
+            </div>
+            break;
+
+        default:
+            EndQuiz();
+            break;
+    }
+
+    @if (Result is not null)
+    {
+        <ShowResult Result="Result"/>
+        <br/>
+        <button type="button" id="Next" @onclick="NextCard">Next Question</button>
+    }
+}
+
+@code {
+    [Parameter] public QuizType? QuizType { get; set; }
+    [Parameter] public MtGSetRecordDTO? MagicSet { get; set; }
+
+    [Inject] public ApiClient? ApiClient { get; set; }
+
+    private MtGQuizModel Model { get; set; } = new MtGQuizModel();
+    private MagicQuizDto QuizDto { get; set; }
+    private int NumOfCards { get; set; }
+    private int Index { get; set; }
+    private bool Ready { get; set; }
+    private int? Score { get; set; }
+
+    private ResultRecord? Result { get; set; }
+
+    private MagicQuizCardDto CurrentCard => QuizDto.Cards.Skip(Index).Take(1).FirstOrDefault();
+
+    protected override async Task OnInitializedAsync()
+    {
+        NumOfCards = 20;
+        await base.OnInitializedAsync();
+        Ready = false;
+
+        if (MagicSet is not null)
+        {
+            var cards = await ApiClient!.GetQuizAsync(MagicSet.SetCode, NumOfCards);
+            if (cards is not null)
+            {
+                QuizDto = cards;
+                Score = 0;
+                Ready = true;
+            }
+        }
+    }
+
+    private void CheckAnswer(string cardtype)
+    {
+        Result = new ResultRecord(CurrentCard.CardTypes.Contains(cardtype), CurrentCard.ImageUrl);
+        if (Result.Correct) Score++;
+
+        StateHasChanged();
+    }
+
+    private void CheckAnswerColor()
+    {
+        var cardColor = CurrentCard.GetColorFromCard();
+        var userAnswer = Model.GetColorFromUser();
+
+        Result = new ResultRecord(cardColor == userAnswer, CurrentCard.ImageUrl);
+        if (Result.Correct) Score++;
+    }
+
+    private void CheckAnswerCmC()
+    {
+        Result = new ResultRecord(CurrentCard.Cmc == Model.CmcValue, CurrentCard.ImageUrl);
+        if (Result.Correct) Score++;
+
+        StateHasChanged();
+    }
+
+    private void EndQuiz()
+    {
+        
+    }
+
+    private void NextCard()
+    {
+        Result = null;
+        Model = new MtGQuizModel();
+
+        if (++Index != NumOfCards) return;
+
+        Ready = false;
+        Index = 0;
+        Score = null;
+    }
+
+}

@@ -1,4 +1,4 @@
-﻿using ApplicationLayer.MtGCard_Service.DTO;
+﻿using MtGCard_Service.DTO;
 using Domain.MtGDomain.DTO;
 using MtGCard_Service.DTO;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationLayer.MtGCard_Service.Interface
+namespace MtGCard_Service.Interface
 {
     public interface IMtGSearchBuffer
     {

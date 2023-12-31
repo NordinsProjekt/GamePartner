@@ -2,7 +2,7 @@
 using MtGCard_Service.DTO;
 using MtGDomain.DTO;
 
-namespace ApplicationLayer.MtGCard_Service.Interface
+namespace MtGCard_Service.Interface
 {
     public interface IMtGCardRepository
     {

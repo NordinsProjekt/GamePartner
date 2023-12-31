@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
-namespace MtGDomain.Enums
+namespace MtGDomain.Enums;
+
+[Flags]
+public enum MtGColor
 {
-    public enum MtGColor
-    {
-        Black = 0,
-        Blue = 1,
-        Red = 2,
-        White = 3,
-        Green = 4
-    }
+    [Description("")] None = 0,
+    [Description("B")] Black = 1,
+    [Description("U")] Blue = 2,
+    [Description("R")] Red = 4,
+    [Description("W")] White = 8,
+    [Description("G")] Green = 16
 }

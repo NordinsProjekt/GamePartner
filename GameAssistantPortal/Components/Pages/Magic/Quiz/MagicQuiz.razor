@@ -1,0 +1,70 @@
+﻿@page "/Magic/Quiz/MagicQuiz"
+@using RazorSharedLib.Shared.Components.MagicQuiz
+@using RazorSharedLib.Api
+@using GameAssistantPortal.Models
+@using MtGDomain.Enums
+<h3>MagicQuiz</h3>
+
+@if (MagicSets is not null && QuizStarted is false)
+{
+    <EditForm Model="@FormData" OnSubmit="SubmitForm" FormName="QuizForm">
+        <h2>Select a Magicset to make a Quiz from</h2>
+        <DataAnnotationsValidator/>
+        <InputSelect @bind-Value="@FormData.MagicSet">
+            @foreach (var set in MagicSets)
+            {
+                <option value="@set.SetCode">@set.SetName</option>
+            }
+        </InputSelect>
+        <br/>
+
+        <InputSelect @bind-Value="@FormData.QuizType">
+            @foreach (var quiz in _quizList)
+            {
+                <option value="@quiz.Type">@quiz.Name</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => FormData.QuizType)"/>
+
+        <button type="submit">Submit</button>
+    </EditForm>
+}
+
+@if (QuizStarted)
+{
+    <Quiz MagicSet="SelectedSet" QuizType="FormData.QuizType"/>
+}
+
+@code {
+    [Inject] ApiClient? Client { get; set; }
+
+    [SupplyParameterFromForm] public QuizFormData FormData { get; set; } = new();
+    public List<MtGSetRecordDTO>? MagicSets { get; set; }
+    public MtGSetRecordDTO? SelectedSet { get; set; }
+    public QuizType? SelectedQuizType { get; set; }
+    private bool QuizStarted { get; set; }
+
+    private List<(string Name, QuizType Type)> _quizList = new()
+    {
+        ("Cmc", QuizType.CMC),
+        ("Type", QuizType.Type),
+        ("Color", QuizType.Color)
+    };
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var magicSets = await Client!.GetSetListAsync(CancellationToken.None);
+        if (magicSets is null) return;
+
+        MagicSets = magicSets.Sets.ToList();
+    }
+
+    public void SubmitForm()
+    {
+        QuizStarted = true;
+        SelectedSet = MagicSets.FirstOrDefault(x => x.SetCode.Equals(FormData.MagicSet));
+    }
+
+}

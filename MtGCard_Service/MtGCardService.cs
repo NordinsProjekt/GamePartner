@@ -1,8 +1,8 @@
-﻿using ApplicationLayer.MtGCard_Service.DTO;
-using ApplicationLayer.MtGCard_Service.Interface;
+﻿using MtGCard_Service.DTO;
 using Domain.MtGDomain.DTO;
+using MtGCard_Service.Interface;
 
-namespace ApplicationLayer.MtGCard_Service
+namespace MtGCard_Service
 {
     public class MtGCardService
     {
@@ -14,7 +14,7 @@ namespace ApplicationLayer.MtGCard_Service
         {
             var result = await _repository.GetCardsByName(name);
             //Bara kort som har unikt namn och som har en bild
-            return result.Where(img=> img.ImageUrl != "").Where(img =>img.ImageUrl !=null).GroupBy(x=>x.Name).Select(f=>f.First()).ToList();
+            return result.Where(img => img.ImageUrl != "").Where(img => img.ImageUrl != null).GroupBy(x => x.Name).Select(f => f.First()).ToList();
         }
     }
 }

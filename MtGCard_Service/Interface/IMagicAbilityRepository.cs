@@ -1,9 +1,9 @@
 ﻿using MtGDomain.Entities;
 
-namespace MtGCard_Service.Interface
+namespace MtGCard_Service.Interface;
+
+public interface IMagicAbilityRepository
 {
-    public interface IMagicAbilityRepository
-    {
-        Task<MagicAbilityMagicCard> FindOrCreateAbility(string abilityName, Guid cardId);
-    }
+    Task<MagicAbilityMagicCard> CreateAbility(string abilityName, Guid cardId);
+    Task<List<MagicAbility>> GetAll();
 }

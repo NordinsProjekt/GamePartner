@@ -1,9 +1,9 @@
 ﻿using MtGDomain.Entities;
 
-namespace MtGCard_Service.Interface
+namespace MtGCard_Service.Interface;
+
+public interface ISuperCardTypeRepository
 {
-    public interface ISuperCardTypeRepository
-    {
-        Task<MagicCardSuperCardType> FindOrCreateSuperCardType(string typeName, Guid cardId);
-    }
+    Task<MagicCardSuperCardType> CreateSuperCardType(string typeName, Guid cardId);
+    Task<List<SuperCardType>> GetAll();
 }

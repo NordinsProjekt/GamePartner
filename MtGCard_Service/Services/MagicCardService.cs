@@ -2,11 +2,7 @@
 using MtGCard_Service.Interface;
 using MtGDomain.DTO;
 using MtGDomain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MtGDomain.Models;
 
 namespace MtGCard_Service.Services;
 
@@ -20,6 +16,9 @@ public class MagicCardService : IMagicCardService
     private readonly IMagicAbilityRepository _abilityRepository;
     private readonly IMagicLegalityRepository _legalityRepository;
     private readonly ILogRepository _logRepository;
+
+    private MagicCardLists? BufferLists;
+    private Guid MagicSetId;
 
     public MagicCardService(
         IMagicCardRepository cardRepository,
@@ -68,7 +67,15 @@ public class MagicCardService : IMagicCardService
 
         await _logRepository.CreateLog("Magic", "Saving.....");
 
-        await _cardRepository.AddAllAsync(convertedCards);
+        try
+        {
+            await _cardRepository.AddAllAsync(convertedCards);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
 
         await _logRepository.CreateLog("Magic", "Saving Done!");
     }
@@ -142,64 +149,37 @@ public class MagicCardService : IMagicCardService
             return null;
         }
 
+        BufferLists = await _cardRepository.GetAllListsForCard();
+        MagicSetId = await _setRepository.FindOrCreateSet(cardDto.SetName, cardDto.Set);
+
         var cardId = Guid.NewGuid();
         var magicCard = new MagicCard
         {
             Id = cardId,
-            Name = cardDto.Name ?? string.Empty,
-            CardId = cardDto.Id ?? string.Empty,
-            Text = cardDto.Text ?? string.Empty,
-            ImageUrl = cardDto.ImageUrl ?? string.Empty,
-            MultiverseId = cardDto.MultiverseId ?? string.Empty,
+            Name = cardDto.Name,
+            CardId = cardDto.Id,
+            Text = cardDto.Text,
+            ImageUrl = cardDto.ImageUrl,
+            MultiverseId = cardDto.MultiverseId,
             Cmc = cardDto.Cmc,
             IsColorLess = cardDto.IsColorLess,
             IsMultiColor = cardDto.IsMultiColor,
-            ManaCost = cardDto.ManaCost ?? string.Empty,
-            CollectingNumber = cardDto.Number ?? string.Empty,
-            MagicSetId = await _setRepository.FindOrCreateSet(cardDto.SetName, cardDto.Set),
+            ManaCost = cardDto.ManaCost,
+            CollectingNumber = cardDto.Number,
+            MagicSetId = MagicSetId,
             Rulings = cardDto.Rulings != null
                 ? cardDto.Rulings.Select(r => new MagicRuling
                 {
                     Id = Guid.NewGuid(),
                     Date = DateTime.Parse(r.Date),
-                    Text = r.Text ?? string.Empty
+                    Text = r.Text
                 }).ToList()
                 : new List<MagicRuling>(),
-            CardTypes = cardDto.Types != null
-                ? await Task.WhenAll(cardDto.Types.Select(async t =>
-                    await _typeRepository.FindOrCreateCardType(t, cardId)))
-                : new List<CardTypeMagicCard>(),
-            SuperCardTypes = cardDto.SuperTypes != null
-                ? await Task.WhenAll(cardDto.SuperTypes.Select(async st =>
-                    await _superTypeRepository.FindOrCreateSuperCardType(st, cardId)))
-                : new List<MagicCardSuperCardType>(),
+            CardTypes = await GetCardTypes(cardDto, cardId),
+            SuperCardTypes = await GetCardSuperTypes(cardDto, cardId),
+            Abilities = await GetCardAbilities(cardDto, cardId),
+            MagicLegalities = await GetCardLegalities(cardDto, cardId)
         };
-
-        var abilities = new List<MagicAbilityMagicCard>();
-        if (cardDto.Abilities != null)
-        {
-            foreach (var ability in cardDto.Abilities)
-            {
-                var abilityResult = await _abilityRepository.FindOrCreateAbility(ability, cardId);
-                abilities.Add(abilityResult);
-            }
-        }
-
-        magicCard.Abilities = abilities;
-
-        var legalities = new List<MagicCardMagicLegality>();
-        if (cardDto.Legalities != null)
-        {
-            foreach (var legality in cardDto.Legalities)
-            {
-                var legalityResult =
-                    await _legalityRepository.FindOrCreateLegality(legality.Format, legality.LegalityName, cardId);
-                legalities.Add(legalityResult);
-            }
-        }
-
-        magicCard.MagicLegalities = legalities;
-
 
         return magicCard;
     }
@@ -216,5 +196,98 @@ public class MagicCardService : IMagicCardService
         result.ForEach(x => list.Add(new MtGSetRecordDTO(x.SetName, x.SetCode)));
 
         return list;
+    }
+
+    private async Task<List<CardTypeMagicCard>> GetCardTypes(MtGCardRecordDTO card, Guid cardId)
+    {
+        var cardTypes = new List<CardTypeMagicCard>();
+        if (card.Types is null) return cardTypes;
+
+        foreach (var type in card.Types)
+        {
+            var temp = BufferLists.CardTypes.FirstOrDefault(x => x.Name.Equals(type));
+
+            if (temp is not null)
+            {
+                cardTypes.Add(new CardTypeMagicCard() { CardTypeId = temp.Id, MagicCardId = cardId });
+            }
+            else
+            {
+                cardTypes.Add(await _typeRepository.CreateCardType(type, cardId));
+            }
+        }
+
+        return cardTypes;
+    }
+
+    private async Task<List<MagicCardSuperCardType>> GetCardSuperTypes(MtGCardRecordDTO card, Guid cardId)
+    {
+        var cardSuperTypes = new List<MagicCardSuperCardType>();
+        if (card.SuperTypes is null) return cardSuperTypes;
+
+        foreach (var superTypes in card.SuperTypes)
+        {
+            var temp = BufferLists!.SuperCards.FirstOrDefault(x => x.Name.Equals(superTypes));
+
+            if (temp is not null)
+            {
+                cardSuperTypes.Add(new MagicCardSuperCardType()
+                    { SuperCardTypeId = temp.Id, MagicCardId = cardId });
+            }
+            else
+            {
+                cardSuperTypes.Add(await _superTypeRepository.CreateSuperCardType(superTypes, cardId));
+            }
+        }
+
+        return cardSuperTypes;
+    }
+
+    private async Task<List<MagicAbilityMagicCard>> GetCardAbilities(MtGCardRecordDTO card, Guid cardId)
+    {
+        var cardAbilities = new List<MagicAbilityMagicCard>();
+        if (card.Abilities is null) return cardAbilities;
+
+        foreach (var ability in card.Abilities)
+        {
+            var temp = BufferLists!.MagicAbilities.FirstOrDefault(x => x.Name.Equals(ability));
+
+            if (temp is not null)
+            {
+                cardAbilities.Add(new MagicAbilityMagicCard()
+                    { MagicAbilityId = temp.Id, MagicCardId = cardId });
+            }
+            else
+            {
+                cardAbilities.Add(await _abilityRepository.CreateAbility(ability, cardId));
+            }
+        }
+
+        return cardAbilities;
+    }
+
+    private async Task<List<MagicCardMagicLegality>> GetCardLegalities(MtGCardRecordDTO card, Guid cardId)
+    {
+        var cardLegalities = new List<MagicCardMagicLegality>();
+        if (card.Legalities is null) return cardLegalities;
+
+        foreach (var legality in card.Legalities)
+        {
+            var temp = BufferLists.MagicLegality.FirstOrDefault(x =>
+                x.Format.Equals(legality.Format) && x.LegalityName.Equals(legality.LegalityName));
+
+            if (temp is not null)
+            {
+                cardLegalities.Add(new MagicCardMagicLegality()
+                    { MagicLegalityId = temp.Id, MagicCardId = cardId });
+            }
+            else
+            {
+                cardLegalities.Add(
+                    await _legalityRepository.CreateLegality(legality.Format, legality.LegalityName, cardId));
+            }
+        }
+
+        return cardLegalities;
     }
 }

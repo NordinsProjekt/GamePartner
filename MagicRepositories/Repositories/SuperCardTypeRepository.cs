@@ -13,27 +13,18 @@ public class SuperCardTypeRepository : ISuperCardTypeRepository
         _context = context;
     }
 
-    public async Task<MagicCardSuperCardType> FindOrCreateSuperCardType(string typeName, Guid cardId)
+    public async Task<MagicCardSuperCardType> CreateSuperCardType(string typeName, Guid cardId)
     {
-        try
-        {
+        var type = new SuperCardType { Id = Guid.NewGuid(), Name = typeName };
 
-            var type = _context.SuperCardTypes.FirstOrDefault(ct => ct.Name == typeName);
-            if (type == null)
-            {
-                type = new SuperCardType { Id = Guid.NewGuid(), Name = typeName };
-                _context.SuperCardTypes.Add(type);
-                await _context.SaveChangesAsync();
-            }
+        _context.SuperCardTypes.Add(type);
+        await _context.SaveChangesAsync();
 
-            return new() { SuperCardTypeId = type.Id, MagicCardId = cardId };
-        
-        }
-        catch (Exception ex)
-        {
+        return new() { SuperCardTypeId = type.Id, MagicCardId = cardId };
+    }
 
-            throw;
-        }
-
+    public async Task<List<SuperCardType>> GetAll()
+    {
+        return await _context.SuperCardTypes.AsNoTracking().ToListAsync();
     }
 }

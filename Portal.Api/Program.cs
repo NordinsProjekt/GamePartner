@@ -9,9 +9,9 @@ using MtGCard_Service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<PortalContext>();
+builder.Services.AddDbContext<PortalContext>();
 
-builder.Services.AddTransient <IMagicCardRepository, MagicCardRepository>();
+builder.Services.AddTransient<IMagicCardRepository, MagicCardRepository>();
 builder.Services.AddTransient<IMtGCardRepository, SearchForCard>();
 builder.Services.AddTransient<IMtgServiceProvider, MtgServiceProvider>();
 
@@ -28,6 +28,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
@@ -50,4 +51,5 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<PortalContext>();
     await dbContext.Database.MigrateAsync();
 }
+
 app.Run();

@@ -58,7 +58,7 @@ public class MagicSetController : Controller
 
     [HttpGet("Ping")]
     [ProducesResponseType(typeof(PingResponseRecordDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Ping()
+    public IActionResult Ping()
     {
         return Ok(new PingResponseRecordDto("Pong"));
     }

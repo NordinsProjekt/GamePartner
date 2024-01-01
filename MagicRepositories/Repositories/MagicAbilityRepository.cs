@@ -13,24 +13,18 @@ public class MagicAbilityRepository : IMagicAbilityRepository
         _context = context;
     }
 
-    public async Task<MagicAbilityMagicCard> FindOrCreateAbility(string abilityName, Guid cardId)
+    public async Task<MagicAbilityMagicCard> CreateAbility(string abilityName, Guid cardId)
     {
-        try
-        {
-            var ability = _context.MagicAbility.FirstOrDefault(a => a.Name == abilityName);
-            if (ability == null)
-            {
-                ability = new MagicAbility { Id = Guid.NewGuid(), Name = abilityName };
-                _context.MagicAbility.Add(ability);
-                await _context.SaveChangesAsync();
-            }
+        var ability = new MagicAbility { Id = Guid.NewGuid(), Name = abilityName };
 
-            return new() { MagicAbilityId = ability.Id, MagicCardId = cardId };
-        }
-        catch (Exception ex)
-        {
-            throw;
-        }
+        _context.MagicAbility.Add(ability);
+        await _context.SaveChangesAsync();
 
+        return new() { MagicAbilityId = ability.Id, MagicCardId = cardId };
+    }
+
+    public async Task<List<MagicAbility>> GetAll()
+    {
+        return await _context.MagicAbility.AsNoTracking().ToListAsync();
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using MtGCard_Service.Interface;
 using MtGDomain.Entities;
 
@@ -13,22 +14,18 @@ public class CardTypeRepository : ICardTypeRepository
         _context = context;
     }
 
-    public async Task<CardTypeMagicCard> FindOrCreateCardType(string typeName, Guid cardId)
+    public async Task<CardTypeMagicCard> CreateCardType(string typeName, Guid cardId)
     {
         try
         {
-            var type = _context.CardType.FirstOrDefault(ct => ct.Name == typeName);
-
-            if (type == null)
+            var type = new CardType
             {
-                type = new CardType
-                {
-                    Id = Guid.NewGuid(),
-                    Name = typeName
-                };
-                _context.CardType.Add(type);
-                await _context.SaveChangesAsync();
-            }
+                Id = Guid.NewGuid(),
+                Name = typeName
+            };
+            _context.CardType.Add(type);
+            await _context.SaveChangesAsync();
+
 
             return new() { CardTypeId = type.Id, MagicCardId = cardId };
         }
@@ -36,5 +33,10 @@ public class CardTypeRepository : ICardTypeRepository
         {
             throw;
         }
+    }
+
+    public async Task<List<CardType>> GetAll()
+    {
+        return await _context.CardType.AsNoTracking().ToListAsync();
     }
 }

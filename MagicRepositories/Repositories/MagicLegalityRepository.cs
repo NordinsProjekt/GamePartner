@@ -13,17 +13,18 @@ public class MagicLegalityRepository : IMagicLegalityRepository
         _context = context;
     }
 
-    public async Task<MagicCardMagicLegality> FindOrCreateLegality(string format, string legalityName, Guid cardId)
+    public async Task<MagicCardMagicLegality> CreateLegality(string format, string legalityName, Guid cardId)
     {
-        var legality =
-            await _context.MagicLegality.FirstOrDefaultAsync(l => l.Format == format && l.LegalityName == legalityName);
-        if (legality == null)
-        {
-            legality = new MagicLegality { Id = Guid.NewGuid(), Format = format, LegalityName = legalityName };
-            _context.MagicLegality.Add(legality);
-            await _context.SaveChangesAsync();
-        }
+        var legality = new MagicLegality { Id = Guid.NewGuid(), Format = format, LegalityName = legalityName };
+
+        _context.MagicLegality.Add(legality);
+        await _context.SaveChangesAsync();
 
         return new() { MagicLegalityId = legality.Id, MagicCardId = cardId };
+    }
+
+    public async Task<List<MagicLegality>> GetAll()
+    {
+        return await _context.MagicLegality.AsNoTracking().ToListAsync();
     }
 }

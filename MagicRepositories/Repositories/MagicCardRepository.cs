@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MtGCard_Service.Interface;
 using MtGDomain.Entities;
+using MtGDomain.Models;
 
 namespace MagicRepositories.Repositories;
 
@@ -24,9 +25,22 @@ public class MagicCardRepository : IMagicCardRepository
 
     public async Task AddAllAsync(List<MagicCard> cards)
     {
-        await _context.MagicCards.AddRangeAsync(cards);
-
-        await _context.SaveChangesAsync();
+        using (var transaction = await _context.Database.BeginTransactionAsync())
+        {
+            //
+            try
+            {
+                await _context.MagicCards.AddRangeAsync(cards);
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+            }
+            catch (Exception e)
+            {
+                await transaction.RollbackAsync();
+                Console.WriteLine(e);
+                throw;
+            }
+        }
     }
 
     // Read
@@ -49,5 +63,16 @@ public class MagicCardRepository : IMagicCardRepository
     {
         _context.MagicCards.Update(card);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<MagicCardLists> GetAllListsForCard()
+    {
+        return new()
+        {
+            CardTypes = await _context.CardType.AsNoTracking().ToListAsync(),
+            SuperCards = await _context.SuperCardTypes.AsNoTracking().ToListAsync(),
+            MagicAbilities = await _context.MagicAbility.AsNoTracking().ToListAsync(),
+            MagicLegality = await _context.MagicLegality.AsNoTracking().ToListAsync()
+        };
     }
 }

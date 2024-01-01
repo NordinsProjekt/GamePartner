@@ -213,7 +213,11 @@ public class MagicCardService : IMagicCardService
             }
             else
             {
-                cardTypes.Add(await _typeRepository.CreateCardType(type, cardId));
+                var newCardTypeConnection = await _typeRepository.CreateCardType(type, cardId);
+
+                cardTypes.Add(newCardTypeConnection);
+
+                BufferLists.CardTypes.Add(new CardType() { Id = newCardTypeConnection.Id, Name = type });
             }
         }
 
@@ -236,7 +240,11 @@ public class MagicCardService : IMagicCardService
             }
             else
             {
-                cardSuperTypes.Add(await _superTypeRepository.CreateSuperCardType(superTypes, cardId));
+                var newSuperTypeConnection = await _superTypeRepository.CreateSuperCardType(superTypes, cardId);
+
+                cardSuperTypes.Add(newSuperTypeConnection);
+
+                BufferLists.SuperCards.Add(new SuperCardType() { Id = newSuperTypeConnection.Id, Name = superTypes });
             }
         }
 
@@ -259,7 +267,12 @@ public class MagicCardService : IMagicCardService
             }
             else
             {
-                cardAbilities.Add(await _abilityRepository.CreateAbility(ability, cardId));
+                var newAbilityConnection = await _abilityRepository.CreateAbility(ability, cardId);
+
+                cardAbilities.Add(newAbilityConnection);
+
+                BufferLists.MagicAbilities.Add(new MagicAbility()
+                    { Id = newAbilityConnection.MagicAbilityId, Name = ability });
             }
         }
 
@@ -283,8 +296,13 @@ public class MagicCardService : IMagicCardService
             }
             else
             {
-                cardLegalities.Add(
-                    await _legalityRepository.CreateLegality(legality.Format, legality.LegalityName, cardId));
+                var newLegalityConnection =
+                    await _legalityRepository.CreateLegality(legality.Format, legality.LegalityName, cardId);
+
+                cardLegalities.Add(newLegalityConnection);
+
+                BufferLists.MagicLegality.Add(new MagicLegality()
+                    { Id = newLegalityConnection.Id, Format = legality.Format, LegalityName = legality.LegalityName });
             }
         }
 

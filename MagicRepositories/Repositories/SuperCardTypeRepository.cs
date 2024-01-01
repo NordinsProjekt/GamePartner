@@ -18,6 +18,13 @@ public class SuperCardTypeRepository : ISuperCardTypeRepository
         var type = new SuperCardType { Id = Guid.NewGuid(), Name = typeName };
 
         _context.SuperCardTypes.Add(type);
+        _context.Logs.Add(new Log()
+        {
+            CreatedUTC = DateTime.UtcNow,
+            Id = Guid.NewGuid(),
+            Message = $"Adding SuperCardType {typeName}",
+            Section = "Magic"
+        });
         await _context.SaveChangesAsync();
 
         return new() { SuperCardTypeId = type.Id, MagicCardId = cardId };

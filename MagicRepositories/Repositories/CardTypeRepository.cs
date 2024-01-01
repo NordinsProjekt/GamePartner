@@ -26,7 +26,13 @@ public class CardTypeRepository : ICardTypeRepository
             _context.CardType.Add(type);
             await _context.SaveChangesAsync();
 
-
+            _context.Logs.Add(new Log()
+            {
+                CreatedUTC = DateTime.UtcNow,
+                Id = Guid.NewGuid(),
+                Message = $"Adding CardType {typeName}",
+                Section = "Magic"
+            });
             return new() { CardTypeId = type.Id, MagicCardId = cardId };
         }
         catch (Exception ex)

@@ -18,6 +18,11 @@ public class MagicAbilityRepository : IMagicAbilityRepository
         var ability = new MagicAbility { Id = Guid.NewGuid(), Name = abilityName };
 
         _context.MagicAbility.Add(ability);
+        _context.Logs.Add(new Log()
+        {
+            CreatedUTC = DateTime.UtcNow, Id = Guid.NewGuid(), Message = $"Adding Ability {abilityName}",
+            Section = "Magic"
+        });
         await _context.SaveChangesAsync();
 
         return new() { MagicAbilityId = ability.Id, MagicCardId = cardId };

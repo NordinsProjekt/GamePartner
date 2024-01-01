@@ -18,6 +18,13 @@ public class MagicLegalityRepository : IMagicLegalityRepository
         var legality = new MagicLegality { Id = Guid.NewGuid(), Format = format, LegalityName = legalityName };
 
         _context.MagicLegality.Add(legality);
+        _context.Logs.Add(new Log()
+        {
+            CreatedUTC = DateTime.UtcNow,
+            Id = Guid.NewGuid(),
+            Message = $"Adding Legality {format} - {legalityName}",
+            Section = "Magic"
+        });
         await _context.SaveChangesAsync();
 
         return new() { MagicLegalityId = legality.Id, MagicCardId = cardId };

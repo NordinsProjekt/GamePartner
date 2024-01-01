@@ -10,7 +10,7 @@ namespace MtGCard_Service.Interface;
 
 public interface IMagicCardService
 {
-    Task SaveCardsFromSet(string setCode);
+    Task<bool> SaveCardsFromSet(string setCode);
     Task<MtGCardSet> GetSetBySetCode(string setCode);
     Task<List<MtGSetRecordDTO>> GetSetList();
 }

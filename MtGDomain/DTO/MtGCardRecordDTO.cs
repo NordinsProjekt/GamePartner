@@ -10,6 +10,7 @@ namespace Domain.MtGDomain.DTO
         List<string>? Abilities,
         string ImageUrl,
         string MultiverseId,
+        string[]? SubTypes,
         string[]? Types,
         string[]? SuperTypes,
         int Cmc,

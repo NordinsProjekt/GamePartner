@@ -38,8 +38,10 @@ public class MagicSetController : Controller
 
         try
         {
-            await _magicCardService.SaveCardsFromSet(setCode);
-            return Ok($"Cards from set {setCode} have been successfully saved.");
+            var response = await _magicCardService.SaveCardsFromSet(setCode);
+            return Ok(response
+                ? $"Cards from set {setCode} have been successfully saved."
+                : "Got 0 cards from Wizards, not saving");
         }
         catch (Exception ex)
         {

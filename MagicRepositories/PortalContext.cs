@@ -14,6 +14,7 @@ public class PortalContext : DbContext
     public DbSet<MagicCard> MagicCards { get; set; }
     public DbSet<MagicSet> MagicSets { get; set; }
     public DbSet<CardType> CardType { get; set; }
+    public DbSet<CardSubType> CardSubType { get; set; }
     public DbSet<SuperCardType> SuperCardTypes { get; set; }
     public DbSet<MagicAbility> MagicAbility { get; set; }
     public DbSet<MagicLegality> MagicLegality { get; set; }
@@ -21,6 +22,7 @@ public class PortalContext : DbContext
 
     // DbSets for relationship tables
     public DbSet<CardTypeMagicCard> CardTypeMagicCards { get; set; }
+    public DbSet<CardSubTypeMagicCard> CardSubTypeMagicCards { get; set; }
     public DbSet<MagicAbilityMagicCard> MagicAbilityMagicCards { get; set; }
     public DbSet<MagicCardMagicLegality> MagicCardMagicLegalities { get; set; }
     public DbSet<MagicCardSuperCardType> MagicCardSuperCardTypes { get; set; }

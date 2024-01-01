@@ -16,6 +16,7 @@ public class MagicCardService : IMagicCardService
     private readonly IMagicAbilityRepository _abilityRepository;
     private readonly IMagicLegalityRepository _legalityRepository;
     private readonly ILogRepository _logRepository;
+    private readonly ICardSubTypeRepository _cardSubTypeRepository;
 
     private MagicCardLists? BufferLists;
     private Guid MagicSetId;
@@ -28,7 +29,8 @@ public class MagicCardService : IMagicCardService
         ISuperCardTypeRepository superTypeRepository,
         IMagicAbilityRepository abilityRepository,
         IMagicLegalityRepository legalityRepository,
-        ILogRepository logRepository)
+        ILogRepository logRepository,
+        ICardSubTypeRepository cardSubTypeRepository)
     {
         _cardRepository = cardRepository;
         _apiMtGCards = apiMtGCards;
@@ -38,13 +40,19 @@ public class MagicCardService : IMagicCardService
         _abilityRepository = abilityRepository;
         _legalityRepository = legalityRepository;
         _logRepository = logRepository;
+        _cardSubTypeRepository = cardSubTypeRepository;
     }
 
-    public async Task SaveCardsFromSet(string setCode)
+    public async Task<bool> SaveCardsFromSet(string setCode)
     {
         await _logRepository.CreateLog("Magic", $"Getting Cards from {setCode}");
 
         var cards = await _apiMtGCards.GetAllCardsFromASet(setCode);
+        if (!cards.Any())
+        {
+            await _logRepository.CreateLog("Magic", $"Got 0 cards {setCode}");
+            return false;
+        }
 
         await _logRepository.CreateLog("Magic", $"Done gettings cards from {setCode}");
 
@@ -78,6 +86,7 @@ public class MagicCardService : IMagicCardService
         }
 
         await _logRepository.CreateLog("Magic", "Saving Done!");
+        return true;
     }
 
     public async Task<MtGCardSet> LoadCardsFromSet(string setCode)
@@ -102,6 +111,8 @@ public class MagicCardService : IMagicCardService
 
             var cardTypes = item.CardTypes?.Select(x => x.CardType?.Name).ToArray() ?? Array.Empty<string>();
 
+            var cardSubTypes = item.CardSubTypes?.Select(x => x.CardSubType?.Name).ToArray() ?? Array.Empty<string>();
+
             var superCardTypes = item.SuperCardTypes?.Select(x => x.SuperCardType?.Name).ToArray() ??
                                  Array.Empty<string>();
 
@@ -121,6 +132,7 @@ public class MagicCardService : IMagicCardService
                     ImageUrl: item.ImageUrl,
                     MultiverseId: item.MultiverseId,
                     Types: cardTypes,
+                    SubTypes: cardSubTypes,
                     SuperTypes: superCardTypes,
                     Cmc: item.Cmc,
                     IsColorLess: item.IsColorLess,
@@ -176,6 +188,7 @@ public class MagicCardService : IMagicCardService
                 }).ToList()
                 : new List<MagicRuling>(),
             CardTypes = await GetCardTypes(cardDto, cardId),
+            CardSubTypes = await GetCardSubTypes(cardDto, cardId),
             SuperCardTypes = await GetCardSuperTypes(cardDto, cardId),
             Abilities = await GetCardAbilities(cardDto, cardId),
             MagicLegalities = await GetCardLegalities(cardDto, cardId)
@@ -222,6 +235,32 @@ public class MagicCardService : IMagicCardService
         }
 
         return cardTypes;
+    }
+
+    private async Task<List<CardSubTypeMagicCard>> GetCardSubTypes(MtGCardRecordDTO card, Guid cardId)
+    {
+        var cardSubTypes = new List<CardSubTypeMagicCard>();
+        if (card.SubTypes is null) return cardSubTypes;
+
+        foreach (var subType in card.SubTypes)
+        {
+            var temp = BufferLists.CardSubType.FirstOrDefault(x => x.Name.Equals(subType));
+
+            if (temp is not null)
+            {
+                cardSubTypes.Add(new CardSubTypeMagicCard() { CardSubTypeId = temp.Id, MagicCardId = cardId });
+            }
+            else
+            {
+                var newCardSubTypeConnection = await _cardSubTypeRepository.CreateCardSubType(subType, cardId);
+
+                cardSubTypes.Add(newCardSubTypeConnection);
+
+                BufferLists.CardSubType.Add(new CardSubType() { Id = newCardSubTypeConnection.Id, Name = subType });
+            }
+        }
+
+        return cardSubTypes;
     }
 
     private async Task<List<MagicCardSuperCardType>> GetCardSuperTypes(MtGCardRecordDTO card, Guid cardId)

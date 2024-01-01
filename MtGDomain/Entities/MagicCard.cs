@@ -19,14 +19,13 @@ namespace MtGDomain.Entities
         public string ImageUrl { get; set; }
         public string MultiverseId { get; set; }
         public ICollection<CardTypeMagicCard> CardTypes { get; set; }
+        public ICollection<CardSubTypeMagicCard> CardSubTypes { get; set; }
         public ICollection<MagicCardSuperCardType> SuperCardTypes { get; set; }
-        public int Cmc {  get; set; }
+        public int Cmc { get; set; }
         public bool IsColorLess { get; set; }
         public bool IsMultiColor { get; set; }
         public string ManaCost { get; set; }
         public string CollectingNumber { get; set; }
         public ICollection<MagicCardMagicLegality> MagicLegalities { get; set; }
-
-
     }
 }

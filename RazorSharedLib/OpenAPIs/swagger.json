@@ -5,6 +5,38 @@
     "version": "1.0"
   },
   "paths": {
+    "/api/Log/get-top-50": {
+      "get": {
+        "tags": [
+          "Log"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogResponseRecordDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogResponseRecordDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogResponseRecordDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
     "/api/MagicSet/save-set/{setCode}": {
       "post": {
         "tags": [
@@ -182,6 +214,37 @@
   },
   "components": {
     "schemas": {
+      "LogRecordDto": {
+        "type": "object",
+        "properties": {
+          "createdUTC": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "section": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LogResponseRecordDto": {
+        "type": "object",
+        "properties": {
+          "logs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LogRecordDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "MagicQuizCardDto": {
         "type": "object",
         "properties": {

@@ -72,7 +72,8 @@ public class MagicCardRepository : IMagicCardRepository
             CardTypes = await _context.CardType.AsNoTracking().ToListAsync(),
             SuperCards = await _context.SuperCardTypes.AsNoTracking().ToListAsync(),
             MagicAbilities = await _context.MagicAbility.AsNoTracking().ToListAsync(),
-            MagicLegality = await _context.MagicLegality.AsNoTracking().ToListAsync()
+            MagicLegality = await _context.MagicLegality.AsNoTracking().ToListAsync(),
+            CardSubType = await _context.CardSubType.AsNoTracking().ToListAsync()
         };
     }
 }

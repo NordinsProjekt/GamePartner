@@ -14,6 +14,7 @@ namespace MagicRepositories.Extensions
             service.AddTransient<IMagicAbilityRepository, MagicAbilityRepository>();
             service.AddTransient<IMagicLegalityRepository, MagicLegalityRepository>();
             service.AddTransient<ILogRepository, LogRepository>();
+            service.AddTransient<ICardSubTypeRepository, CardSubTypeRepository>();
         }
     }
 }

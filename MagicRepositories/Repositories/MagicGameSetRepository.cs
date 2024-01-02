@@ -42,11 +42,7 @@ public class MagicSetRepository : IMagicSetRepository
             return null;
         }
 
-        var cards = await _context.MagicCards
-            .Include(x => x.SuperCardTypes).ThenInclude(x => x.SuperCardType)
-            .Include(x => x.Abilities).ThenInclude(x => x.MagicAbility)
-            .Include(x => x.CardTypes).ThenInclude(x => x.CardType)
-            .Include(x => x.MagicLegalities).ThenInclude(x => x.MagicLegality)
+        var cards = await _context.MagicCards.AsNoTracking().AllIncludes()
             .Where(card => card.MagicSetId == set.Id)
             .ToListAsync();
 

@@ -83,6 +83,66 @@
         }
       }
     },
+    "/api/MagicSet/get-set/{setCode}": {
+      "get": {
+        "tags": [
+          "MagicSet"
+        ],
+        "parameters": [
+          {
+            "name": "setCode",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleMagicSetResponseRecordDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleMagicSetResponseRecordDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleMagicSetResponseRecordDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/MagicSet/get-set-list": {
       "get": {
         "tags": [
@@ -316,6 +376,128 @@
         },
         "additionalProperties": false
       },
+      "MtGCardRecordDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "text": {
+            "type": "string",
+            "nullable": true
+          },
+          "rulings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MtGRulingRecord_DTO"
+            },
+            "nullable": true
+          },
+          "abilities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "multiverseId": {
+            "type": "string",
+            "nullable": true
+          },
+          "subTypes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "superTypes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "cmc": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isColorLess": {
+            "type": "boolean"
+          },
+          "isMultiColor": {
+            "type": "boolean"
+          },
+          "manaCost": {
+            "type": "string",
+            "nullable": true
+          },
+          "setName": {
+            "type": "string",
+            "nullable": true
+          },
+          "set": {
+            "type": "string",
+            "nullable": true
+          },
+          "number": {
+            "type": "string",
+            "nullable": true
+          },
+          "legalities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MtGLegality"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MtGLegality": {
+        "type": "object",
+        "properties": {
+          "format": {
+            "type": "string",
+            "nullable": true
+          },
+          "legalityName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MtGRulingRecord_DTO": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "nullable": true
+          },
+          "text": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "MtGSetRecordDTO": {
         "type": "object",
         "properties": {
@@ -366,6 +548,27 @@
           }
         },
         "additionalProperties": { }
+      },
+      "SingleMagicSetResponseRecordDto": {
+        "type": "object",
+        "properties": {
+          "setName": {
+            "type": "string",
+            "nullable": true
+          },
+          "setCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "cards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MtGCardRecordDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       }
     }
   }

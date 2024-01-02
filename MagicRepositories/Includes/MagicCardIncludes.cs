@@ -13,14 +13,21 @@ public static class MagicCardIncludes
     public static IQueryable<MagicCard> AllIncludes(this IQueryable<MagicCard> query)
     {
         return query.Include(c => c.Rulings)
-                .Include(c => c.Abilities)
-                .Include(c => c.CardTypes)
-                .Include(c => c.SuperCardTypes)
-                .Include(c => c.MagicLegalities);
+            .Include(c => c.Abilities)
+            .ThenInclude(c => c.MagicAbility)
+            .Include(c => c.CardTypes)
+            .ThenInclude(c => c.CardType)
+            .Include(c => c.SuperCardTypes)
+            .ThenInclude(c => c.SuperCardType)
+            .Include(c => c.MagicLegalities)
+            .ThenInclude(c => c.MagicLegality)
+            .Include(st => st.CardSubTypes)
+            .ThenInclude(st => st.CardSubType);
     }
 
     public static IQueryable<MagicCard> QuizVersion(this IQueryable<MagicCard> query)
     {
-        return query.Include(c => c.CardTypes).ThenInclude(x=>x.CardType);
+        return query.Include(c => c.CardTypes)
+            .ThenInclude(x => x.CardType);
     }
 }

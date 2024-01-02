@@ -1,11 +1,7 @@
-﻿using Domain.MtGDomain.DTO;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MtGCard_Service.Interface;
 using MtGCard_Service.Models;
 using MtGCard_Service.Services;
-using MtGDomain.DTO;
 
 namespace Portal.Api.Controllers;
 
@@ -14,12 +10,12 @@ namespace Portal.Api.Controllers;
 public class MagicSetController : Controller
 {
     private readonly MagicCardService _magicCardService;
-    private readonly IMagicSetRepository magicSetRepository;
+    private readonly IMagicSetRepository _magicSetRepository;
 
     public MagicSetController(MagicCardService magicCardService, IMagicSetRepository magicSetRepository)
     {
         _magicCardService = magicCardService;
-        this.magicSetRepository = magicSetRepository;
+        _magicSetRepository = magicSetRepository;
     }
 
     [HttpPost("save-set/{setCode}")]
@@ -33,7 +29,7 @@ public class MagicSetController : Controller
             return BadRequest("Set code is required.");
         }
 
-        if (await magicSetRepository.FindSetBySetCode(setCode))
+        if (await _magicSetRepository.FindSetBySetCode(setCode))
             return Ok("Set already exist");
 
         try
@@ -47,6 +43,17 @@ public class MagicSetController : Controller
         {
             return StatusCode(500, "An error occurred while saving the cards.");
         }
+    }
+
+    [HttpGet("get-set/{setCode}")]
+    [ProducesResponseType(typeof(SingleMagicSetResponseRecordDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetSet(string setCode)
+    {
+        if (setCode.Length != 3) return BadRequest();
+
+        var set = await _magicCardService.GetSetBySetCode(setCode);
+        return Ok(new SingleMagicSetResponseRecordDto(set.SetName, set.SetCode, set.List));
     }
 
     [HttpGet("get-set-list")]

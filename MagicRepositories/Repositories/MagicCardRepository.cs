@@ -47,6 +47,7 @@ public class MagicCardRepository : IMagicCardRepository
     public async Task<MagicCard?> GetByIdAsync(Guid id)
     {
         return await _context.MagicCards
+            .AsNoTracking()
             .AllIncludes()
             .FirstOrDefaultAsync(c => c.Id == id);
     }
@@ -54,6 +55,7 @@ public class MagicCardRepository : IMagicCardRepository
     public async Task<MagicCard?> GetByIdWithQuizIncludes(Guid id)
     {
         return await _context.MagicCards
+            .AsNoTracking()
             .QuizVersion()
             .FirstOrDefaultAsync(c => c.Id == id);
     }

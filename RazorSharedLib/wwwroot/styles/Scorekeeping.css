@@ -1,0 +1,30 @@
+﻿body {
+}
+
+.player-manager {
+    text-align: center;
+    margin: 20px;
+}
+
+    .player-manager .player {
+        margin: 10px 0;
+    }
+
+    .player-manager button {
+        padding: 5px 15px;
+        margin: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .player-manager button:disabled {
+            background-color: #eee;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+    .player-manager input[type="text"] {
+        padding: 5px;
+        margin-left: 10px;
+    }

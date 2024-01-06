@@ -1,5 +1,6 @@
 using GameAssistantPortal.Components;
 using RazorSharedLib.Api;
+using RazorSharedLib.Extensions;
 
 namespace GameAssistantPortal;
 
@@ -12,14 +13,11 @@ public class Program
         // Add services to the container.
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
-        builder.Services.AddHttpClient<ApiClient>((serviceProvider, client) =>
-        {
-            // Set the base address for the HttpClient
-            client.BaseAddress = new Uri("https://www.gameassistant.se");
-        }).ConfigureHttpClient((serviceProvider, client) =>
-        {
-            // Optionally configure other settings for the HttpClient
-        });
+        builder.Services.AddHttpClient<ApiClient>((serviceProvider, client) => { }).ConfigureHttpClient(
+            (serviceProvider, client) =>
+            {
+                // Optionally configure other settings for the HttpClient
+            });
 
         builder.Services.AddTransient(serviceProvider =>
         {
@@ -28,8 +26,11 @@ public class Program
             var client = httpClientFactory.CreateClient(nameof(ApiClient));
 
             // Create an instance of ApiClient with the HttpClient and base URL
-            return new ApiClient("https://www.gameassistant.se", client);
+            return new ApiClient("https://api.gameassistant.se", client);
         });
+
+        builder.Services.AddStates();
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.

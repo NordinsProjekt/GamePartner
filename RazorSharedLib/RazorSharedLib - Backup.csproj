@@ -38,8 +38,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
     <Folder Include="Pages\" />
+    <Folder Include="Shared\Components\Scorekeeping\NewFolder\" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,42 @@
+﻿@using RazorSharedLib.Models.Scorekeeping
+@using RazorSharedLib.Types
+
+<h3>ScoreKeepingSection</h3>
+
+@foreach (var player in Players)
+{
+    <div class="score-container">
+        <h2>@player.Name</h2>
+        <h3>Score: @player.Score</h3>
+        <button @onclick="() => DecreaseScore(player.Id)">Decrease</button>
+        <button @onclick="() => IncreaseScore(player.Id)">Increase</button>
+    </div>
+}
+<button type="button" @onclick="ClearScorekeeping">Clear</button>
+
+@code {
+
+    [Parameter] List<PlayerDto>? Players { get; set; }
+    [Parameter] EventCallback<ScoreKeepingPlayer> OnChange { get; set; }
+
+    private void IncreaseScore(Guid id)
+    {
+        var player = Players!.FirstOrDefault(x => x.Id.Equals(id));
+        if (player is null) return;
+
+        player.Score++;
+    }
+
+    private void DecreaseScore(Guid id)
+    {
+        var player = Players!.FirstOrDefault(x => x.Id.Equals(id));
+        if (player is null) return;
+
+        player.Score--;
+    }
+
+    private async Task ClearScorekeeping()
+        => await OnChange.InvokeAsync(ScoreKeepingPlayer.Clear);
+
+}
+}

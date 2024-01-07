@@ -1,0 +1,73 @@
+﻿@using RazorSharedLib.Interface
+@using RazorSharedLib.States.Player
+
+<div class="player-manager">
+    <div>
+        <button @onclick="AddPlayer" disabled="@(players.Count >= 4)">Add Player</button>
+        <button @onclick="RemovePlayer" disabled="@(players.Count <= 2)">Remove Player</button>
+    </div>
+    
+    @foreach (var (player, index) in players.Select((value, i) => (value, i)))
+    {
+        <div class="player">
+            <span>Player @(index + 1):</span>
+            <input type="text" @bind-value="player.Name" @bind-value:event="oninput" @onchange="(e => SetPlayerName(e, index))"/>
+        </div>
+    }
+    <button type="button" @onclick="StartScoreKeeping" class="start-button">Start</button>
+</div>
+
+
+@code {
+    [Inject] public IPlayerState PlayerState { get; set; }
+
+    [Parameter] public EventCallback OnStart { get; set; }
+
+    private class Player
+    {
+        public string Name { get; set; } = "New Player";
+    }
+
+    // List of players
+    private List<Player> players = new List<Player>();
+
+    // Initialize with 2 players
+    protected override void OnInitialized()
+    {
+        players.Add(new Player());
+        players.Add(new Player());
+    }
+
+    // Method to add a new player
+    private void AddPlayer()
+    {
+        if (players.Count < 4)
+        {
+            players.Add(new Player());
+        }
+    }
+
+    // Method to remove the last player
+    private void RemovePlayer()
+    {
+        if (players.Count > 2)
+        {
+            players.RemoveAt(players.Count - 1);
+        }
+    }
+
+    // Method to update a player's name
+    private void SetPlayerName(ChangeEventArgs e, int playerIndex)
+    {
+        if (playerIndex < players.Count)
+        {
+            players[playerIndex].Name = e.Value.ToString();
+        }
+    }
+
+    private async Task StartScoreKeeping()
+    {
+        PlayerState.CreatePlayers(players.Select(x=>x.Name).ToArray());
+        await OnStart.InvokeAsync();
+    }
+}

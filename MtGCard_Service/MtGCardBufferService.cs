@@ -1,6 +1,6 @@
-﻿using Application.MtGCard_Service.DTO;
-using Application.MtGCard_Service.Interface;
+﻿using MtGCard_Service.DTO;
 using Domain.MtGDomain.DTO;
+using MtGCard_Service.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;

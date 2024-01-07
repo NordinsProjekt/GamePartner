@@ -1,0 +1,26 @@
+﻿@using MtGDomain.DTO
+
+@if (Result is not null)
+{
+    <h3>ShowResult</h3>
+    @if (Result.Correct)
+    {
+        <p>Du hade rätt</p>
+        <img src="@Result?.ImageUrl"/>
+    }
+    else
+    {
+        <p>Du hade tyvärr fel</p>
+        <img src="@Result?.ImageUrl"/>
+    }
+}
+
+@code {
+    [Parameter] public ResultRecord? Result { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        StateHasChanged();
+    }
+
+}

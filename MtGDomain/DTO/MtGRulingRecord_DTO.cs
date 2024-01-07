@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Domain.MtGDomain.DTO
 {
-    public sealed record MtGRulingRecord_DTO(string Date,string Text);
+    public sealed record MtGRulingRecord_DTO(string Date, string Text);
 }

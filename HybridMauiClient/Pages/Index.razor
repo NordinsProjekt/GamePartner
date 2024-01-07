@@ -1,0 +1,16 @@
+﻿@layout MainLayout
+@using HybridMauiClient.Auth;
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@page "/"
+<h1>Main - Index</h1>
+@code {
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await ((ExternalAuthStateProvider)AuthenticationStateProvider)
+            .LogInAsync();
+
+    }
+}

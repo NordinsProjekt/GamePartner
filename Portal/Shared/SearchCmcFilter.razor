@@ -1,0 +1,18 @@
+﻿@using MtGDomain.DTO;
+@using static Portal.Shared.MagicCardSearch;
+
+<label for="CmcId">Manacost: </label>
+<input type="number" @bind="@Model.Cmc" id="CmcId" size="4" />
+<select @bind="Model.ChoosenSymbol">
+    <option value="">--Please choose an option--</option>
+    <option value="=">Equal</option>
+    <option value="<">Less than</option>
+    <option value=">">More than</option>
+</select>
+
+@code {
+
+    [Parameter]
+    public MtGCmcFilter Model { get; set; }
+}
+

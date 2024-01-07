@@ -1,0 +1,139 @@
+﻿@layout MagicBasicLayout
+@page "/MagicBasic/Quiz"
+@using MtGDomain.Hashmaps;
+@using MtGDomain.States;
+@using MtGCard_Service.Interface;
+@using MtGCard_Service.Classes;
+@using MtGCard_Service.DTO;
+@using MtGCard_Service.Interface;
+@using MtGDomain.DTO;
+@using MtGDomain.States;
+@using HybridMauiClient.Pages.MagicBasic.Components;
+@using Domain.MtGDomain.DTO
+@using MtGDomain.Enums
+@using MtGDomain.Extensions;
+@inject IMtGQuizService Service
+
+<h1>Quiz @State.Heading</h1>
+<ScoreBoard Score="@State.Score" />
+
+@if (State.GameStart is false)
+{
+    <p>
+        Se namnet på kortet och välj om det kommer från ett creature card,
+        enchantment, instant, sorcery eller artefact.
+    </p>
+    if (State.Loading is true)
+    {
+        <p>Loading.......please wait</p>
+    }
+    else
+    {
+        <EditForm Model="@State.Model">
+            <select id="QuizSetSelector" @bind="@State.Model.QuizSet">
+                @foreach(var set in MtGSets.Values.Keys)
+                {
+                    <option value="@set">@set</option>
+                }
+            </select>
+            <InputSelect id="QuizTypeSelector" @bind-Value="State.Model.Quiz">
+                <option>CMC</option>
+                <option>Type</option>
+                <option>Color</option>
+            </InputSelect>
+            <button id="startquiz" @onclick="StartQuiz">Starta Quizet</button>
+        </EditForm>
+    }
+}
+else
+{
+    if (State.QuizCard is not null)
+    {
+        @switch (State.Model.Quiz)
+        {
+            case QuizType.Type:
+                <div id="QuizWindowType">
+                    <h2>Vilken typ har detta kortet? @(State.Index + 1) / @State.List.Count</h2>
+                    <p>Cardname: @State.QuizCard.Name</p>
+                    <button id="Enchantment" @onclick='(() => CheckAnswer("enchantment"))'>Enchantment</button>
+                    <button id="Artefact" @onclick='(() => CheckAnswer("artifact"))'>Artifact</button>
+                    <button id="Creature" @onclick='(() => CheckAnswer("creature"))'>Creature</button>
+                    <button id="Instant" @onclick='(() => CheckAnswer("instant"))'>Instant</button>
+                    <button id="Sorcery" @onclick='(() => CheckAnswer("sorcery"))'>Sorcery</button>
+                </div>
+                break;
+            case QuizType.CMC:
+                <div id="QuizWindowCMC">
+                    <h2>Hur mycket CMC har detta kortet? @(State.Index + 1) / @State.List.Count</h2>
+                    <p>Cardname: @State.QuizCard.Name</p>
+                    <EditForm Model="@State.Model">
+                        <InputNumber id="inputCmc" @bind-Value="@State.Model.CmcValue" @ref="inputCmc" />
+                            <button id="CmcCheck" @onclick="CheckAnswerCmC">Send</button>
+                    </EditForm>
+                </div>
+                break;
+            case QuizType.Color:
+                <div id="QuizWindowColor">
+                    <h2>Vilken/Vilka färger har kortet? @(State.Index + 1) / @State.List.Count</h2>
+                    <p>Cardname: @State.QuizCard.Name</p>
+                    <EditForm Model="@State.Model">
+                        <label for="blue">Blue</label><InputCheckbox DisplayName="Blue" @bind-Value="@State.Model.Color.Blue" type="checkbox" id="blue" /> |
+                        <label for="white">White</label><InputCheckbox DisplayName="White" @bind-Value="@State.Model.Color.White" type="checkbox" id="white" /> |
+                        <label for="red">Red</label><InputCheckbox DisplayName="Red" @bind-Value="@State.Model.Color.Red" type="checkbox" id="red" /> |
+                        <label for="black">Black</label><InputCheckbox DisplayName="Black" @bind-Value="@State.Model.Color.Black" type="checkbox" id="black" /> |
+                        <label for="green">Green</label><InputCheckbox DisplayName="Green" @bind-Value="@State.Model.Color.Green" type="checkbox" id="green" />
+                        <button id="ColorCheck" @onclick="CheckAnswerColor">Send</button>
+                    </EditForm>
+                    
+                </div>
+                break;
+            default:
+                Service.EndQuiz();
+                break;
+        }
+        <ShowResult Result="State.Result" />
+    }
+}
+
+@code {
+    public string[] selector = new string[] { "Cardtype", "Card CMC", "Card Color" };
+    public MtGQuizState State { get; set; }
+    public InputNumber<int> inputCmc;
+
+    protected override void OnInitialized()
+    {
+        State = Service.GetQuizState();
+    }
+
+    private async void StartQuiz()
+    {
+        State.Loading = true;
+        if (! State.Model.QuizSet.Equals(""))
+            await Service.StartQuiz(MtGSets.Values[State.Model.QuizSet]);
+        State.Loading = false;
+        StateHasChanged();
+    }
+
+    private void CheckAnswer(string text)
+    {
+        Service.CheckAnswer(text);
+        StateHasChanged();
+    }
+
+
+    private async Task CheckAnswerCmC()
+    {
+        Service.CheckAnswerCmC();
+        await inputCmc.Element.Value.FocusAsync();
+        StateHasChanged();
+    }
+    
+
+   private void CheckAnswerColor()
+    {
+        Service.CheckAnswerColor();
+        StateHasChanged();
+    }
+    
+
+}

@@ -1,4 +1,4 @@
-﻿using Application.MtGCard_Service.DTO;
+﻿using MtGCard_Service.DTO;
 using Domain.MtGDomain.DTO;
 using MtGCard_Service.DTO;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.MtGCard_Service.Interface
+namespace MtGCard_Service.Interface
 {
     public interface IMtGSearchBuffer
     {
@@ -15,6 +15,6 @@ namespace Application.MtGCard_Service.Interface
         public void AddToSearchBuffer(string searchText, List<MtGCardRecordDTO> list);
         public void AddClickedCard(MtGCardRecordDTO card);
         public List<ClickedCardClass> GetClickedCardList();
-        public MtGCardRecordDTO GetCardById(string id);
+        public MtGCardRecordDTO? GetCardById(string id);
     }
 }

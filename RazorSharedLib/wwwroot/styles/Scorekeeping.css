@@ -1,0 +1,134 @@
+﻿body {
+}
+
+.player-manager {
+    max-width: 800px; /* Adjust as needed */
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* Adjust the gap between score containers */
+    padding: 20px;
+}
+
+    .player-manager .player {
+        background-color: #f3f3f3; /* Light background for each score container */
+        border-radius: 10px; /* Rounded corners for elegance */
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+        padding: 15px;
+        text-align: center; /* Center text */
+        width: 100%;
+    }
+
+    .player-manager button {
+        padding: 5px 15px;
+        margin: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .player-manager button:disabled {
+            background-color: #eee;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+    .player-manager input[type="text"] {
+        padding: 5px;
+        margin-left: 10px;
+        border-radius: 10px; /* Rounded corners for elegance */
+        border: groove;
+    }
+
+#scorekeeping-container {
+    max-width: 800px; /* Adjust as needed */
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* Adjust the gap between score containers */
+    padding: 20px;
+}
+
+#score-container {
+    background-color: #f3f3f3; /* Light background for each score container */
+    border-radius: 10px; /* Rounded corners for elegance */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    padding: 15px;
+    text-align: center; /* Center text */
+    width: 100%;
+}
+
+.player-name, .player-score {
+    margin: 10px 0; /* Spacing around headings */
+}
+
+.start-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #555; /* Darker color for clear */
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+    .start-button:hover {
+        background-color: #333;
+    }
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Space between buttons */
+}
+
+.score-button {
+    padding: 5px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+    .score-button.decrease {
+        background-color: #ff6b6b; /* Reddish color for decrease */
+    }
+
+    .score-button.increase {
+        background-color: #48c78e; /* Greenish color for increase */
+    }
+
+    .score-button:hover {
+        opacity: 0.8;
+    }
+
+.clear-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #555; /* Darker color for clear */
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+    .clear-button:hover {
+        background-color: #333;
+    }
+
+#full-height-background {
+    /* Set the height of the div to take up the full viewport height */
+    height: 100vh;
+    /* Make sure the image covers the full container, might crop some parts if the aspect ratio differs */
+    background-size: cover;
+    /* Center the background image */
+    background-position: center;
+    /* Ensure the background image doesn't repeat */
+    background-repeat: no-repeat;
+    border-radius: 10px; /* Rounded corners for elegance */
+}

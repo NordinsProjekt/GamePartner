@@ -1,12 +1,15 @@
 ﻿@using MtGCard_Service.DTO
 <div>
-            <select @bind="@playerId">
-                @foreach (var player in PlayerList)
-                {
-                    <option value="@player.PlayerId">@player.PlayerName</option>
-                }
-            </select>
-            <button @onclick="SaveCard">Lägg till listan</button>
+    <select @bind="@playerId">
+        @if (PlayerList != null)
+        {
+            @foreach (var player in PlayerList)
+            {
+                <option value="@player.PlayerId">@player.PlayerName</option>
+            }
+        }
+    </select>
+    <button @onclick="SaveCard">Lägg till listan</button>
 </div>
 @code {
     [Parameter]

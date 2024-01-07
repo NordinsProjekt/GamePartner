@@ -1,7 +1,7 @@
-﻿using Application.MtGCard_Service.DTO;
-using Application.MtGCard_Service.Interface;
+﻿using MtGCard_Service.DTO;
 using Domain.MtGDomain.DTO;
 using MtGCard_Service.DTO;
+using MtGCard_Service.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,12 +35,13 @@ namespace MtGCard_API
         }
         public List<ClickedCardClass> GetClickedCardList() { return clickedList; }
 
-        public MtGCardRecordDTO GetCardById(string id)
+        public MtGCardRecordDTO? GetCardById(string id)
         {
             var c = clickedList.Where(c=>c.Card.Id == id).FirstOrDefault();
             if (c != null)
                 return c.Card;
-            return default(MtGCardRecordDTO);
+
+            return null;
         }
     }
 }

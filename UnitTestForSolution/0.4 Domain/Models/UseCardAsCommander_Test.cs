@@ -9,8 +9,7 @@ namespace UnitTestForSolution._0._4_Domain.Models
         [Fact]
         public void CheckIfCardWillBeCommander_SendInNotValidCommander_IsModelValidShouldReturnFalse()
         {
-            MtGCardRecordDTO card = new("TestCard", "111", "Def", new(), new(), "", "", 
-                new string[] { "Instant" }, new string[] { "Legendary"},0, false, false, "{1}{B}");
+            MtGCardRecordDTO card = new MtGCardObject() { SuperTypes = new string[] { "" } }.GetDTO();
             UseCardAsCommander commander = new(card);
             Assert.False(commander.IsModelValid());
         }
@@ -18,8 +17,8 @@ namespace UnitTestForSolution._0._4_Domain.Models
         [Fact]
         public void CheckIfCardWillBeCommander_SendInValidCommander_IsModelValidShouldReturnTrue()
         {
-            MtGCardRecordDTO card = new("TestCard", "111", "Def", new(), new(), "", "",
-                new string[] { "Creature" }, new string[] { "Legendary"}, 0, false, false, "{1}{B}");
+            MtGCardRecordDTO card = new MtGCardObject() { Types = new string[] { "Creature" }, 
+                SuperTypes = new string[] { "Legendary" } }.GetDTO();
             UseCardAsCommander commander = new(card);
             Assert.True(commander.IsModelValid());
         }

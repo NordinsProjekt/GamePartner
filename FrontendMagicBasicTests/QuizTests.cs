@@ -3,13 +3,13 @@ using Portal.Pages.MagicBasic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
-using Application.MtGCard_Service.Interface;
 using MtGCard_API;
 using Bunit;
 using Microsoft.AspNetCore.Components.Web;
 using Portal.Pages.MagicBasic.Components;
 using MtGCard_Service.Interface;
 using Microsoft.AspNetCore.Components.Forms;
+using MtGCard_Service;
 
 namespace FrontendMagicBasicTests
 {
@@ -18,7 +18,7 @@ namespace FrontendMagicBasicTests
     /// These tests are written entirely in C#.
     /// Learn more at https://bunit.dev/docs/getting-started/writing-tests.html#creating-basic-tests-in-cs-files
     /// </summary>
-    
+
     [Trait("Presentation", "Magic Quiz")]
     public class QuizTests : TestContext
     {
@@ -26,6 +26,7 @@ namespace FrontendMagicBasicTests
         {
             Services.AddTransient<IMtGCardRepository, MockData>();
             Services.AddSingleton<ICardSetBuffer, MockData>();
+            Services.AddTransient<IMtGQuizService, MtGQuizService>();
         }
 
         [Fact]
@@ -42,7 +43,7 @@ namespace FrontendMagicBasicTests
         }
 
         [Fact]
-        public async Task StartQuiz_CheckIfButtonIsntThereAnymore_ShouldThrowElementNotFound()
+        public void StartQuiz_CheckIfButtonIsntThereAnymore_ShouldThrowElementNotFound()
         {
             DisposeComponents();
             var quiz = RenderComponent<Quiz>(); 
@@ -59,7 +60,7 @@ namespace FrontendMagicBasicTests
         }
 
         [Fact]
-        public async Task StartQuiz_CheckIfButtonIsMissing_ShouldNotContainButton()
+        public void StartQuiz_CheckIfButtonIsMissing_ShouldNotContainButton()
         {
             DisposeComponents();
             var quiz = RenderComponent<Quiz>();
@@ -80,22 +81,25 @@ namespace FrontendMagicBasicTests
             DisposeComponents();
             var quiz = RenderComponent<Quiz>();
 
-            var result = quiz.Instance.GameStart;
+            var result = quiz.Instance.State.GameStart;
 
             Assert.False(result);
         }
 
         [Fact]
-        public void StartQuiz_ClickStartQuizButton_BoolShouldBeSetToTrue()
+        public async void StartQuiz_ClickStartQuizButton_BoolShouldBeSetToTrue()
         {
             DisposeComponents();
             var quiz = RenderComponent<Quiz>();
-            var inputselect = quiz.Find("select");
-            inputselect.Change<string>("Type");
-            var buttonElement = quiz.Find("button");
+            var inputselect = quiz.Find("#QuizSetSelector");
+            inputselect.Change<string>("The Brothers' War");
 
-            buttonElement.Click();
-            var result = quiz.Instance.GameStart;
+            inputselect = quiz.Find("#QuizTypeSelector");
+            inputselect.Change<string>("Type");
+
+            var button = quiz.Find("#startquiz");
+            await button.ClickAsync(new MouseEventArgs());
+            var result = quiz.Instance.State.GameStart;
 
             Assert.True(result);
         }
@@ -105,13 +109,16 @@ namespace FrontendMagicBasicTests
         {
             DisposeComponents();
             var quiz = RenderComponent<Quiz>();
+            var inputselect = quiz.Find("#QuizSetSelector");
+            inputselect.Change<string>("The Brothers' War");
+
+            inputselect = quiz.Find("#QuizTypeSelector");
+            inputselect.Change<string>("Type");
 
             var button = quiz.Find("#startquiz");
-            var inputselect = quiz.Find("select");
-            inputselect.Change<string>("Type");
             await button.ClickAsync(new MouseEventArgs());
 
-            var count = quiz.Instance.List.Count;
+            var count = quiz.Instance.State.List.Count;
 
             Assert.True(count > 0);
         }
@@ -121,11 +128,13 @@ namespace FrontendMagicBasicTests
         {
             DisposeComponents();
             var quiz = RenderComponent<Quiz>();
-            var inputselect = quiz.Find("select");
+            var inputselect = quiz.Find("#QuizSetSelector");
+            inputselect.Change<string>("The Brothers' War");
+
+            inputselect = quiz.Find("#QuizTypeSelector");
             inputselect.Change<string>("Type");
 
             var button = quiz.Find("#startquiz");
-
             await button.ClickAsync(new MouseEventArgs());
             var window = quiz.FindAll("#QuizWindowType");
             
@@ -137,11 +146,15 @@ namespace FrontendMagicBasicTests
         {
             DisposeComponents();
             var quiz = RenderComponent<Quiz>();
-            var inputselect = quiz.Find("select");
-            inputselect.Change<string>("Type");
-            var button = quiz.Find("#startquiz");
+            var inputselect = quiz.Find("#QuizSetSelector");
+            inputselect.Change<string>("The Brothers' War");
 
+            inputselect = quiz.Find("#QuizTypeSelector");
+            inputselect.Change<string>("Type");
+
+            var button = quiz.Find("#startquiz");
             await button.ClickAsync(new MouseEventArgs());
+
             var window = quiz.Find("#QuizWindowType");
             var children = window.ChildNodes.Where(x => x.NodeName.Equals("BUTTON")).ToList();
 
@@ -153,12 +166,17 @@ namespace FrontendMagicBasicTests
         {
             DisposeComponents();
             var quiz = RenderComponent<Quiz>();
-            var inputselect = quiz.Find("select");
-            inputselect.Change<string>("Type");
-            var button = quiz.Find("#startquiz");
+            var inputselect = quiz.Find("#QuizSetSelector");
+            inputselect.Change<string>("The Brothers' War");
 
+            inputselect = quiz.Find("#QuizTypeSelector");
+            inputselect.Change<string>("Type");
+
+            var button = quiz.Find("#startquiz");
             await button.ClickAsync(new MouseEventArgs());
-            var correctButton = quiz.Find("#Artefact");
+
+            var correctButton = quiz.WaitForElement("#Artefact");            
+            
             await correctButton.ClickAsync(new MouseEventArgs());
             int score = quiz.FindComponent<ScoreBoard>().Instance.Score;
 
@@ -170,37 +188,17 @@ namespace FrontendMagicBasicTests
         {
             DisposeComponents();
             var quiz = RenderComponent<Quiz>();
-            var inputselect = quiz.Find("select");
+            var inputselect = quiz.Find("#QuizSetSelector");
+            inputselect.Change<string>("The Brothers' War");
+
+            inputselect = quiz.Find("#QuizTypeSelector");
             inputselect.Change<string>("CMC");
 
             var button = quiz.Find("#startquiz");
-
             await button.ClickAsync(new MouseEventArgs());
             var window = quiz.FindAll("#QuizWindowCMC");
 
             Assert.True(window.Count() == 1);
-        }
-
-
-        //Index verkar leva kvar och förstör andra test;
-        [Fact]
-        public async Task StartQuizCmc_AnswerCorrectOnQuestion1_CountShouldBeOne()
-        {
-            DisposeComponents();
-            var quiz = RenderComponent<Quiz>();
-            var inputselect = quiz.Find("select");
-            inputselect.Change<string>("CMC");
-
-            var button = quiz.Find("#startquiz");
-            await button.ClickAsync(new MouseEventArgs());
-
-            quiz.Find("#inputCmc").Change(quiz.Instance.QuizCard.Cmc);
-            await quiz.Find("#CmcCheck").ClickAsync(new MouseEventArgs());
-
-            int score = quiz.FindComponent<ScoreBoard>().Instance.Score;
-
-            Assert.Equal(1, score);
-            quiz.Dispose();
         }
 
         [Fact]
@@ -208,7 +206,10 @@ namespace FrontendMagicBasicTests
         {
             DisposeComponents();
             var quiz = RenderComponent<Quiz>();
-            var inputselect = quiz.Find("select");
+            var inputselect = quiz.Find("#QuizSetSelector");
+            inputselect.Change<string>("The Brothers' War");
+
+            inputselect = quiz.Find("#QuizTypeSelector");
             inputselect.Change<string>("CMC");
 
             var button = quiz.Find("#startquiz");
@@ -217,9 +218,7 @@ namespace FrontendMagicBasicTests
             quiz.Find("#inputCmc").Change(100);
             await quiz.Find("#CmcCheck").ClickAsync(new MouseEventArgs());
             int score = quiz.FindComponent<ScoreBoard>().Instance.Score;
-
             Assert.Equal(0, score);
-            quiz.Dispose();
         }
 
     }

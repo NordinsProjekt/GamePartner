@@ -1,0 +1,24 @@
+﻿<header>
+    <div class="dropdown">
+        <button class="dropdown-button">Select Background</button>
+        <div class="dropdown-content">
+            @foreach (var image in backgroundImages)
+            {
+                <a @onclick="() => ChangeBackground(new ChangeEventArgs { Value = image })">@image</a>
+            }
+        </div>
+    </div>
+</header>
+
+@code {
+    [Parameter] public EventCallback OnBackgroundChange { get; set; }
+    private List<string> backgroundImages = new List<string> { "Munchkin.png", "Zombies.png", "Zombiedice.png" };
+    public string selectedBackground = "Zombies.png"; // Default background
+
+    // Method to change the background image
+    private async Task ChangeBackground(ChangeEventArgs e)
+    {
+        selectedBackground = e.Value.ToString();
+        await OnBackgroundChange.InvokeAsync();
+    }
+}

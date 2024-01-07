@@ -16,4 +16,14 @@ public class PlayerState : IPlayerState
     {
         return _players;
     }
+
+    public void CreatePlayers(string[] names)
+    {
+        _players.Clear();
+
+        foreach (var player in names)
+        {
+            _players.Add(new PlayerDto(player, 0));
+        }
+    }
 }

@@ -1,13 +1,62 @@
 ﻿@page "/Notes/Scorekeeping"
 @using RazorSharedLib.Shared.Components.Scorekeeping
 @using RazorSharedLib.Shared.Components.Scorekeeping.Components
+@using RazorSharedLib.Shared.Components.Header
+@using RazorSharedLib.Interface
+@using RazorSharedLib.Types
 
-<CreatePlayerSection/>
-<ScoreKeepingSection/>
+<HeaderChooseBackground @ref="BackgroundSelector" OnBackgroundChange="OnChanges"/>
+
+<div class="div-with-background" id="full-height-background" style="background-image: url('_content/RazorSharedLib/images/@SelectedBackground');">
+
+    @if (!_ready)
+    {
+        <CreatePlayerSection OnStart="StartScoreKeeping"/>
+    }
+    else
+    {
+        <ScoreKeepingSection Players="PlayerState!.GetPlayers()" OnChange="HandleScoreKeeping"/>
+    }
+
+</div>
+
 
 @code {
-    //Create a ScoreKeeping State
-    //Allow all components to use and change the state.
+    [Inject] public IPlayerState? PlayerState { get; set; }
 
+    public HeaderChooseBackground? BackgroundSelector { get; set; }
+
+    private string SelectedBackground { get; set; } = "";
+
+    private bool _ready;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (BackgroundSelector is null) return;
+
+        SelectedBackground = BackgroundSelector.selectedBackground;
+        base.OnAfterRender(firstRender);
+    }
+
+    private void HandleScoreKeeping(ScoreKeepingPlayer section)
+    {
+        if (section == ScoreKeepingPlayer.Clear)
+        {
+            _ready = false;
+        }
+    }
+
+    private void StartScoreKeeping()
+    {
+        _ready = true;
+    }
+
+    private async Task OnChanges()
+    {
+        if (BackgroundSelector is null) return;
+
+        SelectedBackground = BackgroundSelector.selectedBackground;
+        await InvokeAsync(StateHasChanged);
+    }
 
 }

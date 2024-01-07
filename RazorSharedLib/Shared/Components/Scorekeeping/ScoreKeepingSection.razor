@@ -1,23 +1,27 @@
 ﻿@using RazorSharedLib.Models.Scorekeeping
 @using RazorSharedLib.Types
 
-<h3>ScoreKeepingSection</h3>
-
-@foreach (var player in Players)
-{
-    <div class="score-container">
-        <h2>@player.Name</h2>
-        <h3>Score: @player.Score</h3>
-        <button @onclick="() => DecreaseScore(player.Id)">Decrease</button>
-        <button @onclick="() => IncreaseScore(player.Id)">Increase</button>
-    </div>
-}
-<button type="button" @onclick="ClearScorekeeping">Clear</button>
+<div id="scorekeeping-container">
+    @foreach (var player in Players)
+    {
+        <div id="score-container">
+            <h2 class="player-name">@player.Name</h2>
+            <h3 class="player-score">Score: @player.Score</h3>
+            <div class="button-group">
+                <button @onclick="() => DecreaseScore(player.Id)" class="score-button decrease">Decrease</button>
+                <button @onclick="() => IncreaseScore(player.Id)" class="score-button increase">Increase</button>
+            </div>
+        </div>
+    }
+    <button type="button" @onclick="ClearScorekeeping" class="clear-button">Clear</button>
+</div>
 
 @code {
 
-    [Parameter] List<PlayerDto>? Players { get; set; }
-    [Parameter] EventCallback<ScoreKeepingPlayer> OnChange { get; set; }
+    [Parameter] public List<PlayerDto>? Players { get; set; }
+    [Parameter] public EventCallback<ScoreKeepingPlayer> OnChange { get; set; }
+
+
 
     private void IncreaseScore(Guid id)
     {
@@ -38,5 +42,4 @@
     private async Task ClearScorekeeping()
         => await OnChange.InvokeAsync(ScoreKeepingPlayer.Clear);
 
-}
 }

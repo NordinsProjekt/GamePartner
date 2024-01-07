@@ -85,7 +85,7 @@
             break;
 
         default:
-            EndQuiz();
+            State.EndQuiz();
             break;
     }
 
@@ -104,12 +104,6 @@
     {
         await State!.SetQuiz();
         await base.OnInitializedAsync();
-    }
-
-
-    private void EndQuiz()
-    {
-        
     }
 }
 

@@ -33,7 +33,8 @@
 
 @if (State.QuizStarted)
 {
-    <Quiz/>
+    <Quiz/> <br/>
+    <button @onclick="State.EndQuiz">End Quiz</button>
 }
 
 @code {

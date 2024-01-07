@@ -67,20 +67,21 @@ public class MagicQuizState
         Model = new MtGQuizModel();
 
         if (++QuizIndex != NumOfCards) return;
-
-        QuizReady = false;
-        QuizIndex = 0;
-        QuizScore = 0;
+        EndQuiz();
     }
 
     public void CheckAnswer(string cardtype)
     {
+        if (Result is not null) return;
+
         Result = new ResultRecord(CurrentCard.CardTypes.Contains(cardtype), CurrentCard.ImageUrl);
         if (Result.Correct) QuizScore++;
     }
 
     public void CheckAnswerColor()
     {
+        if (Result is not null) return;
+
         var cardColor = CurrentCard.GetColorFromCard();
         var userAnswer = Model.GetColorFromUser();
 
@@ -90,7 +91,21 @@ public class MagicQuizState
 
     public void CheckAnswerCmC()
     {
+        if (Result is not null) return;
+
         Result = new ResultRecord(CurrentCard.Cmc == Model.CmcValue, CurrentCard.ImageUrl);
         if (Result.Correct) QuizScore++;
+    }
+
+    public void EndQuiz()
+    {
+        QuizReady = false;
+        QuizIndex = 0;
+        QuizScore = 0;
+        SelectedQuizType = null;
+        SelectedSet = null;
+        Result = null;
+        QuizDto = null;
+        QuizStarted = false;
     }
 }

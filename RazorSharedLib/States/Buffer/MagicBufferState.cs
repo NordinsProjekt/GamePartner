@@ -2,7 +2,7 @@
 
 namespace RazorSharedLib.States.Buffer;
 
-public class MagicBufferState
+public class MagicBufferState : IMagicBufferState
 {
     private bool _isInitialized;
 

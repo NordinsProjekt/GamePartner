@@ -3,15 +3,14 @@ using MtGDomain.Enums;
 using MtGDomain.Models;
 using RazorSharedLib.Api;
 using RazorSharedLib.States.Buffer;
-using System.Reflection;
 using RazorSharedLib.Extensions;
 
 namespace RazorSharedLib.States.Quiz;
 
-public class MagicQuizState
+public class MagicQuizState : IMagicQuizState
 {
     private readonly ApiClient _apiClient;
-    private readonly MagicBufferState _buffer;
+    private readonly IMagicBufferState _buffer;
 
     public List<MtGSetRecordDTO>? MagicSets { get; set; }
     public MtGSetRecordDTO? SelectedSet { get; set; }
@@ -28,14 +27,14 @@ public class MagicQuizState
     public MagicQuizCardDto? CurrentCard => QuizDto.Cards.Skip(QuizIndex).Take(1).FirstOrDefault();
 
 
-    public List<(string Name, QuizType Type)> QuizList = new()
+    public List<(string Name, QuizType Type)> QuizList { get; } = new()
     {
         ("Cmc", QuizType.CMC),
         ("Type", QuizType.Type),
         ("Color", QuizType.Color)
     };
 
-    public MagicQuizState(ApiClient apiClient, MagicBufferState buffer)
+    public MagicQuizState(ApiClient apiClient, IMagicBufferState buffer)
     {
         _apiClient = apiClient;
         _buffer = buffer;
@@ -55,6 +54,9 @@ public class MagicQuizState
     {
         var quiz = await _apiClient.GetQuizAsync(SelectedSet!.SetCode, NumOfCards);
         if (quiz is null) return;
+
+        var list = quiz.Cards.SelectMany(card => card.CardTypes).ToList();
+
 
         QuizDto = quiz;
         QuizScore = 0;

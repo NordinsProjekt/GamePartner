@@ -38,7 +38,7 @@
 }
 
 @code {
-    [Inject] public MagicQuizState State { get; set; }
+    [Inject] public IMagicQuizState State { get; set; }
 
     [SupplyParameterFromForm] public QuizFormData FormData { get; set; } = new();
 

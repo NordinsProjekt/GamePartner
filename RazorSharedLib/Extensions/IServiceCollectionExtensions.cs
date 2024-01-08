@@ -11,13 +11,8 @@ public static class IServiceCollectionExtensions
 {
     public static void AddStates(this IServiceCollection service)
     {
-        var serviceProvider = service.BuildServiceProvider();
-        var apiClient = serviceProvider.GetService<ApiClient>();
-        var magicSetBuffer = new MagicBufferState();
-
-        service.AddSingleton(magicSetBuffer);
-        service.AddSingleton<Task>(magicSetBuffer.InitializeAsync(apiClient));
+        service.AddSingleton<IMagicBufferState, MagicBufferState>();
         service.AddScoped<IPlayerState, PlayerState>();
-        service.AddScoped<MagicQuizState>();
+        service.AddScoped<IMagicQuizState, MagicQuizState>();
     }
 }

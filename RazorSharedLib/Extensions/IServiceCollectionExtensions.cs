@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using RazorSharedLib.Api;
 using RazorSharedLib.Interface;
 using RazorSharedLib.States.Buffer;
+using RazorSharedLib.States.GameAssets;
 using RazorSharedLib.States.Player;
 using RazorSharedLib.States.Quiz;
 
@@ -14,5 +14,6 @@ public static class IServiceCollectionExtensions
         service.AddSingleton<IMagicBufferState, MagicBufferState>();
         service.AddScoped<IPlayerState, PlayerState>();
         service.AddScoped<IMagicQuizState, MagicQuizState>();
+        service.AddScoped<IDiceGeneratorState, DiceGeneratorState>();
     }
 }

@@ -1,0 +1,19 @@
+﻿@using RazorSharedLib.States.GameAssets
+<h3>DiceGenerator</h3>
+@if (State.DiceArray is not null)
+{
+    @for (byte i = 0; i < State.DiceArray.Length; i++)
+    {
+        <p>Dice @(i+1): @State.DiceArray[i]</p>
+    }
+    <button @onclick="State.ClearArray">Clear</button>
+}
+else
+{
+    <button @onclick="State.TwoD6">2x D6</button>
+    <button @onclick="State.ThreeD6">3x D6</button>
+}
+
+@code {
+    [Inject] public IDiceGeneratorState State { get; set; }
+}

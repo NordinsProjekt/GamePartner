@@ -31,6 +31,7 @@ public class Program
         });
 
         builder.Services.AddStates();
+        builder.Services.AddServices();
 
 
         var app = builder.Build();

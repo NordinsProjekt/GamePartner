@@ -1,0 +1,20 @@
+﻿@using RazorSharedLib.States.GameAssets
+@using RazorSharedLib.Interface
+<h3>DiceGenerator</h3>
+@if (Service.State.DiceArray is not null)
+{
+    @for (byte i = 0; i < Service.State.DiceArray.Length; i++)
+    {
+        <p>Dice @(i + 1): @Service.State.DiceArray[i]</p>
+    }
+    <button @onclick="Service.ClearArray">Clear</button>
+}
+else
+{
+    <button @onclick="Service.TwoD6">2x D6</button>
+    <button @onclick="Service.ThreeD6">3x D6</button>
+}
+
+@code {
+    [Inject] public IDiceGeneratorService Service { get; set; }
+}

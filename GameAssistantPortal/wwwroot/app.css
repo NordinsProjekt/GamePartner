@@ -134,7 +134,7 @@ button {
     border: 1px solid black; /* Black border */
     color: black; /* Black text */
     padding: 10px 20px; /* Padding around the text */
-    border-radius: 12px; /* Rounded corners */
+    border-radius: 12px!important; /* Rounded corners */
     transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
 

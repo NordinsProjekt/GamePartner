@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RazorSharedLib", "RazorShar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameAssistantPortal", "GameAssistantPortal\GameAssistantPortal.csproj", "{FA0CFA7F-7F15-492D-903E-131439FDE85A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamePortalTests", "GamePortalTests\GamePortalTests.csproj", "{16894EEB-7672-464A-A631-5832B18C6194}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{FA0CFA7F-7F15-492D-903E-131439FDE85A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA0CFA7F-7F15-492D-903E-131439FDE85A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA0CFA7F-7F15-492D-903E-131439FDE85A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16894EEB-7672-464A-A631-5832B18C6194}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16894EEB-7672-464A-A631-5832B18C6194}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16894EEB-7672-464A-A631-5832B18C6194}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16894EEB-7672-464A-A631-5832B18C6194}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,6 +100,7 @@ Global
 		{1C8B2AA8-D18A-48C5-9C79-B8172A6605A2} = {8EE95C7E-D7D6-4296-91EA-A809A01B6A03}
 		{0EB06039-F732-42D2-BB5D-C338D01FAC82} = {2641E105-40FD-466E-B31D-F1D970E60B29}
 		{FA0CFA7F-7F15-492D-903E-131439FDE85A} = {2641E105-40FD-466E-B31D-F1D970E60B29}
+		{16894EEB-7672-464A-A631-5832B18C6194} = {CAA8935A-F195-47E2-AFBB-F5DA3C411C68}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BBDAA65E-C9C1-4A78-8768-F12836634D47}

@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <OpenApiReference Include="OpenAPIs\swagger.json" CodeGenerator="NSwagCSharp" Namespace="RazorSharedLib.Api" ClassName="ApiClient">
+    <OpenApiReference Include="OpenAPIs\swagger.json" CodeGenerator="NSwagCSharp" Namespace="RazorSharedLib.Api" ClassName="ApiClient" Options="/GenerateClientInterfaces:true">
       <SourceUri>https://localhost:7185/swagger/v1/swagger.json</SourceUri>
     </OpenApiReference>
   </ItemGroup>
@@ -38,7 +38,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
     <Folder Include="Pages\" />
   </ItemGroup>
 

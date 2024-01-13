@@ -134,7 +134,7 @@ button {
     border: 1px solid black; /* Black border */
     color: black; /* Black text */
     padding: 10px 20px; /* Padding around the text */
-    border-radius: 12px; /* Rounded corners */
+    border-radius: 12px!important; /* Rounded corners */
     transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
 
@@ -142,3 +142,14 @@ button {
         background-color: #d3d3d3; /* Light grey on hover */
     }
 
+/* Assuming .background-container is your parent div with the background image */
+.div-with-background {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Full height of the viewport */
+    background-image: url('path-to-your-background-image.jpg'); /* Replace with your image path */
+    background-size: cover; /* Cover the entire area of the div */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+}

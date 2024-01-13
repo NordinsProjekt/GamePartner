@@ -6,12 +6,12 @@
     @if (Result.Correct)
     {
         <p>Du hade rätt</p>
-        <img src="@Result?.ImageUrl"/>
+        <img src="@Result?.ImageUrl" alt="magiccard"/>
     }
     else
     {
         <p>Du hade tyvärr fel</p>
-        <img src="@Result?.ImageUrl"/>
+        <img src="@Result?.ImageUrl" alt="magiccard"/>
     }
 }
 

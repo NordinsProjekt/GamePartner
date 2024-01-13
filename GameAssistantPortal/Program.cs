@@ -1,6 +1,7 @@
 using GameAssistantPortal.Components;
 using RazorSharedLib.Api;
 using RazorSharedLib.Extensions;
+using RazorSharedLib.States.Buffer;
 
 namespace GameAssistantPortal;
 
@@ -30,8 +31,16 @@ public class Program
         });
 
         builder.Services.AddStates();
+        builder.Services.AddServices();
+
 
         var app = builder.Build();
+
+        var magicBufferState = app.Services.GetRequiredService<IMagicBufferState>();
+        var apiClient = app.Services.GetRequiredService<ApiClient>();
+
+        // Call the InitializeAsync method
+        var bufferInitTask = magicBufferState.InitializeAsync(apiClient);
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())

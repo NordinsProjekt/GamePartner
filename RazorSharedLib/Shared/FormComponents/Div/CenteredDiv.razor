@@ -1,4 +1,6 @@
-﻿<div class="centered-container" style="background-image: url('_content/RazorSharedLib/images/@backgroundImageUrl');">
+﻿@using RazorSharedLib.Shared.FormComponents.Enums
+@using MtGDomain.Extensions
+<div class="centered-container" style="background-image: url('_content/RazorSharedLib/images/@backgroundImageUrl');">
     @if (Header is not null)
     {
         <div class="child-header">
@@ -16,17 +18,19 @@
 
 @code {
     [Parameter] public string? BackgroundImageName { get; set; }
+    [Parameter] public ImageFormat? ImageFormat { get; set; }
     [Parameter] public RenderFragment? Header { get; set; }
     [Parameter] public RenderFragment? Body { get; set; }
+    [Parameter] public RenderFragment? Footer { get; set; }
 
     private string backgroundImageUrl = "";
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        if (BackgroundImageName is not null)
+        if (BackgroundImageName is not null && ImageFormat is not null)
         {
-            backgroundImageUrl = BackgroundImageName + ".png";
+            backgroundImageUrl = BackgroundImageName + ImageFormat.GetDescription();
         }
     }
 

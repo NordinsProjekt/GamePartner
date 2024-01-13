@@ -2,20 +2,34 @@
 @using RazorSharedLib.Interface
 @using RazorSharedLib.Shared.FormComponents.Enums
 
-<CenteredDiv BackgroundImageName="@GameState!.BookTitle.Replace(" ", "")">
+<CenteredDiv ImageFormat="ImageFormat.PNG" BackgroundImageName="@GameState!.BookTitle.Replace(" ", "")">
     <Header>
         <TitleField HeadingSize="HeadingType.H1">@GameState.BookTitle</TitleField>
     </Header>
 
     <Body>
         <FormTextField Title="Player name" Value="@GameState!.CharacterSheet.Name"/>
-        <FormNumberField Title="Skill" Value="@GameState!.CharacterSheet.Skill"/>
-        <FormNumberField Title="Stamina" Value="@GameState!.CharacterSheet.Stamina"/>
-        <FormNumberField Title="Luck" Value="@GameState!.CharacterSheet.Luck"/>
+        <FormNumberField Title="Gold pieces" Value="@GameState!.CharacterSheet.GoldPieces"/>
+
+        <RowDiv>
+            <FormNumberField Title="Skill" Value="@GameState!.CharacterSheet.Skill"/>
+            <FormNumberField Title="Skill Modifier" Value="@GameState!.CharacterSheet.SkillModifier"/>
+        </RowDiv>
+
+        <RowDiv>
+            <FormNumberField Title="Stamina" Value="@GameState!.CharacterSheet.Stamina"/>
+            <FormNumberField Title="Stamina Modifier" Value="@GameState!.CharacterSheet.StaminaModifier"/>
+        </RowDiv>
+
+        <RowDiv>
+            <FormNumberField Title="Luck" Value="@GameState!.CharacterSheet.Luck"/>
+            <FormNumberField Title="Luck Modifier" Value="@GameState!.CharacterSheet.LuckModifier"/>
+        </RowDiv>
     </Body>
 
 </CenteredDiv>
 
 @code {
     [Parameter] public IGameAdventureState? GameState { get; set; }
+
 }

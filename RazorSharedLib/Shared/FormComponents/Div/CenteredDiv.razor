@@ -1,0 +1,33 @@
+﻿<div class="centered-container" style="background-image: url('_content/RazorSharedLib/images/@backgroundImageUrl');">
+    @if (Header is not null)
+    {
+        <div class="child-header">
+            @Header
+        </div>
+    }
+
+    @if (Body is not null)
+    {
+        <div class="child-body">
+            @Body
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public string? BackgroundImageName { get; set; }
+    [Parameter] public RenderFragment? Header { get; set; }
+    [Parameter] public RenderFragment? Body { get; set; }
+
+    private string backgroundImageUrl = "";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (BackgroundImageName is not null)
+        {
+            backgroundImageUrl = BackgroundImageName + ".png";
+        }
+    }
+
+}

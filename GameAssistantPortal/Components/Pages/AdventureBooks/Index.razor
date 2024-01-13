@@ -1,0 +1,24 @@
+﻿@page "/AdventureBooks"
+
+@using RazorSharedLib.Services
+@using RazorSharedLib.States.GameAdventure
+@using RazorSharedLib.Shared.Components.AdventureBooks
+@using RazorSharedLib.Interface
+
+@if (CurrentState is not null)
+{
+    <GameAdventureScreen GameState="CurrentState" />
+}
+
+
+@code {
+    [Inject] IGameAdventureService Service { get; set; }
+    private IGameAdventureState? CurrentState { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        CurrentState = Service.GetState("DeathTrap Dungeon");
+    }
+
+}

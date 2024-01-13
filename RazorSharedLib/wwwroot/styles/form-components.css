@@ -1,0 +1,114 @@
+﻿body {
+}
+
+.centered-container {
+    height: 100vh;
+    /* Make sure the image covers the full container, might crop some parts if the aspect ratio differs */
+    background-size: cover;
+    /* Center the background image */
+    background-position: center;
+    /* Ensure the background image doesn't repeat */
+    background-repeat: no-repeat;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    .centered-container .child-header {
+        align-self: stretch; /* Stretch header to take full width */
+        display: flex;
+        justify-content: center; /* Center content in the header */
+        /* Add more styles for the header if needed */
+    }
+
+    .centered-container .child-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Center content in the body vertically */
+        align-items: center; /* Center content in the body horizontally */
+        flex-grow: 1; /* Allows the body to expand and take available space */
+        /* Add more styles for the body if needed */
+    }
+
+
+.input-container-number {
+    margin: 10px 0;
+    padding: 5px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100px;
+}
+
+    .input-container-number label {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+.number-input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #333;
+    outline: none;
+    width: 75px;
+}
+
+    .number-input:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+.input-container-text {
+    margin: 10px 0;
+    padding: 5px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 300px;
+}
+
+    .input-container-text label {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+.text-input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #333;
+    outline: none;
+    width: 250px;
+}
+
+    .text-input:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+.title-container {
+    margin: 10px 0;
+    padding: 5px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 300px;
+}

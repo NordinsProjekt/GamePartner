@@ -1,0 +1,21 @@
+﻿@using RazorSharedLib.States.GameAdventure
+@using RazorSharedLib.Interface
+@using RazorSharedLib.Shared.FormComponents.Enums
+
+<CenteredDiv BackgroundImageName="@GameState!.BookTitle.Replace(" ", "")">
+    <Header>
+        <TitleField HeadingSize="HeadingType.H1">@GameState.BookTitle</TitleField>
+    </Header>
+
+    <Body>
+        <FormTextField Title="Player name" Value="@GameState!.CharacterSheet.Name"/>
+        <FormNumberField Title="Skill" Value="@GameState!.CharacterSheet.Skill"/>
+        <FormNumberField Title="Stamina" Value="@GameState!.CharacterSheet.Stamina"/>
+        <FormNumberField Title="Luck" Value="@GameState!.CharacterSheet.Luck"/>
+    </Body>
+
+</CenteredDiv>
+
+@code {
+    [Parameter] public IGameAdventureState? GameState { get; set; }
+}

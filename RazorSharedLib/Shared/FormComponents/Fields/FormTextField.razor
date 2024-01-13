@@ -1,0 +1,20 @@
+﻿@if (inputId is not null)
+{
+    <div class="input-container-text">
+        <label for="@inputId">@Title</label>
+        <input type="text" id="@inputId" @bind-value="@Value" class="text-input" />
+    </div>
+}
+
+@code {
+    [Parameter] public string Title { get; set; }
+    [Parameter] public string Value { get; set; }
+
+    private Guid? inputId;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        inputId = Guid.NewGuid();
+    }
+}

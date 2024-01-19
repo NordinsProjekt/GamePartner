@@ -7,14 +7,18 @@
     {
         <p>Dice @(i + 1): @Service.State.DiceArray[i]</p>
     }
-    <button @onclick="Service.ClearArray">Clear</button>
+
+    <FormButton Title="Clear" Click="@Service.ClearArray"></FormButton>
 }
 else
 {
-    <button @onclick="Service.TwoD6">2x D6</button>
-    <button @onclick="Service.ThreeD6">3x D6</button>
+    <FormButton Title="Roll (1) D6" Click="@Service.OneD6"/>
+    <FormButton Title="Roll (2) D6" Click="@Service.TwoD6"/>
+    <FormButton Title="Roll (3) D6" Click="@Service.ThreeD6"/>
 }
+
 
 @code {
     [Inject] public IDiceGeneratorService Service { get; set; }
+
 }

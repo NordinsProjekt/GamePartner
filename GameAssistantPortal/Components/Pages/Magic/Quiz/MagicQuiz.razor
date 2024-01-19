@@ -3,48 +3,57 @@
 @using RazorSharedLib.Shared.Components.MagicQuiz
 @using GameAssistantPortal.Models
 @using RazorSharedLib.States.Quiz
+@using RazorSharedLib.Shared.FormComponents.Enums
 
-<h3>MagicQuiz</h3>
-
-@if (State.MagicSets is not null && State.QuizStarted is false)
+@if (State?.MagicSets is not null && State.QuizStarted is false)
 {
     <EditForm Model="@FormData" OnSubmit="SubmitForm" FormName="QuizForm">
-        <h2>Select a Magicset to make a Quiz from</h2>
-        <DataAnnotationsValidator/>
-        <InputSelect @bind-Value="@FormData.MagicSet">
-            @foreach (var set in State.MagicSets)
-            {
-                <option value="@set.SetCode">@set.SetName</option>
-            }
-        </InputSelect>
-        <br/>
+        <CenteredDiv Show="true">
+            <Header>
+                <TitleField HeadingSize="HeadingType.H2">Select a Magicset to make a Quiz from</TitleField>
+                <RowDiv>
+                    <DataAnnotationsValidator/>
+                    <InputSelect @bind-Value="@FormData.MagicSet">
+                        @foreach (var set in State.MagicSets)
+                        {
+                            <option value="@set.SetCode">@set.SetName</option>
+                        }
+                    </InputSelect>
+                    <br/>
 
-        <InputSelect @bind-Value="@FormData.QuizType">
-            @foreach (var quiz in State.QuizList)
-            {
-                <option value="@quiz.Type">@quiz.Name</option>
-            }
-        </InputSelect>
-        <ValidationMessage For="@(() => FormData.QuizType)"/>
+                    <InputSelect @bind-Value="@FormData.QuizType">
+                        @foreach (var quiz in State.QuizList)
+                        {
+                            <option value="@quiz.Type">@quiz.Name</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => FormData.QuizType)"/>
 
-        <button type="submit">Submit</button>
+                    <FormButton Title="Spara" Click="SubmitForm"/>
+                </RowDiv>
+            </Header>
+        </CenteredDiv>
+
     </EditForm>
 }
 
-@if (State.QuizStarted)
+@if (State is not null && State.QuizStarted)
 {
-    <Quiz/> <br/>
+    <Quiz/>
+    <br/>
     <button @onclick="State.EndQuiz">End Quiz</button>
 }
 
 @code {
-    [Inject] public IMagicQuizState State { get; set; }
+    [Inject] public IMagicQuizState? State { get; set; }
 
     [SupplyParameterFromForm] public QuizFormData FormData { get; set; } = new();
 
     public void SubmitForm()
     {
-        State.SelectedQuizType = FormData.QuizType;
+        if (State == null) return;
+
+        State!.SelectedQuizType = FormData.QuizType;
 
         if (State.SetSelectedSet(FormData.MagicSet))
         {

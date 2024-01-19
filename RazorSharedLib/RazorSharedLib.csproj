@@ -39,6 +39,8 @@
 
   <ItemGroup>
     <Folder Include="Pages\" />
+    <Folder Include="Shared\Components\AdventureBooks\Components\" />
+    <Folder Include="Shared\Components\MagicQuiz\Components\" />
   </ItemGroup>
 
 </Project>

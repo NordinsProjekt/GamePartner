@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace FormattingText.Interfaces;
 
-namespace FormattingText.Interfaces
+public interface ITextToPropertiesService
 {
-    public interface ITextToPropertiesService
-    {
-        string[] StringToProperty(string Text, string split, string type);
-    }
+    string[] StringToProperty(string Text, string split, string type);
 }

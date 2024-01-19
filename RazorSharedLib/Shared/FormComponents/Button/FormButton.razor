@@ -1,0 +1,11 @@
+﻿<button class="form-button" @onclick="OnClick">@Title</button>
+
+@code {
+    [Parameter] public string Title { get; set; }
+    [Parameter] public EventCallback Click { get; set; }
+
+    private async Task OnClick()
+    {
+        await Click.InvokeAsync();
+    }
+}

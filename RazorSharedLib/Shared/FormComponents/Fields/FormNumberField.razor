@@ -1,0 +1,30 @@
+﻿@if (inputId is not null)
+{
+    <div class="input-container-number">
+        <label for="@inputId">@Title</label>
+        <input type="tel" min="-12" max="20" id="@inputId" value="@Value" class="number-input" @onchange="OnValueChanged" />
+    </div>
+}
+
+@code {
+    [Parameter] public string Title { get; set; }
+    [Parameter] public int Value { get; set; }
+    [Parameter] public EventCallback<int> ValueChanged { get; set; }
+
+    private Guid? inputId;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        inputId = Guid.NewGuid();
+    }
+
+    private async void OnValueChanged(ChangeEventArgs e)
+    {
+        if (!int.TryParse(e.Value?.ToString(), out var newValue)) return;
+
+        Value = newValue;
+        await ValueChanged.InvokeAsync(Value);
+    }
+
+}

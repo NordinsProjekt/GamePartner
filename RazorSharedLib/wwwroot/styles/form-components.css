@@ -1,0 +1,174 @@
+﻿body {
+}
+
+.centered-container {
+    height: 100vh;
+    /* Make sure the image covers the full container, might crop some parts if the aspect ratio differs */
+    background-size: cover;
+    /* Center the background image */
+    background-position: center;
+    /* Ensure the background image doesn't repeat */
+    background-repeat: no-repeat;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title-container {
+    margin: 10px 0;
+    padding: 5px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; /* Ensure it takes the full width */
+    max-width: 100%; /* Override any max-width constraints */
+}
+    .centered-container .child-header {
+        padding-top: 10px;
+        align-items: center; /* Stretch header to take full width */
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Center content in the header */
+        /* Add more styles for the header if needed */
+    }
+
+    .centered-container .child-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Center content in the body vertically */
+        align-items: center; /* Center content in the body horizontally */
+        flex-grow: 1; /* Allows the body to expand and take available space */
+        /* Add more styles for the body if needed */
+    }
+
+    .centered-container .child-footer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Center content in the body vertically */
+        align-items: center; /* Center content in the body horizontally */
+        /* Add more styles for the body if needed */
+    }
+
+.container-flex-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+}
+
+
+.input-container-number {
+    margin: 10px 0;
+    padding: 5px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 200px;
+}
+
+    .input-container-number label {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+.number-input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #333;
+    outline: none;
+    width: 75px;
+}
+
+    .number-input:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+.input-container-text {
+    margin: 10px 0;
+    padding: 5px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 300px;
+}
+
+    .input-container-text label {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+.text-input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #333;
+    outline: none;
+    width: 250px;
+}
+
+    .text-input:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+
+.form-button {
+    padding: 10px 15px;
+    background-color: whitesmoke; /* Blue color - you can adjust the color as needed */
+    color: black;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease-in-out;
+}
+
+    .form-button:hover {
+        background-color: gray; /* Darker shade for hover effect */
+    }
+
+    .form-button:active {
+        background-color: palegoldenrod; /* Even darker shade for active/clicked state */
+    }
+
+    .form-button:focus {
+        box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5); /* Focus ring similar to inputs */
+    }
+
+.textbox {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #333;
+    outline: none;
+    width: 250px; /* Adjust width as needed */
+    height: 200px; /* Adjust height as needed for multiple lines */
+}
+
+    .textbox:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }

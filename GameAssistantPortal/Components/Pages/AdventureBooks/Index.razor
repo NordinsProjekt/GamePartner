@@ -1,0 +1,22 @@
+﻿@page "/AdventureBooks"
+
+@using RazorSharedLib.Shared.Components.AdventureBooks
+@using RazorSharedLib.Interface
+
+@if (CurrentState is not null)
+{
+    <GameAdventureScreen GameState="CurrentState" />
+}
+
+
+@code {
+    [Inject] IGameAdventureService Service { get; set; }
+    private IGameAdventureState? CurrentState { get; set; }
+
+    protected override void OnInitialized()
+    {
+        //Byt till api anrop för att hämta lista med bok titlar.
+        base.OnInitialized();
+        CurrentState = Service.GetState("DeathTrap Dungeon");
+    }
+}

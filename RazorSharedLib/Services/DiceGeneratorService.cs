@@ -15,6 +15,11 @@ public class DiceGeneratorService : IDiceGeneratorService
         State = state;
     }
 
+    public void OneD6()
+    {
+        State.DiceArray = GetDiceArray(6, 1);
+    }
+
     public void TwoD6()
     {
         State.DiceArray = GetDiceArray(6, 2);
@@ -23,6 +28,11 @@ public class DiceGeneratorService : IDiceGeneratorService
     public void ThreeD6()
     {
         State.DiceArray = GetDiceArray(6, 3);
+    }
+
+    public void FourD6()
+    {
+        State.DiceArray = GetDiceArray(6, 4);
     }
 
     public void ClearArray()

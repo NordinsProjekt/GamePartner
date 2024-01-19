@@ -1,0 +1,29 @@
+﻿@if (inputId is not null)
+{
+    <div class="input-container-text">
+        <label for="@inputId">@Title</label>
+        <textarea id="@inputId" class="textbox" value="@Value" @onchange="OnValueChanged"></textarea>
+    </div>
+}
+
+
+@code {
+    [Parameter] public string Title { get; set; }
+    [Parameter] public string Value { get; set; }
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+
+    private Guid? inputId;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        inputId = Guid.NewGuid();
+    }
+
+    private async void OnValueChanged(ChangeEventArgs e)
+    {
+        Value = (string)e.Value;
+        await ValueChanged.InvokeAsync(Value);
+    }
+
+}

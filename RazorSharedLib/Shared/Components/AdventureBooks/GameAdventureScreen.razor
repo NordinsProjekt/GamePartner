@@ -1,0 +1,70 @@
+﻿@using RazorSharedLib.States.GameAdventure
+@using RazorSharedLib.Interface
+@using RazorSharedLib.Shared.FormComponents.Enums
+
+<CenteredDiv Show="ShowGameWindow" ImageFormat="ImageFormat.PNG" BackgroundImageName="@GameState!.BookTitle.Replace(" ", "")">
+    <Header>
+        <TitleField HeadingSize="HeadingType.H1">@GameState.BookTitle</TitleField>
+        <FormButton Title="Roll Character" Click="ReRollCharacter" />
+        <FormButton Title="Settings" Click="ToggleSettingsWindow"/>
+    </Header>
+
+    <Body>
+    <FormTextField Title="Player name" @bind-Value="@GameState!.CharacterSheet.Name"/>
+    <FormNumberField Title="Gold pieces" @bind-Value="@GameState!.CharacterSheet.GoldPieces"/>
+
+    <RowDiv>
+        <FormNumberField Title="Skill" @bind-Value="@GameState!.CharacterSheet.Skill"/>
+        <FormNumberField Title="Skill Modifier" @bind-Value="@GameState!.CharacterSheet.SkillModifier"/>
+    </RowDiv>
+
+    <RowDiv>
+        <FormNumberField Title="Stamina" @bind-Value="@GameState!.CharacterSheet.Stamina"/>
+        <FormNumberField Title="Stamina Modifier" @bind-Value="@GameState!.CharacterSheet.StaminaModifier"/>
+    </RowDiv>
+
+    <RowDiv>
+        <FormNumberField Title="Luck" @bind-Value="@GameState!.CharacterSheet.Luck"/>
+        <FormNumberField Title="Luck Modifier" @bind-Value="@GameState!.CharacterSheet.LuckModifier"/>
+    </RowDiv>
+    <FormTextBox Title="Notes" @bind-Value="@GameState!.CharacterSheet.Notes"/>
+    </Body>
+
+    <Footer>
+        <p style="background-color:#f4f4f4; padding: 10px;">Powered by FormComponents</p>
+    </Footer>
+</CenteredDiv>
+    <CenteredDiv Show="ShowSettings">
+    <Header>
+        <TitleField HeadingSize="HeadingType.H1">Settings</TitleField>
+        <FormButton Title="Exit settings" Click="ToggleSettingsWindow"/>
+    </Header>
+    <Body></Body>
+    <Footer></Footer>
+</CenteredDiv>
+
+@code {
+    [Parameter] public IGameAdventureState? GameState { get; set; }
+    [Inject] public IGameAdventureService? Service { get; set; }
+
+    private bool ShowGameWindow { get; set; }
+    private bool ShowSettings { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        ShowGameWindow = true;
+    }
+
+
+    private void ReRollCharacter()
+    {
+        Service!.RollNewCharacter(GameState!.BookTitle);
+    }
+
+    private void ToggleSettingsWindow()
+    {
+        ShowSettings = !ShowSettings;
+        ShowGameWindow = !ShowSettings;
+    }
+}

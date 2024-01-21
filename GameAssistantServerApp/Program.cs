@@ -1,11 +1,13 @@
-using GameAssistantPortal.Components;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
 using RazorSharedLib.Api;
 using RazorSharedLib.Extensions;
 using RazorSharedLib.States.Buffer;
 
-namespace GameAssistantPortal;
+namespace GameAssistantServerApp;
 
 public class Program
 {
@@ -14,8 +16,21 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-        builder.Services.AddRazorComponents()
-            .AddInteractiveServerComponents();
+        builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+            .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
+        builder.Services.AddControllersWithViews()
+            .AddMicrosoftIdentityUI();
+
+        builder.Services.AddAuthorization(options =>
+        {
+            // Allows anonymous access by default, only requiring authentication for [Authorize]-marked components
+            options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAssertion(_ => true).Build();
+        });
+
+        builder.Services.AddRazorPages();
+        builder.Services.AddServerSideBlazor()
+            .AddMicrosoftIdentityConsentHandler();
+
         builder.Services.AddHttpClient<ApiClient>((serviceProvider, client) => { }).ConfigureHttpClient(
             (serviceProvider, client) =>
             {
@@ -54,10 +69,12 @@ public class Program
         app.UseHttpsRedirection();
 
         app.UseStaticFiles();
-        app.UseAntiforgery();
 
-        app.MapRazorComponents<App>()
-            .AddInteractiveServerRenderMode();
+        app.UseRouting();
+
+        app.MapControllers();
+        app.MapBlazorHub();
+        app.MapFallbackToPage("/_Host");
 
         app.Run();
     }

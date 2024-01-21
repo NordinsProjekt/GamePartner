@@ -94,3 +94,109 @@
 #QuizWindowType h2, #QuizWindowType p {
     text-align: center; /* Center-align the text */
 }
+
+
+
+select {
+    padding: 10px 15px; /* Add some padding inside the dropdown */
+    margin: 5px; /* Add some space around the dropdown */
+    border: 1px solid #ccc; /* Add a light border */
+    border-radius: 5px; /* Slightly round the corners */
+    background-color: white; /* Set a background color */
+    font-size: 16px; /* Increase font size */
+    color: #333; /* Set the text color */
+    -webkit-appearance: none; /* Remove default styling for WebKit browsers */
+    -moz-appearance: none; /* Remove default styling for Firefox browsers */
+    appearance: none; /* Remove default arrow from dropdown */
+}
+
+    /* Style the dropdown on hover */
+    select:hover {
+        border-color: #888; /* Darken the border on hover */
+    }
+
+    /* You can add a custom arrow indicator */
+    select + .arrow {
+        position: relative;
+        right: 30px; /* Position it on the right side */
+        top: -25px; /* Align it with the select box */
+        pointer-events: none; /* Ignore mouse events */
+    }
+
+/* Optionally style the options */
+option {
+    padding: 10px; /* Add padding to each option */
+}
+
+.radio-container {
+    margin: 10px 0;
+}
+
+    /* Hide the default radio button */
+    .radio-container input[type='radio'] {
+        display: none;
+    }
+
+    /* Create a custom radio button */
+    .radio-container .custom-radio {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background-color: #f2f2f2;
+        border-radius: 50%;
+        position: relative;
+        cursor: pointer;
+        border: 2px solid #d1d3d4;
+        margin-right: 10px;
+        vertical-align: middle;
+    }
+
+    /* Style the label */
+    .radio-container label {
+        cursor: pointer;
+        vertical-align: middle;
+    }
+
+    /* Style the radio button when it's checked */
+    .radio-container input[type='radio']:checked + .custom-radio {
+        background-color: #009688;
+        border-color: #00796b;
+    }
+
+        /* Add a dot in the center of the custom radio when it's checked */
+        .radio-container input[type='radio']:checked + .custom-radio:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            background-color: #fff;
+            border-radius: 50%;
+        }
+
+button {
+    background-color: #f5f5f5; /* Bone white background */
+    border: 1px solid black; /* Black border */
+    color: black; /* Black text */
+    padding: 10px 20px; /* Padding around the text */
+    border-radius: 12px !important; /* Rounded corners */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+    button:hover {
+        background-color: #d3d3d3; /* Light grey on hover */
+    }
+
+/* Assuming .background-container is your parent div with the background image */
+.div-with-background {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Full height of the viewport */
+    background-image: url('path-to-your-background-image.jpg'); /* Replace with your image path */
+    background-size: cover; /* Cover the entire area of the div */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+}

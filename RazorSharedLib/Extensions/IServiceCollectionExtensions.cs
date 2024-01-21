@@ -8,7 +8,7 @@ using RazorSharedLib.States.Quiz;
 
 namespace RazorSharedLib.Extensions;
 
-public static class IServiceCollectionExtensions
+public static class ServiceCollectionExtensions
 {
     public static void AddStates(this IServiceCollection service)
     {

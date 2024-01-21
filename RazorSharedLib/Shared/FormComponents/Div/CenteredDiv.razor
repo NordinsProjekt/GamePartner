@@ -1,32 +1,30 @@
 ﻿@using RazorSharedLib.Shared.FormComponents.Enums
 @using MtGDomain.Extensions
 @using RazorSharedLib.Shared.Components.MagicQuiz
-@if (Show)
-{
-    <div class="centered-container" style="background-image: url('_content/RazorSharedLib/images/@backgroundImageUrl');">
-        @if (Header is not null)
-        {
-            <div class="child-header">
-                @Header
-            </div>
-        }
 
-        @if (Body is not null)
-        {
-            <div class="child-body">
-                @Body
-            </div>
-        }
-    
-        @if (Footer is not null)
-        {
-            <div class="child-footer">
-                @Footer
-            </div>
-        }
+<div class="centered-container" style="background-image: url('_content/RazorSharedLib/images/@backgroundImageUrl');">
+    @if (Header is not null)
+    {
+        <div class="child-header">
+            @Header
+        </div>
+    }
 
-    </div>
-}
+    @if (Body is not null)
+    {
+        <div class="child-body">
+            @Body
+        </div>
+    }
+
+    @if (Footer is not null)
+    {
+        <div class="child-footer">
+            @Footer
+        </div>
+    }
+
+</div>
 
 
 @code {
@@ -35,7 +33,7 @@
     [Parameter] public RenderFragment? Header { get; set; }
     [Parameter] public RenderFragment? Body { get; set; }
     [Parameter] public RenderFragment? Footer { get; set; }
-    [Parameter, EditorRequired] public bool Show { get; set; }
+
 
     private string backgroundImageUrl = "";
 

@@ -1,6 +1,8 @@
 using GameAssistantPortal.Components;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.Identity.Web;
 using RazorSharedLib.Api;
 using RazorSharedLib.Extensions;
 using RazorSharedLib.States.Buffer;
@@ -15,7 +17,17 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddRazorComponents()
-            .AddInteractiveServerComponents();
+            .AddInteractiveServerComponents()
+            .AddMicrosoftIdentityConsentHandler();
+
+        builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+            .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
+        builder.Services.AddAuthorization(options =>
+        {
+            // Allows anonymous access by default, only requiring authentication for [Authorize]-marked components
+            options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAssertion(_ => true).Build();
+        });
+
         builder.Services.AddHttpClient<ApiClient>((serviceProvider, client) => { }).ConfigureHttpClient(
             (serviceProvider, client) =>
             {

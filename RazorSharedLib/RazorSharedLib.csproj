@@ -42,6 +42,7 @@
     <Folder Include="Shared\Components\AdventureBooks\Components\" />
     <Folder Include="Shared\Components\MagicQuiz\Components\" />
     <Folder Include="Shared\FormComponents\Div\Components\" />
+    <Folder Include="Shared\Identity\" />
   </ItemGroup>
 
 </Project>

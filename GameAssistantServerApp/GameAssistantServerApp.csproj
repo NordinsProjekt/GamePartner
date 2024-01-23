@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-GameAssistantServerApp-08b0d8d0-75a4-4ce8-a16b-7c170934587b</UserSecretsId>
@@ -9,14 +9,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.13" NoWarn="NU1605" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.13" NoWarn="NU1605" />
-    <PackageReference Include="Microsoft.Identity.Web" Version="2.13.4" />
-    <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.13.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" NoWarn="NU1605" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.1" NoWarn="NU1605" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="2.16.1" />
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.16.1" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Data\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\GameAssistant PRODUCTION!!.pubxml.user" />
   </ItemGroup>
 
   <ItemGroup>

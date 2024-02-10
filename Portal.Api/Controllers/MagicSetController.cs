@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MtGCard_Service.Interface;
 using MtGCard_Service.Models;
 using MtGCard_Service.Services;
@@ -18,6 +19,7 @@ public class MagicSetController : Controller
         _magicSetRepository = magicSetRepository;
     }
 
+    [Authorize]
     [HttpPost("save-set/{setCode}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -39,7 +41,7 @@ public class MagicSetController : Controller
                 ? $"Cards from set {setCode} have been successfully saved."
                 : "Got 0 cards from Wizards, not saving");
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return StatusCode(500, "An error occurred while saving the cards.");
         }

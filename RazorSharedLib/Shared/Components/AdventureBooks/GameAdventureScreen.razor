@@ -8,6 +8,7 @@
             <TitleField HeadingSize="HeadingType.H1">@GameState.BookTitle</TitleField>
             <RowDiv>
                 <FormButton Title="Settings" Click="ToggleSettingsWindow"/>
+                <FormButton Title="Combat area" Click="ToggleCombatWindow"></FormButton>
                 <FormButton Title="Roll Character" Click="ReRollCharacter"/>
             </RowDiv>
 
@@ -56,6 +57,10 @@
     </CenteredDiv>
 </VisibilityToggleArea>
 
+<VisibilityToggleArea Show="@ShowCombat">
+    <BattleArea/>
+</VisibilityToggleArea>
+
 @code {
 
     [Parameter] public IGameAdventureState? GameState { get; set; }
@@ -63,6 +68,7 @@
 
     private bool ShowGameWindow { get; set; }
     private bool ShowSettings { get; set; }
+    private bool ShowCombat { get; set; }
 
     protected override void OnInitialized()
     {
@@ -79,6 +85,14 @@
     {
         ShowSettings = !ShowSettings;
         ShowGameWindow = !ShowSettings;
+        ShowCombat = !ShowSettings;
+    }
+
+    private void ToggleCombatWindow()
+    {
+        ShowCombat = !ShowCombat;
+        ShowSettings = !ShowCombat;
+        ShowGameWindow = !ShowCombat;
     }
 
 }

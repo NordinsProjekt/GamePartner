@@ -16,7 +16,6 @@ public class QuizController : Controller
         this.magicQuizService = magicQuizService;
     }
 
-
     [HttpGet("GetQuiz/{numOfCards}/{setCode}")]
     [ProducesResponseType(typeof(MagicQuizDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

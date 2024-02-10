@@ -2,7 +2,9 @@ using Infrastructure.MtGCard_API;
 using MagicRepositories;
 using MagicRepositories.Extensions;
 using MagicRepositories.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Web;
 using MtgApiManager.Lib.Service;
 using MtGCard_Service.Interface;
 using MtGCard_Service.Services;
@@ -20,9 +22,9 @@ builder.Services.AddTransient<MagicCardService>();
 
 builder.Services.AddRepositories();
 
-// Add services to the container.
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 
-builder.Services.AddAuthorization();
 
 builder.Services.AddControllers();
 

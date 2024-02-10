@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MtGCard_Service.Interface;
 using MtGCard_Service.Models;
 
 namespace MtGApi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class LogController : Controller
@@ -15,8 +17,10 @@ public class LogController : Controller
         _logRepository = logRepository;
     }
 
+
     [HttpGet("get-top-50")]
     [ProducesResponseType(typeof(LogResponseRecordDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public LogResponseRecordDto GetTop50Latest()
     {

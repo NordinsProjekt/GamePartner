@@ -1,3 +1,4 @@
+using GameAssistantServerApp.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -17,15 +18,14 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-            .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
+            .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
+            .EnableTokenAcquisitionToCallDownstreamApi()
+            .AddInMemoryTokenCaches();
+
         builder.Services.AddControllersWithViews()
             .AddMicrosoftIdentityUI();
 
-        builder.Services.AddAuthorization(options =>
-        {
-            // Allows anonymous access by default, only requiring authentication for [Authorize]-marked components
-            options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAssertion(_ => true).Build();
-        });
+        builder.Services.AddTransient<CustomAuthorizationMessageHandler>();
 
         builder.Services.AddRazorPages();
         builder.Services.AddServerSideBlazor()
@@ -35,7 +35,7 @@ public class Program
             (serviceProvider, client) =>
             {
                 // Optionally configure other settings for the HttpClient
-            });
+            }).AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
 
         builder.Services.AddTransient(serviceProvider =>
         {

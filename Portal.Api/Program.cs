@@ -25,7 +25,6 @@ builder.Services.AddRepositories();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 
-
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();

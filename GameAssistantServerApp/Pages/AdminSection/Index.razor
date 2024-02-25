@@ -1,9 +1,36 @@
 ﻿@page "/Admin"
+@using RazorSharedLib.Api
 @attribute [Authorize]
 
 <h3>Admin section</h3>
 <p>Secret area</p>
+@if (Log is not null)
+{
+    @foreach (var log in Log.Logs)
+    {
+        <p>@log.CreatedUTC</p>
+        <p><b>@log.Section</b></p>
+        <p>@log.Message</p>
+        <br/><br/>
+    }
+}
 
 @code {
+    [Inject] ApiClient? ApiClient { get; set; }
+    [Inject] NavigationManager? NavigationManager { get; set; }
+
+    private LogResponseRecordDto? Log { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            Log = await ApiClient!.GetTop50Async(CancellationToken.None);
+        }
+        catch (Exception e)
+        {
+            NavigationManager!.NavigateTo("/MicrosoftIdentity/Account/SignIn", true);
+        }
+    }
 
 }
